@@ -74,8 +74,8 @@ User buffers are those whose name does not start with *."
 (global-set-key (kbd "s-m e") 'kmacro-end-or-call-macro)
 (global-set-key [f5] 'call-last-kbd-macro)
 
-(global-set-key (kbd "s-{") 'previous-user-buffer)
-(global-set-key (kbd "s-}") 'next-user-buffer)
+;; (global-set-key (kbd "s-{") 'previous-user-buffer)
+;; (global-set-key (kbd "s-}") 'next-user-buffer)
 
 ;; (global-set-key (kbd "C-j") 'backward-char)
 ;; (global-set-key (kbd "C-l") 'forward-char)
@@ -269,6 +269,13 @@ of FILE in the current directory, suitable for creation"
       '(ace-jump-word-mode              ;; C-M-j
         ace-jump-char-mode              ;; C-u C-M-j
         ace-jump-line-mode))            ;; C-u C-u C-M-j
+
+(require 'ace-jump-buffer)
+(global-set-key (kbd "s-b") 'ace-jump-buffer)
+
+(require 'cycbuf)
+(global-set-key (kbd "s-{") 'cycbuf-switch-to-previous-buffer)
+(global-set-key (kbd "s-}") 'cycbuf-switch-to-next-buffer)
 
 (defun yank-and-indent ()
   "Yank and then indent the newly formed region according to mode."
