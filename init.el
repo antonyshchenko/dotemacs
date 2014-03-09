@@ -321,6 +321,7 @@ instead of a char."
 (require 'rainbow-delimiters)
 (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
 
+
 ;; ETC
 
 (set-frame-font "Menlo-14")
