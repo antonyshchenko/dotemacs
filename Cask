@@ -4,6 +4,7 @@
 
 (depends-on "ace-jump-buffer")
 (depends-on "ace-jump-mode")
+(depends-on "ag")
 (depends-on "auto-complete")
 (depends-on "cask")
 (depends-on "cider")
@@ -39,6 +40,7 @@
 (depends-on "s")
 (depends-on "smartparens")
 (depends-on "smartscan")
+(depends-on "smex")
 (depends-on "sr-speedbar")
 (depends-on "tree-mode")
 (depends-on "web-mode")

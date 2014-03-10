@@ -277,6 +277,16 @@ of FILE in the current directory, suitable for creation"
 (global-set-key (kbd "s-{") 'cycbuf-switch-to-previous-buffer)
 (global-set-key (kbd "s-}") 'cycbuf-switch-to-next-buffer)
 
+
+(smex-initialize)
+(global-set-key (kbd "M-x") 'smex)
+(global-set-key (kbd "M-X") 'smex-major-mode-commands)
+;; This is your old M-x.
+(global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
+
+(require 'ag)
+(global-set-key (kbd "s-g") 'projectile-ag)
+
 (defun yank-and-indent ()
   "Yank and then indent the newly formed region according to mode."
   (interactive)
