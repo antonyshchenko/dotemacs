@@ -154,21 +154,24 @@
   (sp-local-pair "<%" "%>"))
 
 
-(require 'helm-config)
-(define-key global-map [remap list-buffers] 'helm-buffers-list)
-
+(require 'ag)
+(setq ag-highlight-search t)
 
 ;; PROJECTILE
 (projectile-global-mode)
 (setq projectile-enable-caching t)
-(global-set-key (kbd "s-g") 'projectile-grep)
+(global-set-key (kbd "s-g") 'projectile-ag)
 (global-set-key (kbd "s-r") 'projectile-replace)
 (defun projectile-project-vcs ()
   "Determine the VCS used by the project if any."
   'none)
 
+;; HELM
+(require 'helm-config)
+(define-key global-map [remap list-buffers] 'helm-buffers-list)
+
 (require 'helm-projectile)
- (global-set-key (kbd "s-p") 'helm-projectile)
+(global-set-key (kbd "s-o") 'helm-projectile)
 
 
 ;; RUBY
@@ -255,9 +258,6 @@
 ;; This is your old M-x.
 (global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
 
-(require 'ag)
-(global-set-key (kbd "s-g") 'projectile-ag)
-(setq ag-highlight-search t)
 
 (defun yank-and-indent ()
   "Yank and then indent the newly formed region according to mode."
