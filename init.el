@@ -37,27 +37,6 @@
 ;; kill scratch buffer on start
 (kill-buffer "*scratch*")
 
-;; user buffer cycling
-(defun next-user-buffer ()
-  "Switch to the next user buffer.
-User buffers are those whose name does not start with *."
-  (interactive)
-  (next-buffer)
-  (let ((i 0))
-    (while (and (string-match "^*" (buffer-name)) (< i 50))
-      (setq i (1+ i)) (next-buffer) )))
-
-(defun previous-user-buffer ()
-  "Switch to the previous user buffer.
-User buffers are those whose name does not start with *."
-  (interactive)
-  (previous-buffer)
-  (let ((i 0))
-    (while (and (string-match "^*" (buffer-name)) (< i 50))
-      (setq i (1+ i)) (previous-buffer) )))
-
-
-
 ; kill open bufer w/o confirmation
 (global-set-key (kbd "s-w") 'kill-this-buffer)
 
@@ -105,6 +84,11 @@ User buffers are those whose name does not start with *."
 
 ;; auto indent new lines
 (global-set-key (kbd "RET") 'newline-and-indent)
+
+(global-set-key (kbd "M-j")
+                (lambda ()
+                  (interactive)
+                  (join-line -1)))
 
 (require 'linum+)
 (setq linum-format "%d ")
