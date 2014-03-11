@@ -233,6 +233,26 @@ of FILE in the current directory, suitable for creation"
             (rbenv-use-corresponding)
             ))
 
+;; better ruby intendation
+(setq ruby-deep-indent-paren nil)
+
+(defadvice ruby-indent-line (after unindent-closing-paren activate)
+  (let ((column (current-column))
+        indent offset)
+    (save-excursion
+      (back-to-indentation)
+      (let ((state (syntax-ppss)))
+        (setq offset (- column (current-column)))
+        (when (and (eq (char-after) ?\))
+                   (not (zerop (car state))))
+          (goto-char (cadr state))
+          (setq indent (current-indentation)))))
+    (when indent
+      (indent-line-to indent)
+      (when (> offset 0) (forward-char offset)))))
+
+
+
 (require 'web-mode)
 (add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
@@ -286,6 +306,7 @@ of FILE in the current directory, suitable for creation"
 
 (require 'ag)
 (global-set-key (kbd "s-g") 'projectile-ag)
+(setq ag-highlight-search t)
 
 (defun yank-and-indent ()
   "Yank and then indent the newly formed region according to mode."
