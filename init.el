@@ -339,6 +339,11 @@ instead of a char."
 
 (global-set-key (kbd "C-x C-k") 'delete-current-buffer-file)
 
+;; elisp
+;; Elisp go-to-definition with M-. and back again with M-,
+(autoload 'elisp-slime-nav-mode "elisp-slime-nav")
+(add-hook 'emacs-lisp-mode-hook (lambda () (elisp-slime-nav-mode t)))
+
 ;; ETC
 
 (set-frame-font "Menlo-14")
