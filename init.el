@@ -20,9 +20,9 @@
 (set-fringe-style -1)
 (tooltip-mode -1)
 (desktop-save-mode 1)
-
 (setq make-backup-files nil)
 (setq auto-save-default nil)
+(global-auto-revert-mode 1)
 
 ;; word moving commands will move cursor into between CamelCaseWords
 (global-subword-mode 1)
