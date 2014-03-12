@@ -5,6 +5,7 @@
 (add-to-list 'load-path "~/.emacs.d/vendor")
 
 (push "/usr/local/bin" exec-path)
+
 (setq make-backup-files nil)
 (setq auto-save-default nil)
 (setq-default tab-width 2)
@@ -36,6 +37,22 @@
 
 ;; kill scratch buffer on start
 (kill-buffer "*scratch*")
+;; never show certain buffers
+;; TODO: make ace-jump-buffer use it as well
+(setq my-nevershown-buffers '(
+                              "^ "
+                              "^\\*cycbuf\\*$"
+                              "\\` "
+                              "\\*helm"
+                              "\\*helm-mode"
+                              "\\*Echo Area"
+                              "\\*Minibuf"
+                              "\\TAGS"
+                              "\\*Debug Helm Log"
+                              "\\*buffer-selection*"
+                              "\\*Compile-Log"
+                              "\\*Messages"))
+
 
 ; kill open bufer w/o confirmation
 (global-set-key (kbd "s-w") 'kill-this-buffer)
@@ -98,9 +115,6 @@
 (setq frame-title-format
       (list (format "%s %%S: %%j " (system-name))
             '(Buffer-File-name "%f" (dired-directory dired-directory "%b"))))
-
-(require 'smartscan)
-(global-smartscan-mode 1)
 
 ;; (require 'sr-speedbar)
 ;; (setq speedbar-default-position 'left)
@@ -173,12 +187,13 @@
 (require 'helm-projectile)
 (global-set-key (kbd "s-o") 'helm-projectile)
 
+(setq helm-boring-buffer-regexp-list my-nevershown-buffers)
 
 ;; RUBY
+(require 'bundler)
 (require 'ruby-tools)
 (require 'rbenv)
 (global-rbenv-mode)
-(add-hook 'ruby-mode-hook 'robe-mode)
 (add-hook 'ruby-mode-hook (lambda ()
                             (rbenv-use-corresponding)))
 
@@ -227,7 +242,11 @@
                 text-mode-hook
                 ruby-mode-hook
                 web-mode-hook))
-    (add-hook hook (lambda() (highlight-symbol-mode 1) )))
+  (add-hook hook (lambda()
+                   (highlight-symbol-mode 1)
+                   (local-set-key (kbd "M-n") 'highlight-symbol-next)
+                   (local-set-key (kbd "M-p") 'highlight-symbol-prev)
+                   (local-set-key (kbd "M-r") 'highlight-symbol-query-replace))))
 
 (require 'fastnav)
 (global-set-key "\M-z" 'fastnav-zap-up-to-char-forward)
@@ -247,16 +266,48 @@
 (require 'ace-jump-buffer)
 (global-set-key (kbd "s-b") 'ace-jump-buffer)
 
+
 (require 'cycbuf)
+(setq cycbuf-dont-show-regexp my-nevershown-buffers)
 (global-set-key (kbd "s-{") 'cycbuf-switch-to-previous-buffer)
 (global-set-key (kbd "s-}") 'cycbuf-switch-to-next-buffer)
-
 
 (smex-initialize)
 (global-set-key (kbd "M-x") 'smex)
 (global-set-key (kbd "M-X") 'smex-major-mode-commands)
 ;; This is your old M-x.
 (global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
+
+;; ETAGS stuff
+(require 'helm-etags+)
+
+(require 'etags-table)
+(defun get-gems-path ()
+  (replace-regexp-in-string "\n" "/gems" (shell-command-to-string "rbenv exec gem environment | grep INSTALLATION | cut -d : -f 2 | xargs")))
+
+(add-hook 'helm-etags+-select-hook (lambda()
+                                     (setq tags-table-list (list (concat (get-gems-path) "/TAGS")))))
+
+(defun bundle-install ()
+  "Run bundle install for the current bundle."
+  (interactive)
+  (bundle-command (concat "source ~/.zshrc && bundle install && echo 'Generating tags\n' && cd " (get-gems-path) "&& ctags -e -R --extra=+fq --exclude=db --exclude=doc --exclude=log --exclude=tmp --exclude=.git --exclude=public")))
+
+
+(defun projectile-idle-regenerate-tags ()
+  "Regenerate the project's tags if in a project"
+  (when (projectile-project-p)
+    (shell-command-to-string (concat "source ~/.zshrc && cd " (projectile-project-root) " && ctags -R"))))
+
+;; regenerate TAGS file if idle for 30 seconds
+(setq projectile-idle-timer (run-with-idle-timer 10 t 'projectile-idle-regenerate-tags))
+
+(global-set-key (kbd "M-.") 'helm-etags+-select)
+(global-set-key (kbd "M-,") 'helm-etags+-history-go-back)
+
+
+
+
 
 
 (defun yank-and-indent ()
