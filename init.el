@@ -278,9 +278,14 @@
 ;; This is your old M-x.
 (global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
 
+
+
 ;; ETAGS stuff
 (require 'helm-etags+)
+(global-set-key (kbd "M-.") 'helm-etags+-select)
+(global-set-key (kbd "M-,") 'helm-etags+-history-go-back)
 
+;; Ruby specific etags stuff
 (require 'etags-table)
 (defun get-gems-path ()
   (replace-regexp-in-string "\n" "/gems" (shell-command-to-string "rbenv exec gem environment | grep INSTALLATION | cut -d : -f 2 | xargs")))
@@ -297,16 +302,10 @@
 (defun projectile-idle-regenerate-tags ()
   "Regenerate the project's tags if in a project"
   (when (projectile-project-p)
-    (shell-command-to-string (concat "source ~/.zshrc && cd " (projectile-project-root) " && ctags -R"))))
+    (shell-command-to-string (concat "source ~/.zshrc && cd " (projectile-project-root) " && ctags -R -e --extra=+fq --exclude=db --exclude=doc --exclude=log --exclude=tmp --exclude=.git --exclude=public --exclude=vendor/bundle"))))
 
-;; regenerate TAGS file if idle for 30 seconds
+;; regenerate TAGS file if idle for 10 seconds
 (setq projectile-idle-timer (run-with-idle-timer 10 t 'projectile-idle-regenerate-tags))
-
-(global-set-key (kbd "M-.") 'helm-etags+-select)
-(global-set-key (kbd "M-,") 'helm-etags+-history-go-back)
-
-
-
 
 
 
