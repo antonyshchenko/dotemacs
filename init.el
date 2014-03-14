@@ -264,6 +264,13 @@
 (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
 (global-set-key (kbd "H-a") 'mc/mark-all-like-this)
 
+
+(require 'expand-region)
+(global-set-key (kbd "C-=") 'er/expand-region)
+(global-set-key (kbd "C--") 'er/contract-region)
+(global-set-key (kbd "C-0") 'er/clear-history)
+
+
 (require 'ace-jump-mode)
 (define-key global-map (kbd "C-M-j") 'ace-jump-mode)
 (setq ace-jump-mode-submode-list
@@ -422,6 +429,7 @@ instead of a char."
  '(font-lock-string-face ((t (:foreground "yellow green"))))
  '(helm-selection ((t (:foreground "Green"))))
  '(helm-source-header ((t (:foreground "white" :weight bold))))
+ '(highlight-symbol-face ((t (:background "gray30"))))
  '(rainbow-delimiters-depth-1-face ((t (:foreground "gray100"))))
  '(rainbow-delimiters-depth-2-face ((t (:foreground "orange1"))))
  '(rainbow-delimiters-depth-3-face ((t (:foreground "purple1"))))
@@ -430,6 +438,7 @@ instead of a char."
  '(rainbow-delimiters-depth-6-face ((t (:foreground "cyan1"))))
  '(rainbow-delimiters-depth-7-face ((t (:foreground "SteelBlue1"))))
  '(rainbow-delimiters-depth-8-face ((t (:foreground "salmon"))))
+ '(region ((t (:background "gray50"))))
  '(sp-pair-overlay-face ((t (:inherit default))))
  '(sp-wrap-overlay-face ((t nil)))
  '(sp-wrap-tag-overlay-face ((t nil))))

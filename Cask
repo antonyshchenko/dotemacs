@@ -20,6 +20,7 @@
 (depends-on "ergoemacs-mode")
 (depends-on "es-lib")
 (depends-on "etags-table")
+(depends-on "expand-region")
 (depends-on "f")
 (depends-on "fastnav")
 (depends-on "flx")
