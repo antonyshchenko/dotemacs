@@ -24,6 +24,7 @@
 (setq make-backup-files nil)
 (setq auto-save-default nil)
 (global-auto-revert-mode 1)
+(setq auto-revert-verbose nil)
 
 ;; word moving commands will move cursor into between CamelCaseWords
 (global-subword-mode 1)
@@ -256,6 +257,13 @@
 (global-set-key "\M-m" 'fastnav-mark-to-char-forward)
 (global-set-key "\M-M" 'fastnav-mark-to-char-backward)
 
+
+(require 'multiple-cursors)
+(global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
+(global-set-key (kbd "C->") 'mc/mark-next-like-this)
+(global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
+(global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
+
 (require 'ace-jump-mode)
 (define-key global-map (kbd "C-M-j") 'ace-jump-mode)
 (setq ace-jump-mode-submode-list
@@ -296,16 +304,16 @@
 (defun bundle-install ()
   "Run bundle install for the current bundle."
   (interactive)
-  (bundle-command (concat "source ~/.zshrc && bundle install && echo 'Generating tags\n' && cd " (get-gems-path) "&& ctags -e -R --extra=+fq --exclude=db --exclude=doc --exclude=log --exclude=tmp --exclude=.git --exclude=public")))
+  (bundle-command (concat "source ~/.zshrc && bundle install && echo 'Generating tags\n' && cd " (get-gems-path) "&& ctags -e -R --extra=+fq --exclude=db --exclude=doc --exclude=log --exclude=tmp --exclude=.git --exclude=public && echo 'Done'")))
 
 
 (defun projectile-idle-regenerate-tags ()
   "Regenerate the project's tags if in a project"
   (when (projectile-project-p)
-    (shell-command-to-string (concat "source ~/.zshrc && cd " (projectile-project-root) " && ctags -R -e --extra=+fq --exclude=db --exclude=doc --exclude=log --exclude=tmp --exclude=.git --exclude=public --exclude=vendor/bundle"))))
+    (shell-command-to-string (concat "source ~/.zshrc && cd " (projectile-project-root) " && ctags -R -e --extra=+fq --exclude=log --exclude=tmp --exclude=.git"))))
 
-;; regenerate TAGS file if idle for 10 seconds
-(setq projectile-idle-timer (run-with-idle-timer 10 t 'projectile-idle-regenerate-tags))
+;; regenerate TAGS file if idle for 30 seconds
+(setq projectile-idle-timer (run-with-idle-timer 30 t 'projectile-idle-regenerate-tags))
 
 
 
@@ -353,7 +361,6 @@ instead of a char."
 (require 'rainbow-delimiters)
 (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
 
-
 ;; current file functions
 (defun rename-current-buffer-file ()
   "Renames current buffer and file it is visiting."
@@ -395,7 +402,6 @@ instead of a char."
 (add-hook 'emacs-lisp-mode-hook (lambda () (elisp-slime-nav-mode t)))
 
 ;; ETC
-
 (set-frame-font "Menlo-14")
 (custom-set-variables
  ;; custom-set-variables was added by Custom.

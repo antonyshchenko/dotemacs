@@ -30,6 +30,7 @@
 (depends-on "highlight-symbol")
 (depends-on "ido-vertical-mode")
 (depends-on "inf-ruby")
+(depends-on "multiple-cursors")
 (depends-on "pallet")
 (depends-on "pkg-info")
 (depends-on "popup")
