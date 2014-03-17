@@ -15,6 +15,7 @@
 (depends-on "cyberpunk-theme")
 (depends-on "cycbuf")
 (depends-on "dash")
+(depends-on "dirtree")
 (depends-on "elisp-slime-nav")
 (depends-on "epl")
 (depends-on "ergoemacs-mode")

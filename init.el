@@ -190,6 +190,11 @@
 
 (setq helm-boring-buffer-regexp-list my-nevershown-buffers)
 
+
+(require 'dirtree)
+(add-hook 'dirtree-mode-hook (lambda()
+                               (smartparens-mode -1)))
+
 ;; RUBY
 (require 'bundler)
 (require 'ruby-tools)
@@ -417,7 +422,8 @@ instead of a char."
  ;; If there is more than one, they won't work right.
  '(custom-enabled-themes (quote (tango-dark)))
  '(fci-rule-color "#383838")
- '(highlight-symbol-on-navigation-p nil))
+ '(highlight-symbol-on-navigation-p nil)
+ '(tree-widget-image-enable nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -442,3 +448,4 @@ instead of a char."
  '(sp-pair-overlay-face ((t (:inherit default))))
  '(sp-wrap-overlay-face ((t nil)))
  '(sp-wrap-tag-overlay-face ((t nil))))
+(put 'narrow-to-region 'disabled nil)
