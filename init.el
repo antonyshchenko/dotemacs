@@ -147,16 +147,6 @@
 (add-to-list 'ac-modes 'web-mode)
 
 
-;; SMARTPARENS
-(require 'smartparens-config)
-(require 'smartparens-ruby)
-(smartparens-global-mode)
-(show-smartparens-global-mode t)
-(sp-with-modes '(rhtml-mode)
-  (sp-local-pair "<" ">")
-  (sp-local-pair "<%" "%>"))
-
-
 (require 'ag)
 (setq ag-highlight-search t)
 
@@ -215,19 +205,31 @@
       (when (> offset 0) (forward-char offset)))))
 
 
+(require 'expand-region)
+(global-set-key (kbd "C-=") 'er/expand-region)
+(global-set-key (kbd "C--") 'er/contract-region)
+(global-set-key (kbd "C-0") 'er/clear-history)
 
 (require 'web-mode)
 (add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
 (setq web-mode-code-indent-offset 2)
 (setq web-mode-script-padding 2)
-(add-hook 'web-mode-hook (lambda()
-                           (smartparens-mode -1)
-                           (local-set-key (kbd "M-s-<left>") 'web-mode-element-previous)
-                           (local-set-key (kbd "M-s-<right>") 'web-mode-element-next)
-                           (local-set-key (kbd "M-s-<up>") 'web-mode-element-parent)
-                           (local-set-key (kbd "M-s-<down>") 'web-mode-element-child)))
+(setq web-mode-disable-auto-pairing t)
 
+
+;; SMARTPARENS
+(require 'smartparens-config)
+(require 'smartparens-ruby)
+(smartparens-global-mode)
+(show-smartparens-global-mode t)
+(sp-with-modes '(web-mode)
+  (sp-local-pair "%" "%"
+                 :unless '(sp-in-string-or-word-p)
+                 :post-handlers '(
+                                  (space-and-space-on-each-side "SPC")
+                                  (space-on-each-side "=" "#")
+                                  )))
 
 (require 'highlight-symbol)
 (setq highlight-symbol-idle-delay 0.2)
@@ -256,12 +258,6 @@
 (global-set-key (kbd "C->") 'mc/mark-next-like-this)
 (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
 (global-set-key (kbd "H-a") 'mc/mark-all-like-this)
-
-
-(require 'expand-region)
-(global-set-key (kbd "C-=") 'er/expand-region)
-(global-set-key (kbd "C--") 'er/contract-region)
-(global-set-key (kbd "C-0") 'er/clear-history)
 
 
 (require 'ace-jump-mode)
