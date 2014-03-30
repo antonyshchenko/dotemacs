@@ -33,8 +33,15 @@
 ;; gc tuning
 (setq gc-cons-threshold 20000000)
 
-(require 'windmove)
-(windmove-default-keybindings 'meta)
+(require 'evil)
+(evil-mode 1)
+
+(require 'evil-tabs)
+(global-evil-tabs-mode t)
+(global-set-key (kbd "s-{") 'elscreen-previous)
+(global-set-key (kbd "s-}") 'elscreen-next)
+(global-set-key (kbd "s-t") 'elscreen-create)
+(global-set-key (kbd "s-w") 'elscreen-kill)
 
 ;; kill scratch buffer on start
 (kill-buffer "*scratch*")
@@ -56,7 +63,7 @@
 
 
 ; kill open bufer w/o confirmation
-(global-set-key (kbd "s-w") 'kill-this-buffer)
+(global-set-key (kbd "s-k") 'kill-this-buffer)
 
 ;(setq mac-command-modifier 'control)
 (setq mac-function-modifier 'hyper)
@@ -71,20 +78,8 @@
 (global-set-key (kbd "s-m e") 'kmacro-end-or-call-macro)
 (global-set-key [f5] 'call-last-kbd-macro)
 
-;; (global-set-key (kbd "s-{") 'previous-user-buffer)
-;; (global-set-key (kbd "s-}") 'next-user-buffer)
-
-;; (global-set-key (kbd "C-j") 'backward-char)
-;; (global-set-key (kbd "C-l") 'forward-char)
-;; (global-set-key (kbd "C-k") 'next-line)
-;; (global-set-key (kbd "C-i") 'previous-line)
-
-;; (global-set-key (kbd "M-j") 'backward-word)
-;; (global-set-key (kbd "M-l") 'forward-word)
 (global-set-key (kbd "M-<left>") 'backward-word)
 (global-set-key (kbd "M-<right>") 'forward-word)
-;; (global-set-key (kbd "s-i") 'beginning-of-buffer)
-;; (global-set-key (kbd "s-k") 'end-of-buffer)
 
 (global-set-key (kbd "s-<left>") 'move-beginning-of-line)
 (global-set-key (kbd "s-<right>") 'move-end-of-line)
@@ -116,13 +111,6 @@
 (setq frame-title-format
       (list (format "%s %%S: %%j " (system-name))
             '(Buffer-File-name "%f" (dired-directory dired-directory "%b"))))
-
-;; (require 'sr-speedbar)
-;; (setq speedbar-default-position 'left)
-;; (setq speedbar-show-unknown-files t)
-;; (setq sr-speedbar-right-side nil)
-;; (setq speedbar-use-images nil)
-;; (global-set-key (kbd "C-c b") 'sr-speedbar-toggle)
 
 (require 'ido)
 (ido-mode t)
@@ -277,20 +265,17 @@
 
 
 (require 'ace-jump-mode)
-(define-key global-map (kbd "C-M-j") 'ace-jump-mode)
+(define-key global-map (kbd "H-SPC") 'ace-jump-mode)
 (setq ace-jump-mode-submode-list
       '(ace-jump-word-mode              ;; C-M-j
         ace-jump-char-mode              ;; C-u C-M-j
         ace-jump-line-mode))            ;; C-u C-u C-M-j
 
+(define-key evil-normal-state-map (kbd "H-SPC") 'ace-jump-mode)
+
 (require 'ace-jump-buffer)
 (global-set-key (kbd "s-b") 'ace-jump-buffer)
 
-
-(require 'cycbuf)
-(setq cycbuf-dont-show-regexp my-nevershown-buffers)
-(global-set-key (kbd "s-{") 'cycbuf-switch-to-previous-buffer)
-(global-set-key (kbd "s-}") 'cycbuf-switch-to-next-buffer)
 
 (smex-initialize)
 (global-set-key (kbd "M-x") 'smex)
@@ -302,8 +287,8 @@
 
 ;; ETAGS stuff
 (require 'helm-etags+)
-(global-set-key (kbd "M-.") 'helm-etags+-select)
-(global-set-key (kbd "M-,") 'helm-etags+-history-go-back)
+(global-set-key (kbd "H-]") 'helm-etags+-select)
+(global-set-key (kbd "H-[") 'helm-etags+-history-go-back)
 
 ;; Ruby specific etags stuff
 (require 'etags-table)
@@ -350,22 +335,6 @@ instead of a char."
 
 (global-set-key (kbd "C-M-z") 'zap-to-string)
 
-;; (defun forward-word-to-beginning (&optional n)
-;;   "Move point forward n words and place cursor at the beginning."
-;;   (interactive "p")
-;;   (let (myword)
-;;     (setq myword
-;;           (if (and transient-mark-mode mark-active)
-;;               (buffer-substring-no-properties (region-beginning) (region-end))
-;;             (thing-at-point 'symbol)))
-;;     (if (not (eq myword nil))
-;;         (forward-word n))
-;;     (forward-word n)
-;;     (backward-word n)))
-
-;; (global-set-key (kbd "M-C-f") 'forward-word-to-beginning)
-
-
 ;; Cleanup whitespace on save
 (add-hook 'before-save-hook 'whitespace-cleanup)
 
@@ -391,7 +360,7 @@ instead of a char."
           (message "File '%s' successfully renamed to '%s'"
                    name (file-name-nondirectory new-name)))))))
 
-(global-set-key (kbd "C-x C-r") 'rename-current-buffer-file)
+(global-set-key [f6] 'rename-current-buffer-file)
 
 (defun delete-current-buffer-file ()
   "Removes file connected to current buffer and kills buffer."
@@ -406,12 +375,16 @@ instead of a char."
         (kill-buffer buffer)
         (message "File '%s' successfully removed" filename)))))
 
-(global-set-key (kbd "C-x C-k") 'delete-current-buffer-file)
+(global-set-key [f8] 'delete-current-buffer-file)
 
 ;; elisp
-;; Elisp go-to-definition with M-. and back again with M-,
+;; Elisp go-to-definition with H-] and back again with H-[,
 (autoload 'elisp-slime-nav-mode "elisp-slime-nav")
-(add-hook 'emacs-lisp-mode-hook (lambda () (elisp-slime-nav-mode t)))
+(add-hook 'emacs-lisp-mode-hook (lambda ()
+                                  (elisp-slime-nav-mode t)
+                                  (local-set-key (kbd "H-]") 'elisp-slime-nav-find-elisp-thing-at-point)
+                                  (local-set-key (kbd "H-[") 'pop-tag-mark)))
+
 
 ;; ETC
 (set-frame-font "Menlo-14")
