@@ -494,6 +494,7 @@ instead of a char."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(custom-enabled-themes (quote (tango-dark)))
+ '(elscreen-tab-display-kill-screen nil)
  '(fci-rule-color "#383838")
  '(highlight-symbol-on-navigation-p nil)
  '(tree-widget-image-enable nil))
@@ -503,6 +504,8 @@ instead of a char."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(default ((t (:inherit nil :stipple nil :background "#2e3436" :foreground "gray100" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 140 :width normal :foundry "nil" :family "Menlo"))))
+ '(elscreen-tab-background-face ((t (:background "#2e3436"))))
+ '(elscreen-tab-other-screen-face ((t (:background "gray66" :foreground "black" :underline t))))
  '(font-lock-builtin-face ((t (:foreground "brown1"))))
  '(font-lock-comment-face ((t (:foreground "gray43"))))
  '(font-lock-string-face ((t (:foreground "yellow green"))))
