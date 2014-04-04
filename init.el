@@ -519,6 +519,15 @@ instead of a char."
                                                   (interactive)
                                                   (evil-insert-newline-above)
                                                   (evil-normal-state)))
+(defun evil-break-line ()
+  (interactive)
+  (if (eql 'insert evil-state)
+      (newline-and-indent)
+    (without-evil-mode
+     (newline-and-indent))))
+
+(define-key evil-insert-state-map (kbd "C-j") 'evil-break-line)
+(define-key evil-normal-state-map (kbd "C-j") 'evil-break-line)
 
 (define-key evil-normal-state-map (kbd "H-SPC") 'ace-jump-mode)
 
