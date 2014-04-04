@@ -481,6 +481,15 @@ instead of a char."
 ;; (define-key evil-visual-state-map "P" 'evil-destroy-paste-before)
 ;; (define-key evil-visual-state-map "p" 'evil-destroy-paste-after)
 
+(define-key evil-normal-state-map (kbd "RET") (lambda ()
+                                                (interactive)
+                                                (evil-insert-newline-below)
+                                                (evil-normal-state)))
+(define-key evil-normal-state-map [(S-return)] (lambda ()
+                                                  (interactive)
+                                                  (evil-insert-newline-above)
+                                                  (evil-normal-state)))
+
 (define-key evil-normal-state-map (kbd "H-SPC") 'ace-jump-mode)
 
 ;;; esc quits
