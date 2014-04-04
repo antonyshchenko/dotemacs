@@ -52,6 +52,12 @@
                               "\\*Compile-Log"
                               "\\*Messages"))
 
+;; De-duplicate buffer names by prepending parts of the directory until the name
+;; is unique, instead of just appending numbers.
+(require 'uniquify)
+(setq uniquify-buffer-name-style 'forward
+      uniquify-after-kill-buffer-p t
+      uniquify-ignore-buffers-re "^\\*") ; Do not rename special buffers!
 
 ; kill open bufer w/o confirmation
 (global-set-key (kbd "s-k") 'kill-this-buffer)
