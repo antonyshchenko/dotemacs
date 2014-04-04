@@ -230,6 +230,7 @@
                 text-mode-hook
                 ruby-mode-hook
                 js-mode-hook
+                clojure-mode-hook
                 web-mode-hook))
   (add-hook hook (lambda()
                    (highlight-symbol-mode 1)

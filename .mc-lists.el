@@ -4,6 +4,10 @@
 (setq mc/cmds-to-run-for-all
       '(
         electric-indent-just-newline
+        evil-backward-char
+        evil-destroy-change
+        evil-normal-state
+        evil-previous-line
         sp--self-insert-command
         ))
 
