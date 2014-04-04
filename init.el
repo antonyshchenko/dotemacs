@@ -290,7 +290,7 @@
 
 
 (require 'ace-jump-mode)
-(define-key global-map (kbd "H-SPC") 'ace-jump-mode)
+(define-key global-map (kbd "C-SPC") 'ace-jump-mode)
 (setq ace-jump-mode-submode-list
       '(ace-jump-word-mode              ;; C-M-j
         ace-jump-char-mode              ;; C-u C-M-j
