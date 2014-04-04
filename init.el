@@ -223,6 +223,35 @@
                                   (space-on-each-side "=" "#")
                                   )))
 
+(let ((map smartparens-mode-map))
+    ;; Movement and navigation
+    (define-key map (kbd "H-l") #'sp-forward-sexp)
+    (define-key map (kbd "H-h") #'sp-backward-sexp)
+    (define-key map (kbd "H-j") #'sp-down-sexp)
+    (define-key map (kbd "H-k") #'sp-up-sexp)
+    (define-key map (kbd "H-u") #'sp-beginning-of-sexp)
+    (define-key map (kbd "H-i") #'sp-end-of-sexp)
+    ;; ;; Deleting and killing
+    ;; (define-key map (kbd "C-M-k") #'sp-kill-sexp)
+    ;; (define-key map (kbd "C-M-w") #'sp-copy-sexp)
+    ;; ;; Depth changing
+    ;; (define-key map (kbd "M-s") #'sp-splice-sexp)
+    ;; (define-key map (kbd "M-<up>") #'sp-splice-sexp-killing-backward)
+    ;; (define-key map (kbd "M-<down>") #'sp-splice-sexp-killing-forward)
+    ;; (define-key map (kbd "M-r") #'sp-splice-sexp-killing-around)
+    ;; (define-key map (kbd "M-?") #'sp-convolute-sexp)
+    ;; Barfage & Slurpage
+    (define-key map (kbd "s-l")  #'sp-forward-slurp-sexp)
+    (define-key map (kbd "s-h")  #'sp-forward-barf-sexp)
+    (define-key map (kbd "M-h")  #'sp-backward-slurp-sexp)
+    (define-key map (kbd "M-l")  #'sp-backward-barf-sexp)
+    ;; Miscellaneous commands
+    ;; (define-key map (kbd "M-S") #'sp-split-sexp)
+    ;; (define-key map (kbd "M-J") #'sp-join-sexp)
+    ;; (define-key map (kbd "C-M-t") #'sp-transpose-sexp)
+    )
+
+
 (require 'highlight-symbol)
 (setq highlight-symbol-idle-delay 0.2)
 (dolist (hook '(emacs-lisp-mode-hook
