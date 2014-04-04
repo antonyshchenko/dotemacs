@@ -300,6 +300,16 @@
 (require 'ace-jump-buffer)
 (global-set-key (kbd "s-b") 'ace-jump-buffer)
 
+(defun switch-to-previous-buffer ()
+  "Switch to the previous buffer.
+
+Repeated invocations toggle between the two most recently used
+buffers."
+  (interactive)
+  (switch-to-buffer (other-buffer (current-buffer) :visible-ok)))
+
+(global-set-key (kbd "H-b") 'switch-to-previous-buffer)
+
 
 (smex-initialize)
 (global-set-key (kbd "M-x") 'smex)
