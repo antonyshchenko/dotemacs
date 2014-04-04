@@ -50,6 +50,7 @@
 (depends-on "smartscan")
 (depends-on "smex")
 (depends-on "sr-speedbar")
+(depends-on "surround")
 (depends-on "tree-mode")
 (depends-on "web-mode")
 (depends-on "yari")

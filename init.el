@@ -208,6 +208,7 @@
 (setq web-mode-script-padding 2)
 (setq web-mode-disable-auto-pairing t)
 
+(setq js-indent-level 2)
 
 ;; SMARTPARENS
 (require 'smartparens-config)
@@ -228,6 +229,7 @@
                 lisp-interaction-mode-hook
                 text-mode-hook
                 ruby-mode-hook
+                js-mode-hook
                 web-mode-hook))
   (add-hook hook (lambda()
                    (highlight-symbol-mode 1)
@@ -380,6 +382,7 @@ instead of a char."
 ;; EVIL mode settings
 (require 'evil)
 (evil-mode 1)
+(setq evil-auto-indent t)
 
 (require 'evil-tabs)
 (global-evil-tabs-mode t)
@@ -469,21 +472,29 @@ instead of a char."
   (evil-paste-before 1 register))
 
 ;; Clipboard bypass key rebindings
-(define-key evil-normal-state-map "s" 'evil-destroy)
-(define-key evil-normal-state-map "S" 'evil-destroy-line)
-(define-key evil-normal-state-map "c" 'evil-destroy-change)
-(define-key evil-normal-state-map "x" 'evil-destroy-char)
-(define-key evil-normal-state-map "X" 'evil-destroy-whole-line)
-(define-key evil-normal-state-map "Y" 'evil-copy-to-end-of-line)
-(define-key evil-visual-state-map "P" 'evil-destroy-paste-before)
-(define-key evil-visual-state-map "p" 'evil-destroy-paste-after)
+;; (define-key evil-normal-state-map "s" 'evil-destroy)
+;; (define-key evil-normal-state-map "S" 'evil-destroy-line)
+;; (define-key evil-normal-state-map "c" 'evil-destroy-change)
+;; (define-key evil-normal-state-map "x" 'evil-destroy-char)
+;; (define-key evil-normal-state-map "X" 'evil-destroy-whole-line)
+;; (define-key evil-normal-state-map "Y" 'evil-copy-to-end-of-line)
+;; (define-key evil-visual-state-map "P" 'evil-destroy-paste-before)
+;; (define-key evil-visual-state-map "p" 'evil-destroy-paste-after)
 
 (define-key evil-normal-state-map (kbd "H-SPC") 'ace-jump-mode)
 
+;;; esc quits
+(define-key evil-normal-state-map [escape] 'keyboard-quit)
+(define-key evil-visual-state-map [escape] 'keyboard-quit)
+(define-key minibuffer-local-map [escape] 'minibuffer-keyboard-quit)
+(define-key minibuffer-local-ns-map [escape] 'minibuffer-keyboard-quit)
+(define-key minibuffer-local-completion-map [escape] 'minibuffer-keyboard-quit)
+(define-key minibuffer-local-must-match-map [escape] 'minibuffer-keyboard-quit)
+(define-key minibuffer-local-isearch-map [escape] 'minibuffer-keyboard-quit)
 
 
-
-
+(require 'surround)
+(global-surround-mode 1)
 
 
 ;; ETC
