@@ -238,8 +238,8 @@
     (define-key map (kbd "H-u") #'sp-beginning-of-sexp)
     (define-key map (kbd "H-i") #'sp-end-of-sexp)
     ;; ;; Deleting and killing
-    ;; (define-key map (kbd "C-M-k") #'sp-kill-sexp)
-    ;; (define-key map (kbd "C-M-w") #'sp-copy-sexp)
+    (define-key map (kbd "H-d") #'sp-kill-sexp)
+    (define-key map (kbd "H-y") #'sp-copy-sexp)
     ;; ;; Depth changing
     ;; (define-key map (kbd "M-s") #'sp-splice-sexp)
     ;; (define-key map (kbd "M-<up>") #'sp-splice-sexp-killing-backward)
