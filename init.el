@@ -25,6 +25,8 @@
 (setq auto-save-default nil)
 (global-auto-revert-mode 1)
 (setq auto-revert-verbose nil)
+(winner-mode 1)
+(setq even-window-heights nil)
 
 ;; word moving commands will move cursor into between CamelCaseWords
 (global-subword-mode 1)
@@ -251,6 +253,7 @@
     (define-key map (kbd "s-h")  #'sp-forward-barf-sexp)
     (define-key map (kbd "M-h")  #'sp-backward-slurp-sexp)
     (define-key map (kbd "M-l")  #'sp-backward-barf-sexp)
+    (define-key map (kbd "s-j")  #'sp-raise-sexp)
     ;; Miscellaneous commands
     ;; (define-key map (kbd "M-S") #'sp-split-sexp)
     ;; (define-key map (kbd "M-J") #'sp-join-sexp)
@@ -560,6 +563,19 @@ instead of a char."
 (require 'surround)
 (global-surround-mode 1)
 
+(defun other-window-kill-buffer ()
+  "Kill the buffer in the other window"
+  (interactive)
+  ;; Window selection is used because point goes to a different window
+  ;; if more than 2 windows are present
+  (let ((win-curr (selected-window))
+        (win-other (next-window)))
+    (select-window win-other)
+    (kill-this-buffer)
+    (select-window win-curr)))
+
+(global-set-key [f12] 'other-window-kill-buffer)
+
 
 ;; ETC
 (set-frame-font "Menlo-14")
@@ -581,7 +597,7 @@ instead of a char."
  '(default ((t (:inherit nil :stipple nil :background "#2e3436" :foreground "gray100" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 140 :width normal :foundry "nil" :family "Menlo"))))
  '(elscreen-tab-background-face ((t (:background "#2e3436"))))
  '(elscreen-tab-other-screen-face ((t (:background "gray66" :foreground "black" :underline t))))
- '(font-lock-builtin-face ((t (:foreground "brown1"))))
+ '(font-lock-builtin-face ((t (:foreground "light sky blue"))))
  '(font-lock-comment-face ((t (:foreground "gray43"))))
  '(font-lock-string-face ((t (:foreground "yellow green"))))
  '(helm-selection ((t (:foreground "Green"))))
