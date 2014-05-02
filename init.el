@@ -441,7 +441,7 @@ instead of a char."
 (global-set-key (kbd "s-{") 'elscreen-previous)
 (global-set-key (kbd "s-}") 'elscreen-next)
 (global-set-key (kbd "s-t") 'elscreen-create)
-(global-set-key (kbd "s-w") 'elscreen-kill)
+(global-set-key (kbd "s-w") 'elscreen-kill-screen-and-buffers)
 
 
 ;;;; Clipboard bypass in evil mode
