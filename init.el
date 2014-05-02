@@ -106,6 +106,9 @@
 (setq linum-format "%d ")
 (global-linum-mode 1)
 
+(require 'linum-relative)
+(setq linum-relative-format "%3s ")
+
 ;; show system name and current file path in window title
 (setq frame-title-format
       (list (format "%s %%S: %%j " (system-name))
