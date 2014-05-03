@@ -534,6 +534,8 @@ instead of a char."
 ;; (define-key evil-normal-state-map "Y" 'evil-copy-to-end-of-line)
 ;; (define-key evil-visual-state-map "P" 'evil-destroy-paste-before)
 ;; (define-key evil-visual-state-map "p" 'evil-destroy-paste-after)
+(define-key evil-normal-state-map "r" 'evil-destroy-replace)
+
 
 
 (evil-define-command evil-paste-and-indent-before
