@@ -523,6 +523,8 @@ instead of a char."
   (evil-destroy beg end type register yank-handler)
   (evil-paste-before 1 register))
 
+
+
 ;; Clipboard bypass key rebindings
 ;; (define-key evil-normal-state-map "s" 'evil-destroy)
 ;; (define-key evil-normal-state-map "S" 'evil-destroy-line)
@@ -532,6 +534,26 @@ instead of a char."
 ;; (define-key evil-normal-state-map "Y" 'evil-copy-to-end-of-line)
 ;; (define-key evil-visual-state-map "P" 'evil-destroy-paste-before)
 ;; (define-key evil-visual-state-map "p" 'evil-destroy-paste-after)
+
+
+(evil-define-command evil-paste-and-indent-before
+  (count &optional register yank-handler)
+  :suppress-operator t
+  (interactive "P<x>")
+  (evil-with-single-undo
+    (evil-paste-before count register yank-handler)
+    (call-interactively 'indent-region)))
+
+(evil-define-command evil-paste-and-indent-after
+  (count &optional register yank-handler)
+  :suppress-operator t
+  (interactive "P<x>")
+  (evil-with-single-undo
+    (evil-paste-after count register yank-handler)
+    (call-interactively 'indent-region)))
+
+(define-key evil-normal-state-map "P" 'evil-paste-and-indent-before)
+(define-key evil-normal-state-map "p" 'evil-paste-and-indent-after)
 
 (define-key evil-normal-state-map (kbd "RET") (lambda ()
                                                 (interactive)
