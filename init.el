@@ -256,15 +256,6 @@
                    (local-set-key (kbd "M-p") 'highlight-symbol-prev)
                    (local-set-key (kbd "M-r") 'highlight-symbol-query-replace))))
 
-(require 'fastnav)
-(global-set-key "\M-z" 'fastnav-zap-up-to-char-forward)
-(global-set-key "\M-Z" 'fastnav-zap-up-to-char-backward)
-(global-set-key "\M-s" 'fastnav-jump-to-char-forward)
-(global-set-key "\M-S" 'fastnav-jump-to-char-backward)
-(global-set-key "\M-m" 'fastnav-mark-to-char-forward)
-(global-set-key "\M-M" 'fastnav-mark-to-char-backward)
-
-
 (require 'multiple-cursors)
 (global-set-key (kbd "H-c") 'mc/edit-lines)
 (global-set-key (kbd "C->") 'mc/mark-next-like-this)

@@ -25,7 +25,6 @@
 (depends-on "evil-tabs")
 (depends-on "expand-region")
 (depends-on "f")
-(depends-on "fastnav")
 (depends-on "flx")
 (depends-on "flx-ido")
 (depends-on "grizzl")
