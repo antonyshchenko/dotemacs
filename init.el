@@ -27,6 +27,8 @@
 (setq auto-revert-verbose nil)
 (winner-mode 1)
 (setq even-window-heights nil)
+(require 'windmove)
+(windmove-default-keybindings 'meta)
 
 ;; word moving commands will move cursor into between CamelCaseWords
 (global-subword-mode 1)
@@ -67,31 +69,6 @@
 ;(setq mac-command-modifier 'control)
 (setq mac-function-modifier 'hyper)
 (global-set-key (kbd "C-x C-m") 'execute-extended-command)
-(global-set-key (kbd "C-w") 'backward-kill-word)
-(global-set-key (kbd "C-x C-k") 'kill-region)
-
-(global-unset-key (kbd "s-l"))
-
-(global-unset-key (kbd "s-m"))
-(global-set-key (kbd "s-m r") 'kmacro-start-macro)
-(global-set-key (kbd "s-m e") 'kmacro-end-or-call-macro)
-(global-set-key [f5] 'call-last-kbd-macro)
-
-(global-set-key (kbd "M-<left>") 'backward-word)
-(global-set-key (kbd "M-<right>") 'forward-word)
-
-(global-set-key (kbd "s-<left>") 'move-beginning-of-line)
-(global-set-key (kbd "s-<right>") 'move-end-of-line)
-(global-set-key (kbd "s-<up>") 'beginning-of-buffer)
-(global-set-key (kbd "s-<down>") 'end-of-buffer)
-
-(global-set-key (kbd "M-s-<left>") 'backward-sexp)
-(global-set-key (kbd "M-s-<right>") 'forward-sexp)
-(global-set-key (kbd "M-s-<up>") 'backward-up-list)
-(global-set-key (kbd "M-s-<down>") 'down-list)
-
-(global-set-key (kbd "s-d") 'kill-whole-line)
-
 (global-set-key (kbd "s-/") 'comment-dwim)
 
 ;; auto indent new lines
