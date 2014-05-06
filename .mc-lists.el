@@ -8,9 +8,21 @@
         evil-destroy-change
         evil-normal-state
         evil-previous-line
+        elscreen-previous
+        evil-backward-char
+        evil-change
+        evil-delete-backward-char-and-join
+        evil-exit-visual-state
+        evil-forward-word-begin
+        evil-insert
+        evil-next-line
+        evil-normal-state
+        ns-copy-including-secondary
         sp--self-insert-command
+        yank-and-indent
         ))
 
 (setq mc/cmds-to-run-once
       '(
+        helm-projectile
         ))

@@ -87,9 +87,7 @@
 (setq linum-relative-format "%3s ")
 
 ;; show system name and current file path in window title
-(setq frame-title-format
-      (list (format "%s %%S: %%j " (system-name))
-            '(Buffer-File-name "%f" (dired-directory dired-directory "%b"))))
+(setq-default frame-title-format (list (system-name) ": %b (%f)"))
 
 (require 'ido)
 (ido-mode t)
