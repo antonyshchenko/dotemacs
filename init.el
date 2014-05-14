@@ -559,6 +559,9 @@ instead of a char."
 (require 'surround)
 (global-surround-mode 1)
 
+(require 'evil-matchit)
+(global-evil-matchit-mode 1)
+
 (defun other-window-kill-buffer ()
   "Kill the buffer in the other window"
   (interactive)
