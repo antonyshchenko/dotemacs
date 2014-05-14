@@ -12,6 +12,7 @@
 (depends-on "clojure-cheatsheet")
 (depends-on "clojure-mode")
 (depends-on "clojure-test-mode")
+(depends-on "color-identifiers-mode")
 (depends-on "cyberpunk-theme")
 (depends-on "cycbuf")
 (depends-on "dash")

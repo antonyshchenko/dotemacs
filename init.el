@@ -254,6 +254,9 @@
                    (local-set-key (kbd "M-p") 'highlight-symbol-prev)
                    (local-set-key (kbd "M-r") 'highlight-symbol-query-replace))))
 
+(require 'color-identifiers-mode)
+(global-color-identifiers-mode)
+
 (require 'multiple-cursors)
 (global-set-key (kbd "H-c") 'mc/edit-lines)
 (global-set-key (kbd "C->") 'mc/mark-next-like-this)
