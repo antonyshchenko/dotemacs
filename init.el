@@ -335,16 +335,6 @@ buffers."
 (global-set-key (kbd "s-v") 'yank-and-indent)
 
 
-(defun zap-to-string (arg str)
-  "Same as `zap-to-char' except that it zaps to the given string
-instead of a char."
-  (interactive "p\nsZap to string: ")
-  (kill-region (point) (progn
-                         (search-forward str nil nil arg)
-                         (point))))
-
-(global-set-key (kbd "C-M-z") 'zap-to-string)
-
 ;; Cleanup whitespace on save
 (add-hook 'before-save-hook 'whitespace-cleanup)
 
@@ -562,6 +552,10 @@ instead of a char."
 
 (require 'evil-matchit)
 (global-evil-matchit-mode 1)
+
+(require 'evil-numbers)
+(global-set-key (kbd "s-=") 'evil-numbers/inc-at-pt)
+(global-set-key (kbd "s--") 'evil-numbers/dec-at-pt)
 
 (defun other-window-kill-buffer ()
   "Kill the buffer in the other window"
