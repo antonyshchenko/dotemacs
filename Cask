@@ -42,6 +42,7 @@
 (depends-on "pkg-info")
 (depends-on "popup")
 (depends-on "popup-switcher")
+(depends-on "popwin")
 (depends-on "project-explorer")
 (depends-on "projectile")
 (depends-on "rainbow-delimiters")

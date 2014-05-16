@@ -30,6 +30,12 @@
 (require 'windmove)
 (windmove-default-keybindings 'meta)
 
+(require 'popwin)
+(popwin-mode 1)
+(setq display-buffer-function 'popwin:display-buffer)
+(push '("\*ag regexp*" :regexp t :height 20 :stick t) popwin:special-display-config)
+(push '("\*rspec-compilation*" :regexp t :height 20 :stick t) popwin:special-display-config)
+
 ;; word moving commands will move cursor into between CamelCaseWords
 (global-subword-mode 1)
 ;; (toggle-frame-maximized)
@@ -126,6 +132,7 @@
 
 (require 'ag)
 (setq ag-highlight-search t)
+(setq ag-reuse-window 't)
 
 ;; PROJECTILE
 (projectile-global-mode)
@@ -556,19 +563,6 @@ buffers."
 (require 'evil-numbers)
 (global-set-key (kbd "s-=") 'evil-numbers/inc-at-pt)
 (global-set-key (kbd "s--") 'evil-numbers/dec-at-pt)
-
-(defun other-window-kill-buffer ()
-  "Kill the buffer in the other window"
-  (interactive)
-  ;; Window selection is used because point goes to a different window
-  ;; if more than 2 windows are present
-  (let ((win-curr (selected-window))
-        (win-other (next-window)))
-    (select-window win-other)
-    (kill-this-buffer)
-    (select-window win-curr)))
-
-(global-set-key [f12] 'other-window-kill-buffer)
 
 
 ;; ETC
