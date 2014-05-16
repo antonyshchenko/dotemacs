@@ -151,7 +151,8 @@
 (global-set-key (kbd "s-o") 'helm-projectile)
 
 (setq helm-boring-buffer-regexp-list my-nevershown-buffers)
-
+;; (loop for ext in '("\\.swf$" "\\.elc$" "\\.pyc$")
+;;       do (add-to-list 'helm-boring-file-regexp-list ext))
 
 (require 'dirtree)
 (add-hook 'dirtree-mode-hook (lambda()
@@ -542,7 +543,7 @@ buffers."
 (define-key evil-insert-state-map (kbd "C-j") 'evil-break-line)
 (define-key evil-normal-state-map (kbd "C-j") 'evil-break-line)
 
-(define-key evil-normal-state-map (kbd "H-SPC") 'ace-jump-mode)
+(define-key evil-normal-state-map (kbd "SPC") 'ace-jump-mode)
 
 ;;; esc quits
 (define-key evil-normal-state-map [escape] 'keyboard-quit)
