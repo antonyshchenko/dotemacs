@@ -1,3 +1,5 @@
+(setq user-emacs-directory "~/.emacs.d")
+
 (require 'cask "~/.cask/cask.el")
 (cask-initialize)
 (require 'pallet)
@@ -45,22 +47,22 @@
 
 
 ;; kill scratch buffer on start
-(kill-buffer "*scratch*")
+;;(kill-buffer "*scratch*")
 ;; never show certain buffers
 ;; TODO: make ace-jump-buffer use it as well
 (setq my-nevershown-buffers '(
-                              "^ "
-                              "^\\*cycbuf\\*$"
-                              "\\` "
-                              "\\*helm"
-                              "\\*helm-mode"
-                              "\\*Echo Area"
-                              "\\*Minibuf"
-                              "\\TAGS"
-                              "\\*Debug Helm Log"
-                              "\\*buffer-selection*"
-                              "\\*Compile-Log"
-                              "\\*Messages"))
+                               "^ "
+                               "^\\*cycbuf\\*$"
+                               "\\` "
+                               "\\*helm"
+                               "\\*helm-mode"
+                               "\\*Echo Area"
+                               "\\*Minibuf"
+                               "\\TAGS"
+                               "\\*Debug Helm Log"
+                               "\\*buffer-selection*"
+                               "\\*Compile-Log"
+                               "\\*Messages"))
 
 ;; De-duplicate buffer names by prepending parts of the directory until the name
 ;; is unique, instead of just appending numbers.
@@ -204,9 +206,10 @@
 
 (setq js-indent-level 2)
 
-;; SMARTPARENS
-(require 'smartparens-config)
-(require 'smartparens-ruby)
+;; ;; SMARTPARENS
+;; Bug in Aquamatics when requiring this
+;; (require 'smartparens-config)
+;; (require 'smartparens-ruby)
 (smartparens-global-mode)
 (show-smartparens-global-mode t)
 (setq sp-autoescape-string-quote nil)
@@ -217,6 +220,7 @@
                                   (space-and-space-on-each-side "SPC")
                                   (space-on-each-side "=" "#")
                                   )))
+
 
 (let ((map smartparens-mode-map))
     ;; Movement and navigation
@@ -394,23 +398,10 @@ buffers."
                                   (local-set-key (kbd "H-[") 'pop-tag-mark)))
 
 
-
-
-
-
-
 ;; EVIL mode settings
 (require 'evil)
 (evil-mode 1)
 (setq evil-auto-indent t)
-
-(require 'evil-tabs)
-(global-evil-tabs-mode t)
-(global-set-key (kbd "s-{") 'elscreen-previous)
-(global-set-key (kbd "s-}") 'elscreen-next)
-(global-set-key (kbd "s-t") 'elscreen-create)
-(global-set-key (kbd "s-w") 'elscreen-kill-screen-and-buffers)
-
 
 ;;;; Clipboard bypass in evil mode
 (defmacro without-evil-mode (&rest do-this)
@@ -565,43 +556,9 @@ buffers."
 (global-set-key (kbd "s-=") 'evil-numbers/inc-at-pt)
 (global-set-key (kbd "s--") 'evil-numbers/dec-at-pt)
 
-
-;; ETC
-(set-frame-font "Menlo-14")
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(custom-enabled-themes (quote (tango-dark)))
- '(elscreen-tab-display-kill-screen nil)
- '(fci-rule-color "#383838")
- '(highlight-symbol-on-navigation-p nil)
- '(tree-widget-image-enable nil))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(default ((t (:inherit nil :stipple nil :background "#2e3436" :foreground "gray100" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 140 :width normal :foundry "nil" :family "Menlo"))))
- '(elscreen-tab-background-face ((t (:background "#2e3436"))))
- '(elscreen-tab-other-screen-face ((t (:background "gray66" :foreground "black" :underline t))))
- '(font-lock-builtin-face ((t (:foreground "light sky blue"))))
- '(font-lock-comment-face ((t (:foreground "gray43"))))
- '(font-lock-string-face ((t (:foreground "yellow green"))))
- '(helm-selection ((t (:foreground "Green"))))
- '(helm-source-header ((t (:foreground "white" :weight bold))))
- '(highlight-symbol-face ((t (:background "gray30"))))
- '(rainbow-delimiters-depth-1-face ((t (:foreground "gray100"))))
- '(rainbow-delimiters-depth-2-face ((t (:foreground "orange1"))))
- '(rainbow-delimiters-depth-3-face ((t (:foreground "purple1"))))
- '(rainbow-delimiters-depth-4-face ((t (:foreground "OrangeRed1"))))
- '(rainbow-delimiters-depth-5-face ((t (:foreground "OliveDrab3"))))
- '(rainbow-delimiters-depth-6-face ((t (:foreground "cyan1"))))
- '(rainbow-delimiters-depth-7-face ((t (:foreground "SteelBlue1"))))
- '(rainbow-delimiters-depth-8-face ((t (:foreground "salmon"))))
- '(region ((t (:background "gray50"))))
- '(sp-pair-overlay-face ((t (:inherit default))))
- '(sp-wrap-overlay-face ((t nil)))
- '(sp-wrap-tag-overlay-face ((t nil))))
-(put 'narrow-to-region 'disabled nil)
+;; tabbar
+(tabbar-define-access-keys '(super))
+(global-set-key (kbd "s-t") 'tabbar-new-tab)
+(global-set-key (kbd "s-w") 'tabbar-close-tab)
+(global-set-key (kbd "s-{") 'previous-tab-or-buffer)
+(global-set-key (kbd "s-}") 'next-tab-or-buffer)

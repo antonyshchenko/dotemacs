@@ -25,7 +25,6 @@
 (depends-on "evil")
 (depends-on "evil-matchit")
 (depends-on "evil-numbers")
-(depends-on "evil-tabs")
 (depends-on "expand-region")
 (depends-on "f")
 (depends-on "flx")
