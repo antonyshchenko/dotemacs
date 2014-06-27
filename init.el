@@ -32,11 +32,11 @@
 (require 'windmove)
 (windmove-default-keybindings 'meta)
 
-(require 'popwin)
-(popwin-mode 1)
-(setq display-buffer-function 'popwin:display-buffer)
-(push '("\*ag regexp*" :regexp t :height 20 :stick t) popwin:special-display-config)
-(push '("\*rspec-compilation*" :regexp t :height 20 :stick t) popwin:special-display-config)
+;; (require 'popwin)
+;; (popwin-mode 1)
+;; (setq display-buffer-function 'popwin:display-buffer)
+;; (push '("\*ag regexp*" :regexp t :height 20 :stick t) popwin:special-display-config)
+;; (push '("\*rspec-compilation*" :regexp t :height 20 :stick t) popwin:special-display-config)
 
 ;; word moving commands will move cursor into between CamelCaseWords
 (global-subword-mode 1)
@@ -128,7 +128,7 @@
 (add-to-list 'ac-dictionary-directories "~/.emacs.d/.cask/24.3.50.1/elpa/auto-complete-20131128.233/dict")
 (ac-config-default)
 (setq ac-ignore-case nil)
-(add-to-list 'ac-modes 'ruby-mode)
+(add-to-list 'ac-modes 'enh-ruby-mode)
 (add-to-list 'ac-modes 'web-mode)
 
 
@@ -157,19 +157,31 @@
 ;;       do (add-to-list 'helm-boring-file-regexp-list ext))
 
 (require 'dirtree)
-(add-hook 'dirtree-mode-hook (lambda()
-                               (smartparens-mode -1)))
+;; (add-hook 'dirtree-mode-hook (lambda()
+;;                                (smartparens-mode -1)))
 
 ;; RUBY
+;; (require 'enh-ruby-mode)
 (require 'bundler)
 (require 'ruby-tools)
 (require 'rbenv)
 (global-rbenv-mode)
-(add-hook 'ruby-mode-hook (lambda ()
+
+(add-hook 'enh-ruby-mode-hook (lambda ()
                             (rbenv-use-corresponding)))
 
-(add-hook 'ruby-mode-hook (lambda ()
+(add-hook 'enh-ruby-mode-hook (lambda ()
                             (local-set-key (kbd "C-c C-{") 'ruby-toggle-block)))
+
+(add-to-list 'auto-mode-alist '("\\.rb$" . enh-ruby-mode))
+(add-to-list 'auto-mode-alist '("\\.rake$" . enh-ruby-mode))
+(add-to-list 'auto-mode-alist '("Rakefile$" . enh-ruby-mode))
+(add-to-list 'auto-mode-alist '("\\.gemspec$" . enh-ruby-mode))
+(add-to-list 'auto-mode-alist '("\\.ru$" . enh-ruby-mode))
+(add-to-list 'auto-mode-alist '("Gemfile$" . enh-ruby-mode))
+(add-to-list 'interpreter-mode-alist '("ruby" . enh-ruby-mode))
+(setq enh-ruby-bounce-deep-indent t)
+(setq enh-ruby-hanging-brace-indent-level 2)
 
 (require 'rspec-mode)
 
@@ -206,50 +218,67 @@
 
 (setq js-indent-level 2)
 
+
+(add-hook 'ruby-mode-hook
+      (lambda ()
+        (require 'ruby-electric)
+        (ruby-electric-mode t)))
+
+(defun ruby-insert-end ()
+  "Insert \"end\" at point and reindent current line."
+  (interactive)
+  (insert "end")
+  (ruby-indent-line t)
+  (end-of-line))
+
+;; (require 'autopair)
+;; (autopair-global-mode)
+
 ;; ;; SMARTPARENS
 ;; Bug in Aquamatics when requiring this
+;; (require 'smartparens)
 ;; (require 'smartparens-config)
 ;; (require 'smartparens-ruby)
-(smartparens-global-mode)
-(show-smartparens-global-mode t)
-(setq sp-autoescape-string-quote nil)
-(sp-with-modes '(web-mode)
-  (sp-local-pair "%" "%"
-                 :unless '(sp-in-string-or-word-p)
-                 :post-handlers '(
-                                  (space-and-space-on-each-side "SPC")
-                                  (space-on-each-side "=" "#")
-                                  )))
+;; (smartparens-global-mode)
+;; (show-smartparens-global-mode t)
+;; (setq sp-autoescape-string-quote nil)
+;; ;; (sp-with-modes '(web-mode)
+;; ;;   (sp-local-pair "%" "%"
+;; ;;                  :unless '(sp-in-string-or-word-p)
+;; ;;                  :post-handlers '(
+;; ;;                                   (space-and-space-on-each-side "SPC")
+;; ;;                                   (space-on-each-side "=" "#")
+;; ;;                                   )))
 
 
-(let ((map smartparens-mode-map))
-    ;; Movement and navigation
-    (define-key map (kbd "H-l") #'sp-forward-sexp)
-    (define-key map (kbd "H-h") #'sp-backward-sexp)
-    (define-key map (kbd "H-j") #'sp-down-sexp)
-    (define-key map (kbd "H-k") #'sp-up-sexp)
-    (define-key map (kbd "H-u") #'sp-beginning-of-sexp)
-    (define-key map (kbd "H-i") #'sp-end-of-sexp)
-    ;; ;; Deleting and killing
-    (define-key map (kbd "H-d") #'sp-kill-sexp)
-    (define-key map (kbd "H-y") #'sp-copy-sexp)
-    ;; ;; Depth changing
-    ;; (define-key map (kbd "M-s") #'sp-splice-sexp)
-    ;; (define-key map (kbd "M-<up>") #'sp-splice-sexp-killing-backward)
-    ;; (define-key map (kbd "M-<down>") #'sp-splice-sexp-killing-forward)
-    ;; (define-key map (kbd "M-r") #'sp-splice-sexp-killing-around)
-    ;; (define-key map (kbd "M-?") #'sp-convolute-sexp)
-    ;; Barfage & Slurpage
-    (define-key map (kbd "s-l")  #'sp-forward-slurp-sexp)
-    (define-key map (kbd "s-h")  #'sp-forward-barf-sexp)
-    (define-key map (kbd "M-h")  #'sp-backward-slurp-sexp)
-    (define-key map (kbd "M-l")  #'sp-backward-barf-sexp)
-    (define-key map (kbd "s-j")  #'sp-raise-sexp)
-    ;; Miscellaneous commands
-    ;; (define-key map (kbd "M-S") #'sp-split-sexp)
-    ;; (define-key map (kbd "M-J") #'sp-join-sexp)
-    ;; (define-key map (kbd "C-M-t") #'sp-transpose-sexp)
-    )
+;; (let ((map smartparens-mode-map))
+;;     ;; Movement and navigation
+;;     (define-key map (kbd "H-l") #'sp-forward-sexp)
+;;     (define-key map (kbd "H-h") #'sp-backward-sexp)
+;;     (define-key map (kbd "H-j") #'sp-down-sexp)
+;;     (define-key map (kbd "H-k") #'sp-up-sexp)
+;;     (define-key map (kbd "H-u") #'sp-beginning-of-sexp)
+;;     (define-key map (kbd "H-i") #'sp-end-of-sexp)
+;;     ;; ;; Deleting and killing
+;;     (define-key map (kbd "H-d") #'sp-kill-sexp)
+;;     (define-key map (kbd "H-y") #'sp-copy-sexp)
+;;     ;; ;; Depth changing
+;;     ;; (define-key map (kbd "M-s") #'sp-splice-sexp)
+;;     ;; (define-key map (kbd "M-<up>") #'sp-splice-sexp-killing-backward)
+;;     ;; (define-key map (kbd "M-<down>") #'sp-splice-sexp-killing-forward)
+;;     ;; (define-key map (kbd "M-r") #'sp-splice-sexp-killing-around)
+;;     ;; (define-key map (kbd "M-?") #'sp-convolute-sexp)
+;;     ;; Barfage & Slurpage
+;;     (define-key map (kbd "s-l")  #'sp-forward-slurp-sexp)
+;;     (define-key map (kbd "s-h")  #'sp-forward-barf-sexp)
+;;     (define-key map (kbd "M-h")  #'sp-backward-slurp-sexp)
+;;     (define-key map (kbd "M-l")  #'sp-backward-barf-sexp)
+;;     (define-key map (kbd "s-j")  #'sp-raise-sexp)
+;;     ;; Miscellaneous commands
+;;     ;; (define-key map (kbd "M-S") #'sp-split-sexp)
+;;     ;; (define-key map (kbd "M-J") #'sp-join-sexp)
+;;     ;; (define-key map (kbd "C-M-t") #'sp-transpose-sexp)
+;;     )
 
 
 (require 'highlight-symbol)
@@ -257,7 +286,7 @@
 (dolist (hook '(emacs-lisp-mode-hook
                 lisp-interaction-mode-hook
                 text-mode-hook
-                ruby-mode-hook
+                enh-ruby-mode-hook
                 js-mode-hook
                 clojure-mode-hook
                 web-mode-hook))

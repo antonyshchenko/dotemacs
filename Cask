@@ -49,7 +49,7 @@
 (depends-on "rspec-mode")
 (depends-on "ruby-tools")
 (depends-on "s")
-(depends-on "smartparens")
+;;(depends-on "smartparens" "701")
 (depends-on "smartscan")
 (depends-on "smex")
 (depends-on "sr-speedbar")
