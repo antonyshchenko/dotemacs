@@ -32,6 +32,8 @@
 (require 'windmove)
 (windmove-default-keybindings 'meta)
 
+(setq x-select-enable-clipboard t) ;; merge system clipboard and kill-ring
+
 ;; (require 'popwin)
 ;; (popwin-mode 1)
 ;; (setq display-buffer-function 'popwin:display-buffer)
