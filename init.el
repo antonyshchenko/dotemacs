@@ -221,7 +221,7 @@
 (setq js-indent-level 2)
 
 
-(add-hook 'ruby-mode-hook
+(add-hook 'enh-ruby-mode-hook
       (lambda ()
         (require 'ruby-electric)
         (ruby-electric-mode t)))
@@ -233,8 +233,8 @@
   (ruby-indent-line t)
   (end-of-line))
 
-;; (require 'autopair)
-;; (autopair-global-mode)
+(require 'autopair)
+(autopair-global-mode)
 
 ;; ;; SMARTPARENS
 ;; Bug in Aquamatics when requiring this
