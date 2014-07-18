@@ -136,7 +136,7 @@
 
 (require 'ag)
 (setq ag-highlight-search t)
-(setq ag-reuse-window 't)
+(setq ag-reuse-window nil)
 
 ;; PROJECTILE
 (projectile-global-mode)
