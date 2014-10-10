@@ -291,7 +291,8 @@
                 enh-ruby-mode-hook
                 js-mode-hook
                 clojure-mode-hook
-                web-mode-hook))
+                web-mode-hook
+                cperl-mode-hook))
   (add-hook hook (lambda()
                    (highlight-symbol-mode 1)
                    (local-set-key (kbd "M-n") 'highlight-symbol-next)
