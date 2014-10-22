@@ -34,6 +34,8 @@
 
 (setq x-select-enable-clipboard t) ;; merge system clipboard and kill-ring
 
+(global-set-key [C-tab] 'other-window)
+
 ;; (require 'popwin)
 ;; (popwin-mode 1)
 ;; (setq display-buffer-function 'popwin:display-buffer)
