@@ -169,23 +169,24 @@
 (require 'bundler)
 (require 'ruby-tools)
 (require 'rbenv)
+(require 'ruby-mode)
 (global-rbenv-mode)
 
-(add-hook 'enh-ruby-mode-hook (lambda ()
-                            (rbenv-use-corresponding)))
+;; (add-hook 'ruby-mode-hook (lambda ()
+;;                             (rbenv-use-corresponding)))
 
-(add-hook 'enh-ruby-mode-hook (lambda ()
-                            (local-set-key (kbd "C-c C-{") 'ruby-toggle-block)))
+;; (add-hook 'ruby-mode-hook (lambda ()
+;;                             (local-set-key (kbd "C-c {") 'ruby-toggle-block)))
 
-(add-to-list 'auto-mode-alist '("\\.rb$" . enh-ruby-mode))
-(add-to-list 'auto-mode-alist '("\\.rake$" . enh-ruby-mode))
-(add-to-list 'auto-mode-alist '("Rakefile$" . enh-ruby-mode))
-(add-to-list 'auto-mode-alist '("\\.gemspec$" . enh-ruby-mode))
-(add-to-list 'auto-mode-alist '("\\.ru$" . enh-ruby-mode))
-(add-to-list 'auto-mode-alist '("Gemfile$" . enh-ruby-mode))
-(add-to-list 'interpreter-mode-alist '("ruby" . enh-ruby-mode))
-(setq enh-ruby-bounce-deep-indent t)
-(setq enh-ruby-hanging-brace-indent-level 2)
+;; (add-to-list 'auto-mode-alist '("\\.rb$" . ruby-mode))
+;; (add-to-list 'auto-mode-alist '("\\.rake$" . ruby-mode))
+;; (add-to-list 'auto-mode-alist '("Rakefile$" . ruby-mode))
+;; (add-to-list 'auto-mode-alist '("\\.gemspec$" . ruby-mode))
+;; (add-to-list 'auto-mode-alist '("\\.ru$" . ruby-mode))
+;; (add-to-list 'auto-mode-alist '("Gemfile$" . ruby-mode))
+;; (add-to-list 'interpreter-mode-alist '("ruby" . ruby-mode))
+;; (setq enh-ruby-bounce-deep-indent t)
+;; (setq enh-ruby-hanging-brace-indent-level 2)
 
 (require 'rspec-mode)
 
@@ -222,18 +223,21 @@
 
 (setq js-indent-level 2)
 
-
-(add-hook 'enh-ruby-mode-hook
+;; ruby-electric stuff (inserting end automatically)
+(add-hook 'ruby-mode-hook
       (lambda ()
         (require 'ruby-electric)
-        (ruby-electric-mode t)))
+        (ruby-electric-mode t)
+        ;; insert end automatically on new line by hitting RET
+        (define-key evil-insert-state-map (kbd "RET") 'ruby-electric-space/return)))
 
 (defun ruby-insert-end ()
-  "Insert \"end\" at point and reindent current line."
+  "Insert \"end\" at point and reindent current line. Needed by ruby-electric-mode"
   (interactive)
   (insert "end")
   (ruby-indent-line t)
   (end-of-line))
+
 
 (require 'autopair)
 (autopair-global-mode)
@@ -290,7 +294,7 @@
 (dolist (hook '(emacs-lisp-mode-hook
                 lisp-interaction-mode-hook
                 text-mode-hook
-                enh-ruby-mode-hook
+                ruby-mode-hook
                 js-mode-hook
                 clojure-mode-hook
                 web-mode-hook
@@ -338,36 +342,6 @@ buffers."
 (global-set-key (kbd "M-X") 'smex-major-mode-commands)
 ;; This is your old M-x.
 (global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
-
-
-
-;; ETAGS stuff
-(require 'helm-etags+)
-(global-set-key (kbd "H-]") 'helm-etags+-select)
-(global-set-key (kbd "H-[") 'helm-etags+-history-go-back)
-
-;; Ruby specific etags stuff
-(require 'etags-table)
-(defun get-gems-path ()
-  (replace-regexp-in-string "\n" "/gems" (shell-command-to-string "rbenv exec gem environment | grep INSTALLATION | cut -d : -f 2 | xargs")))
-
-(add-hook 'helm-etags+-select-hook (lambda()
-                                     (setq tags-table-list (list (concat (get-gems-path) "/TAGS")))))
-
-(defun bundle-install ()
-  "Run bundle install for the current bundle."
-  (interactive)
-  (bundle-command (concat "source ~/.zshrc && bundle install && echo 'Generating tags\n' && cd " (get-gems-path) "&& ctags -e -R --extra=+fq --exclude=db --exclude=doc --exclude=log --exclude=tmp --exclude=.git --exclude=public && echo 'Done'")))
-
-
-(defun projectile-idle-regenerate-tags ()
-  "Regenerate the project's tags if in a project"
-  (when (projectile-project-p)
-    (shell-command-to-string (concat "source ~/.zshrc && cd " (projectile-project-root) " && ctags -R -e --extra=+fq --exclude=log --exclude=tmp --exclude=.git"))))
-
-;; regenerate TAGS file if idle for 30 seconds
-(setq projectile-idle-timer (run-with-idle-timer 30 t 'projectile-idle-regenerate-tags))
-
 
 
 (defun yank-and-indent ()
@@ -423,13 +397,6 @@ buffers."
 
 (global-set-key [f8] 'delete-current-buffer-file)
 
-;; elisp
-;; Elisp go-to-definition with H-] and back again with H-[,
-(autoload 'elisp-slime-nav-mode "elisp-slime-nav")
-(add-hook 'emacs-lisp-mode-hook (lambda ()
-                                  (elisp-slime-nav-mode t)
-                                  (local-set-key (kbd "H-]") 'elisp-slime-nav-find-elisp-thing-at-point)
-                                  (local-set-key (kbd "H-[") 'pop-tag-mark)))
 
 
 ;; EVIL mode settings
@@ -589,6 +556,54 @@ buffers."
 (require 'evil-numbers)
 (global-set-key (kbd "s-=") 'evil-numbers/inc-at-pt)
 (global-set-key (kbd "s--") 'evil-numbers/dec-at-pt)
+
+;; ETAGS stuff
+(require 'helm-etags+)
+
+(defun find-tag-via-helm ()
+  (interactive)
+  (let ((tag-at-point (thing-at-point 'symbol 1)))
+    (when (derived-mode-p 'ruby-mode 'cperl-mode)
+      ;; quick fix for searching full qualified class/module names in ruby and perl
+      (setq tag-at-point (first (reverse (split-string tag-at-point "::")))))
+    (when (and (equal 'ruby-mode major-mode) (equal ":" (substring tag-at-point 0 1)))
+      ;; in ruby mode try to find appropriate method for ruby symbol at point
+      (setq tag-at-point (substring tag-at-point 1)))
+    (helm-etags+-select-internal (concat "\\_<" tag-at-point "\\_>"))))
+
+(global-set-key (kbd "s-]") 'find-tag-via-helm)
+(global-set-key (kbd "s-[") 'helm-etags+-history-go-back)
+
+
+;; Ruby specific etags stuff
+(require 'etags-table)
+(defun get-gems-path ()
+  (replace-regexp-in-string "\n" "/gems" (shell-command-to-string "rbenv exec gem environment | grep INSTALLATION | cut -d : -f 2 | xargs")))
+
+(add-hook 'helm-etags+-select-hook (lambda()
+                                     (setq tags-table-list (list (concat (get-gems-path) "/TAGS")))))
+
+(defun bundle-install ()
+  "Run bundle install for the current bundle."
+  (interactive)
+  (bundle-command (concat "source ~/.zshrc && bundle install && echo 'Generating tags\n' && cd " (get-gems-path) "&& ctags -e -R --extra=+fq --exclude=db --exclude=doc --exclude=log --exclude=tmp --exclude=.git --exclude=public && echo 'Done'")))
+
+
+(defun projectile-idle-regenerate-tags ()
+  "Regenerate the project's tags if in a project"
+  (when (projectile-project-p)
+    (shell-command-to-string (concat "source ~/.zshrc && cd " (projectile-project-root) " && ctags -R -e --extra=+fq --exclude=log --exclude=tmp --exclude=.git"))))
+
+;; regenerate TAGS file if idle for 30 seconds
+(setq projectile-idle-timer (run-with-idle-timer 30 t 'projectile-idle-regenerate-tags))
+
+;; elisp
+;; Elisp go-to-definition with s-] and back again with s-[,
+(autoload 'elisp-slime-nav-mode "elisp-slime-nav")
+(add-hook 'emacs-lisp-mode-hook (lambda ()
+                                  (elisp-slime-nav-mode t)
+                                  (local-set-key (kbd "s-]") 'elisp-slime-nav-find-elisp-thing-at-point)
+                                  (local-set-key (kbd "s-[") 'pop-tag-mark)))
 
 ;; tabbar
 (tabbar-define-access-keys '(super))
