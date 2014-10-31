@@ -160,12 +160,19 @@
     helm-source-projectile-files-list
     helm-source-projectile-directories-list
     helm-source-projectile-projects))
+(setq projectile-switch-project-action 'helm-projectile)
 
 (global-set-key (kbd "s-o") 'helm-projectile)
 
+(defun open-other-project-in-new-window ()
+  (interactive)
+  (new-empty-buffer-other-frame)
+  (helm-projectile-switch-project))
+
+(global-set-key (kbd "s-p") 'open-other-project-in-new-window)
+
 (setq helm-boring-buffer-regexp-list my-nevershown-buffers)
-;; (loop for ext in '("\\.swf$" "\\.elc$" "\\.pyc$")
-;;       do (add-to-list 'helm-boring-file-regexp-list ext))
+
 
 (require 'dirtree)
 ;; (add-hook 'dirtree-mode-hook (lambda()
