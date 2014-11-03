@@ -152,6 +152,7 @@
 ;; HELM
 (require 'helm-config)
 (define-key global-map [remap list-buffers] 'helm-buffers-list)
+(global-set-key (kbd "M-x") 'helm-M-x)
 
 (require 'helm-projectile)
 (setq helm-projectile-sources-list
