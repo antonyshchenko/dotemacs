@@ -53,7 +53,6 @@
 (depends-on "s")
 (depends-on "smartparens")
 (depends-on "smartscan")
-(depends-on "smex")
 (depends-on "sr-speedbar")
 (depends-on "surround")
 (depends-on "tree-mode")

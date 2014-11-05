@@ -129,7 +129,7 @@
 
 ;; AUTOCOMPLETE
 (require 'auto-complete-config)
-(add-to-list 'ac-dictionary-directories "~/.emacs.d/.cask/24.3.50.1/elpa/auto-complete-20131128.233/dict")
+(add-to-list 'ac-dictionary-directories "~/.emacs.d/.cask/24.3.50.1/elpa/auto-complete-20140208.653/dict")
 (ac-config-default)
 (setq ac-ignore-case nil)
 (add-to-list 'ac-modes 'enh-ruby-mode)
@@ -350,13 +350,6 @@ buffers."
   (switch-to-buffer (other-buffer (current-buffer) :visible-ok)))
 
 (global-set-key (kbd "H-b") 'switch-to-previous-buffer)
-
-
-(smex-initialize)
-(global-set-key (kbd "M-x") 'smex)
-(global-set-key (kbd "M-X") 'smex-major-mode-commands)
-;; This is your old M-x.
-(global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
 
 
 (defun yank-and-indent ()
