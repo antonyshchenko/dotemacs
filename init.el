@@ -565,6 +565,26 @@ buffers."
 (global-set-key (kbd "s-=") 'evil-numbers/inc-at-pt)
 (global-set-key (kbd "s--") 'evil-numbers/dec-at-pt)
 
+(require 'project-explorer)
+(add-hook 'project-explorer-mode 'turn-off-evil-mode)
+
+(defun find-project-explorer-window ()
+  (cl-find-if
+   (lambda (window)
+     (and (memq (window-buffer window) (pe/get-project-explorer-buffers))
+          (window-parameter window 'window-side)))
+   (window-list)))
+
+(defun toggle-project-explorer ()
+  (interactive)
+  (let ((pe-window (find-project-explorer-window)))
+    (if pe-window
+        (progn (select-window pe-window) (pe/quit))
+      (project-explorer-open))))
+
+(global-set-key [f1] 'toggle-project-explorer)
+
+
 ;; ETAGS stuff
 (require 'helm-etags+)
 
