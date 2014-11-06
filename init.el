@@ -566,7 +566,7 @@ buffers."
 (global-set-key (kbd "s--") 'evil-numbers/dec-at-pt)
 
 (require 'project-explorer)
-(add-hook 'project-explorer-mode 'turn-off-evil-mode)
+;; (add-hook 'project-explorer-mode 'turn-off-evil-mode) ;; does not work for some reason
 
 (defun find-project-explorer-window ()
   (cl-find-if
@@ -576,11 +576,12 @@ buffers."
    (window-list)))
 
 (defun toggle-project-explorer ()
+  ;; TODO: maybe move turn-off-evil-mode out and find another solution, so this function does not depend on evil-mode being installed
   (interactive)
   (let ((pe-window (find-project-explorer-window)))
     (if pe-window
         (progn (select-window pe-window) (pe/quit))
-      (project-explorer-open))))
+      (progn (project-explorer-open) (turn-off-evil-mode)))))
 
 (global-set-key [f1] 'toggle-project-explorer)
 
