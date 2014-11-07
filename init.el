@@ -8,6 +8,8 @@
 
 (push "/usr/local/bin" exec-path)
 
+(setq ns-use-mac-modifier-symbols nil) ;; fix for single-key-description function (and smartparens) in aquamacs
+
 (setq make-backup-files nil)
 (setq auto-save-default nil)
 (setq-default tab-width 2)
@@ -259,9 +261,9 @@
 
 ;; ;; SMARTPARENS
 ;; Bug in Aquamatics when requiring this
-;; (require 'smartparens)
-;; (require 'smartparens-config)
-;; (require 'smartparens-ruby)
+(require 'smartparens)
+(require 'smartparens-config)
+(require 'smartparens-ruby)
 ;; (smartparens-global-mode)
 ;; (show-smartparens-global-mode t)
 ;; (setq sp-autoescape-string-quote nil)
