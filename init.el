@@ -642,3 +642,14 @@ buffers."
 (global-set-key (kbd "s-w") 'tabbar-close-tab)
 (global-set-key (kbd "s-{") 'previous-tab-or-buffer)
 (global-set-key (kbd "s-}") 'next-tab-or-buffer)
+
+
+;; from https://github.com/rejeep/emacs/blob/master/osx.el
+(defun reveal-in-finder ()
+  "Opens file directory in Finder."
+  (interactive)
+  (let ((file (buffer-file-name)))
+    (if file
+        (shell-command
+         (format "%s %s" (executable-find "open") (file-name-directory file)))
+      (error "Buffer is not attached to any file."))))
