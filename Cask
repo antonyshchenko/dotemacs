@@ -6,7 +6,6 @@
 (depends-on "ace-jump-mode")
 (depends-on "ag")
 (depends-on "auto-complete")
-(depends-on "autopair")
 (depends-on "bundler")
 (depends-on "cask")
 (depends-on "cider")

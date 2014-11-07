@@ -256,54 +256,47 @@
   (end-of-line))
 
 
-(require 'autopair)
-(autopair-global-mode)
-
 ;; ;; SMARTPARENS
-;; Bug in Aquamatics when requiring this
-(require 'smartparens)
 (require 'smartparens-config)
-(require 'smartparens-ruby)
-;; (smartparens-global-mode)
-;; (show-smartparens-global-mode t)
-;; (setq sp-autoescape-string-quote nil)
-;; ;; (sp-with-modes '(web-mode)
-;; ;;   (sp-local-pair "%" "%"
-;; ;;                  :unless '(sp-in-string-or-word-p)
-;; ;;                  :post-handlers '(
-;; ;;                                   (space-and-space-on-each-side "SPC")
-;; ;;                                   (space-on-each-side "=" "#")
-;; ;;                                   )))
+(smartparens-global-mode)
+(show-smartparens-global-mode t)
+(setq sp-autoescape-string-quote nil)
+(sp-with-modes '(web-mode)
+  (sp-local-pair "%" "%"
+                 :unless '(sp-in-string-or-word-p)
+                 :post-handlers '(
+                                  (space-and-space-on-each-side "SPC")
+                                  (space-on-each-side "=" "#")
+                                  )))
 
-
-;; (let ((map smartparens-mode-map))
-;;     ;; Movement and navigation
-;;     (define-key map (kbd "H-l") #'sp-forward-sexp)
-;;     (define-key map (kbd "H-h") #'sp-backward-sexp)
-;;     (define-key map (kbd "H-j") #'sp-down-sexp)
-;;     (define-key map (kbd "H-k") #'sp-up-sexp)
-;;     (define-key map (kbd "H-u") #'sp-beginning-of-sexp)
-;;     (define-key map (kbd "H-i") #'sp-end-of-sexp)
-;;     ;; ;; Deleting and killing
-;;     (define-key map (kbd "H-d") #'sp-kill-sexp)
-;;     (define-key map (kbd "H-y") #'sp-copy-sexp)
-;;     ;; ;; Depth changing
-;;     ;; (define-key map (kbd "M-s") #'sp-splice-sexp)
-;;     ;; (define-key map (kbd "M-<up>") #'sp-splice-sexp-killing-backward)
-;;     ;; (define-key map (kbd "M-<down>") #'sp-splice-sexp-killing-forward)
-;;     ;; (define-key map (kbd "M-r") #'sp-splice-sexp-killing-around)
-;;     ;; (define-key map (kbd "M-?") #'sp-convolute-sexp)
-;;     ;; Barfage & Slurpage
-;;     (define-key map (kbd "s-l")  #'sp-forward-slurp-sexp)
-;;     (define-key map (kbd "s-h")  #'sp-forward-barf-sexp)
-;;     (define-key map (kbd "M-h")  #'sp-backward-slurp-sexp)
-;;     (define-key map (kbd "M-l")  #'sp-backward-barf-sexp)
-;;     (define-key map (kbd "s-j")  #'sp-raise-sexp)
-;;     ;; Miscellaneous commands
-;;     ;; (define-key map (kbd "M-S") #'sp-split-sexp)
-;;     ;; (define-key map (kbd "M-J") #'sp-join-sexp)
-;;     ;; (define-key map (kbd "C-M-t") #'sp-transpose-sexp)
-;;     )
+(let ((map smartparens-mode-map))
+    ;; Movement and navigation
+    (define-key map (kbd "H-l") #'sp-forward-sexp)
+    (define-key map (kbd "H-h") #'sp-backward-sexp)
+    (define-key map (kbd "H-j") #'sp-down-sexp)
+    (define-key map (kbd "H-k") #'sp-up-sexp)
+    (define-key map (kbd "H-u") #'sp-beginning-of-sexp)
+    (define-key map (kbd "H-i") #'sp-end-of-sexp)
+    ;; ;; Deleting and killing
+    (define-key map (kbd "H-d") #'sp-kill-sexp)
+    (define-key map (kbd "H-y") #'sp-copy-sexp)
+    ;; ;; Depth changing
+    ;; (define-key map (kbd "M-s") #'sp-splice-sexp)
+    ;; (define-key map (kbd "M-<up>") #'sp-splice-sexp-killing-backward)
+    ;; (define-key map (kbd "M-<down>") #'sp-splice-sexp-killing-forward)
+    ;; (define-key map (kbd "M-r") #'sp-splice-sexp-killing-around)
+    ;; (define-key map (kbd "M-?") #'sp-convolute-sexp)
+    ;; Barfage & Slurpage
+    (define-key map (kbd "s-l")  #'sp-forward-slurp-sexp)
+    (define-key map (kbd "s-h")  #'sp-forward-barf-sexp)
+    (define-key map (kbd "M-h")  #'sp-backward-slurp-sexp)
+    (define-key map (kbd "M-l")  #'sp-backward-barf-sexp)
+    (define-key map (kbd "s-j")  #'sp-raise-sexp)
+    ;; Miscellaneous commands
+    ;; (define-key map (kbd "M-S") #'sp-split-sexp)
+    ;; (define-key map (kbd "M-J") #'sp-join-sexp)
+    ;; (define-key map (kbd "C-M-t") #'sp-transpose-sexp)
+    )
 
 
 (require 'highlight-symbol)
