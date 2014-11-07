@@ -34,6 +34,7 @@
 (depends-on "helm-projectile")
 (depends-on "highlight-symbol")
 (depends-on "ido-vertical-mode")
+(depends-on "indent-guide")
 (depends-on "inf-ruby")
 (depends-on "ruby-electric")
 (depends-on "linum-relative")

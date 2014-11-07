@@ -637,6 +637,9 @@ buffers."
 (global-set-key (kbd "s-}") 'next-tab-or-buffer)
 
 
+;; (require 'indent-guide)
+;; (indent-guide-global-mode)
+
 ;; from https://github.com/rejeep/emacs/blob/master/osx.el
 (defun reveal-in-finder ()
   "Opens file directory in Finder."
