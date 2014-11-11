@@ -238,6 +238,27 @@
 (setq web-mode-script-padding 2)
 (setq web-mode-disable-auto-pairing t)
 
+
+;; temporary fix for highlight-symbol and web-mode integration issue
+(defun web-mode-font-lock-highlight (limit)
+  "font-lock matcher"
+  ;;(message "font-lock-highlight: point(%S) limit(%S) change-beg(%S) change-end(%S)" (point) limit web-mode-change-beg web-mode-change-end)
+  ;;  (when (or (null web-mode-change-beg) (null web-mode-change-end))
+  ;;    (message "font-lock-highlight: untouched buffer (%S)" this-command))
+  (let ((inhibit-modification-hooks t)
+        (buffer-undo-list t)
+        (region nil))
+    (if (and web-mode-change-beg web-mode-change-end)
+        (setq region (web-mode-propertize))
+      ;; (message "font-lock-highlight ** untouched buffer (%S) **" this-command)
+      (setq region (web-mode-propertize (point) limit)))
+    ;;(message "region=%S" region)
+    (when (and region (car region))
+      (web-mode-highlight-region (car region) (cdr region))
+      ))
+  nil)
+
+
 (setq js-indent-level 2)
 
 ;; ruby-electric stuff (inserting end automatically)
@@ -254,7 +275,6 @@
   (insert "end")
   (ruby-indent-line t)
   (end-of-line))
-
 
 ;; ;; SMARTPARENS
 (require 'smartparens-config)
@@ -580,7 +600,6 @@ buffers."
 
 (global-set-key [f1] 'toggle-project-explorer)
 
-
 ;; ETAGS stuff
 (require 'helm-etags+)
 
@@ -649,3 +668,5 @@ buffers."
         (shell-command
          (format "%s %s" (executable-find "open") (file-name-directory file)))
       (error "Buffer is not attached to any file."))))
+
+(define-key minibuffer-local-map (kbd "C-w") 'backward-kill-word)
