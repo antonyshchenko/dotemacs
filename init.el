@@ -1,10 +1,10 @@
-(setq user-emacs-directory "~/.emacs.d")
+(setq user-emacs-directory "~/.aquamacs.d")
 
 (require 'cask "~/.cask/cask.el")
 (cask-initialize)
 (require 'pallet)
 
-(add-to-list 'load-path "~/.emacs.d/vendor")
+(add-to-list 'load-path "~/.aquamacs.d/vendor")
 
 (push "/usr/local/bin" exec-path)
 
@@ -131,7 +131,7 @@
 
 ;; AUTOCOMPLETE
 (require 'auto-complete-config)
-(add-to-list 'ac-dictionary-directories "~/.emacs.d/.cask/24.3.50.1/elpa/auto-complete-20140208.653/dict")
+(add-to-list 'ac-dictionary-directories "~/.aquamacs.d/.cask/24.3.50.1/elpa/auto-complete-20140208.653/dict")
 (ac-config-default)
 (setq ac-ignore-case nil)
 (add-to-list 'ac-modes 'enh-ruby-mode)
@@ -188,6 +188,12 @@
 (require 'rbenv)
 (require 'ruby-mode)
 (global-rbenv-mode)
+
+(require 'robe)
+(add-hook 'ruby-mode-hook 'robe-mode)
+(add-hook 'after-save-hook (lambda()
+                             (when (and (derived-mode-p 'ruby-mode) (bound-and-true-p robe-mode))
+                               (ruby-load-file (buffer-file-name)))))
 
 ;; (add-hook 'ruby-mode-hook (lambda ()
 ;;                             (rbenv-use-corresponding)))
@@ -614,8 +620,15 @@ buffers."
       (setq tag-at-point (substring tag-at-point 1)))
     (helm-etags+-select-internal (concat "\\_<" tag-at-point "\\_>"))))
 
-(global-set-key (kbd "s-]") 'find-tag-via-helm)
-(global-set-key (kbd "s-[") 'helm-etags+-history-go-back)
+(defun jump-to-definiton (arg)
+  (interactive "P")
+  (if (and (derived-mode-p 'ruby-mode) (bound-and-true-p robe-mode))
+      (robe-jump arg)
+    (find-tag-via-helm)))
+
+(global-set-key (kbd "s-]") 'jump-to-definiton)
+(global-set-key (kbd "s-[") 'pop-tag-mark)
+;; (global-set-key (kbd "s-[") 'helm-etags+-history-go-back)
 
 
 ;; Ruby specific etags stuff
