@@ -579,6 +579,22 @@ buffers."
 (define-key minibuffer-local-isearch-map [escape] 'minibuffer-keyboard-quit)
 
 
+;; clw, dlw to change subwors in camelCaseWords and in underscored_ones
+;; from http://metasandwich.com/2013/01/19/having-my-vim-and-m-x-emacs-ing-it-too/
+(evil-define-motion evil-little-word (count)
+  :type exclusive
+  (let* ((case-fold-search nil)
+         (count (if count count 1)))
+    (while (> count 0)
+      (forward-char)
+      (search-forward-regexp "[_A-Z]\\|\\W" nil t)
+      (backward-char)
+      (decf count))))
+
+(define-key evil-operator-state-map (kbd "lw") 'evil-little-word)
+
+
+
 (require 'surround)
 (global-surround-mode 1)
 
