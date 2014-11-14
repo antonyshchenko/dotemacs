@@ -474,7 +474,7 @@ buffers."
   :motion evil-forward-char
   (evil-delete-backward-char beg end type ?_))
 
-;; delete: text object
+;; delete: text object without putting to default register
 (evil-define-operator evil-destroy (beg end type register yank-handler)
   "Vim's 's' without clipboard."
   (evil-delete beg end type ?_ yank-handler))
@@ -516,6 +516,12 @@ buffers."
   (evil-paste-before 1 register))
 
 
+(defadvice evil-delete (around evil-delete-dont-yank-empty-strings activate)
+  ;; don't yank if deleting empty string (or if it consists only from whitespace chars)
+  (if (equal "" (replace-regexp-in-string "[ \t\n]" "" (buffer-substring beg end)))
+    (delete-region beg end)
+    ad-do-it))
+
 
 ;; Clipboard bypass key rebindings
 ;; (define-key evil-normal-state-map "s" 'evil-destroy)
@@ -527,6 +533,7 @@ buffers."
 ;; (define-key evil-visual-state-map "P" 'evil-destroy-paste-before)
 ;; (define-key evil-visual-state-map "p" 'evil-destroy-paste-after)
 (define-key evil-normal-state-map "r" 'evil-destroy-replace)
+;; (define-key evil-normal-state-map "_d" 'evil-destroy)
 
 
 
