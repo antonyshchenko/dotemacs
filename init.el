@@ -176,6 +176,8 @@
 
 (setq helm-boring-buffer-regexp-list my-nevershown-buffers)
 
+(global-set-key (kbd "s-f") 'helm-imenu)
+
 
 (require 'dirtree)
 ;; (add-hook 'dirtree-mode-hook (lambda()
@@ -432,6 +434,7 @@ buffers."
 (require 'evil)
 (evil-mode 1)
 (setq evil-auto-indent t)
+(setq evil-search-module 'evil-search)
 
 ;;;; Clipboard bypass in evil mode
 (defmacro without-evil-mode (&rest do-this)
