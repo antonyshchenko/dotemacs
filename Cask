@@ -48,7 +48,7 @@
 (depends-on "projectile")
 (depends-on "rainbow-delimiters")
 (depends-on "rbenv")
-(depends-on "robe-mode")
+(depends-on "robe")
 (depends-on "rspec-mode")
 (depends-on "ruby-tools")
 (depends-on "s")
