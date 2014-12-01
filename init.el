@@ -192,6 +192,7 @@
 (global-rbenv-mode)
 
 (require 'robe)
+(setq robe-turn-on-eldoc nil)
 (add-hook 'ruby-mode-hook 'robe-mode)
 (add-hook 'after-save-hook (lambda()
                              (when (and (derived-mode-p 'ruby-mode) (bound-and-true-p robe-mode))
@@ -244,8 +245,9 @@
 (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
 (setq web-mode-code-indent-offset 2)
 (setq web-mode-script-padding 2)
-(setq web-mode-disable-auto-pairing t)
 
+(add-hook 'web-mode-hook (lambda()
+                           (setq web-mode-enable-auto-pairing nil)))
 
 ;; temporary fix for highlight-symbol and web-mode integration issue
 (defun web-mode-font-lock-highlight (limit)
@@ -269,33 +271,28 @@
 
 (setq js-indent-level 2)
 
-;; ruby-electric stuff (inserting end automatically)
-(add-hook 'ruby-mode-hook
-      (lambda ()
-        (require 'ruby-electric)
-        (ruby-electric-mode t)
-        ;; insert end automatically on new line by hitting RET
-        (define-key evil-insert-state-map (kbd "RET") 'ruby-electric-space/return)))
-
-(defun ruby-insert-end ()
-  "Insert \"end\" at point and reindent current line. Needed by ruby-electric-mode"
-  (interactive)
-  (insert "end")
-  (ruby-indent-line t)
-  (end-of-line))
-
 ;; ;; SMARTPARENS
 (require 'smartparens-config)
 (smartparens-global-mode)
 (show-smartparens-global-mode t)
 (setq sp-autoescape-string-quote nil)
-(sp-with-modes '(web-mode)
-  (sp-local-pair "%" "%"
-                 :unless '(sp-in-string-or-word-p)
-                 :post-handlers '(
-                                  (space-and-space-on-each-side "SPC")
-                                  (space-on-each-side "=" "#")
-                                  )))
+
+(sp-local-pair 'web-mode "%" "%"
+               :unless '(sp-in-string-or-word-p)
+               :post-handlers '(
+                                (space-and-space-on-each-side "SPC")
+                                (space-on-each-side "=" "#")
+                                ))
+
+(defun sp-web-mode-is-code-context (id action context)
+  (when (and (eq action 'insert)
+             (not (or (get-text-property (point) 'part-side)
+                      (get-text-property (point) 'block-side))))
+
+    t))
+
+(sp-local-pair 'web-mode "<" nil :when '(sp-web-mode-is-code-context))
+
 
 (let ((map smartparens-mode-map))
     ;; Movement and navigation
@@ -533,7 +530,6 @@ buffers."
 ;; (define-key evil-visual-state-map "P" 'evil-destroy-paste-before)
 ;; (define-key evil-visual-state-map "p" 'evil-destroy-paste-after)
 (define-key evil-normal-state-map "r" 'evil-destroy-replace)
-;; (define-key evil-normal-state-map "_d" 'evil-destroy)
 
 
 
