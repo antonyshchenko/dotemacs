@@ -429,6 +429,7 @@ buffers."
 (evil-mode 1)
 (setq evil-auto-indent t)
 (setq evil-search-module 'evil-search)
+(define-key evil-normal-state-map (kbd "C-s") 'evil-search-forward)
 
 ;;;; Clipboard bypass in evil mode
 (defmacro without-evil-mode (&rest do-this)
