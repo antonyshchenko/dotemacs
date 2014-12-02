@@ -105,19 +105,14 @@
 
 (require 'ido)
 (ido-mode t)
-(setq ido-enable-flex-matching t)
 (require 'flx-ido)
-(ido-everywhere 1)
-(flx-ido-mode 1)
-;; disable ido faces to see flx highlights.
-(setq ido-use-faces nil)
+(setq ido-enable-flex-matching t)
+(ido-everywhere t)
+(flx-ido-mode t)
+(setq ido-use-faces nil) ;; disable ido faces to see flx highlights.
 (require 'ido-vertical-mode)
-(ido-vertical-mode 1)
-(setq ido-vertical-define-keys 'C-n-C-p-up-down)
-(defun ido-define-keys () ;; C-n/p is more intuitive in vertical layout
-  (define-key ido-completion-map (kbd "<down>") 'ido-next-match)
-  (define-key ido-completion-map (kbd "<up>") 'ido-prev-match))
-
+(ido-vertical-mode t)
+(setq ido-vertical-define-keys 'C-n-C-p-up-and-down)
 
 ;; Smooth scrolling
 ;; From http://stackoverflow.com/questions/3631220/fix-to-get-smooth-scrolling-in-emacs
@@ -408,6 +403,8 @@ buffers."
           (message "File '%s' successfully renamed to '%s'"
                    name (file-name-nondirectory new-name)))))))
 
+;; no IDO please, because it constantly tries to suggest existing file when typing new name
+(setq ido-read-file-name-non-ido '(rename-current-buffer-file))
 (global-set-key [f6] 'rename-current-buffer-file)
 
 (defun delete-current-buffer-file ()
