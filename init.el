@@ -630,25 +630,41 @@ buffers."
 
 ;; ETAGS stuff
 (require 'helm-etags+)
+(setq tags-add-tables nil) ;; don't ask to keep current tag tables list when switching to other directory/project
 
-(defun find-tag-via-helm ()
-  (interactive)
-  (let ((tag-at-point (thing-at-point 'symbol 1)))
-    (when (derived-mode-p 'ruby-mode 'cperl-mode)
-      ;; quick fix for searching full qualified class/module names in ruby and perl
-      (setq tag-at-point (first (reverse (split-string tag-at-point "::")))))
-    (when (and (equal 'ruby-mode major-mode) (equal ":" (substring tag-at-point 0 1)))
-      ;; in ruby mode try to find appropriate method for ruby symbol at point
-      (setq tag-at-point (substring tag-at-point 1)))
-    (helm-etags+-select-internal (concat "\\_<" tag-at-point "\\_>"))))
-
-(defun jump-to-definiton (arg)
+(defun hyperjump-to-definiton (arg)
   (interactive "P")
-  (if (and (derived-mode-p 'ruby-mode) (bound-and-true-p robe-mode))
-      (robe-jump arg)
-    (find-tag-via-helm)))
+  (let ((thing (hyperjump-to-definiton-thing-at-point )))
+    (if (and (derived-mode-p 'ruby-mode) (bound-and-true-p robe-mode))
+        (condition-case nil
+            (hyperjump-to-definition-via-robe thing)
+          (error (hyperjump-to-definition-via-tags thing))) ;; fallback to tag search if robe can't find anything
+      (hyperjump-to-definition-via-tags thing))))
 
-(global-set-key (kbd "s-]") 'jump-to-definiton)
+(defun hyperjump-to-definiton-thing-at-point ()
+  (interactive)
+  (let ((thing (thing-at-point 'symbol 1)))
+    (when (and (equal 'ruby-mode major-mode) (equal ":" (substring thing 0 1)))
+      ;; in ruby mode try to find appropriate method for ruby symbol at point
+      (setq thing (substring thing 1)))
+    thing))
+
+(defun hyperjump-to-definition-via-tags (thing)
+  (interactive)
+  (when (derived-mode-p 'ruby-mode 'cperl-mode)
+    ;; quick fix for searching full qualified class/module names in ruby and perl
+    (setq thing (first (reverse (split-string thing "::")))))
+  (helm-etags+-select-internal (concat "\\_<" thing "\\_>")))
+
+(defun hyperjump-to-definition-via-robe (thing)
+  (interactive)
+  (cond
+   ((robe-const-p thing)
+    (robe-jump-to-module thing))
+   (t
+    (robe-jump-to (robe-jump-prompt thing)))))
+
+(global-set-key (kbd "s-]") 'hyperjump-to-definiton)
 (global-set-key (kbd "s-[") 'pop-tag-mark)
 ;; (global-set-key (kbd "s-[") 'helm-etags+-history-go-back)
 
