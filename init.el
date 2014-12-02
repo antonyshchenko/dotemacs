@@ -596,6 +596,7 @@ buffers."
 
 (define-key evil-operator-state-map (kbd "lw") 'evil-little-word)
 
+(define-key evil-visual-state-map [tab] 'align-regexp)
 
 
 (require 'surround)
