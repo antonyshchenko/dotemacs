@@ -4,7 +4,7 @@
 
 (depends-on "ace-jump-buffer")
 (depends-on "ace-jump-mode")
-(depends-on "ag")
+(depends-on "helm-ag")
 (depends-on "auto-complete")
 (depends-on "bundler")
 (depends-on "cask")

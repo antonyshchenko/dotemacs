@@ -133,15 +133,9 @@
 (add-to-list 'ac-modes 'web-mode)
 
 
-(require 'ag)
-(setq ag-highlight-search t)
-(setq ag-reuse-window nil)
-
 ;; PROJECTILE
 (projectile-global-mode)
 (setq projectile-enable-caching t)
-(global-set-key (kbd "s-g") 'projectile-ag)
-(global-set-key (kbd "s-r") 'projectile-replace)
 (defun projectile-project-vcs ()
   "Determine the VCS used by the project if any."
   'none)
@@ -172,6 +166,16 @@
 (setq helm-boring-buffer-regexp-list my-nevershown-buffers)
 
 (global-set-key (kbd "s-f") 'helm-imenu)
+
+
+(require 'helm-ag)
+(setq helm-ag-insert-at-point 'symbol)
+(defun projectile-helm-ag ()
+  (interactive)
+  (helm-ag (projectile-project-root)))
+
+(global-set-key (kbd "s-g") 'projectile-helm-ag)
+
 
 
 (require 'dirtree)
