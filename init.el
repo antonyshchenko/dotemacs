@@ -14,6 +14,7 @@
 (setq auto-save-default nil)
 (setq-default tab-width 2)
 (setq-default indent-tabs-mode nil)
+(setq-default truncate-lines t)
 (setq inhibit-startup-message t)
 (fset 'yes-or-no-p 'y-or-n-p)
 (delete-selection-mode t)
