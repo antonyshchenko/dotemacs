@@ -169,14 +169,25 @@
 (global-set-key (kbd "s-f") 'helm-imenu)
 
 
-(require 'helm-ag)
-(setq helm-ag-insert-at-point 'symbol)
-(defun projectile-helm-ag ()
+(require 'ag)
+(setq ag-highlight-search t)
+(setq ag-reuse-window nil)
+
+(global-set-key (kbd "s-g") 'projectile-ag)
+(global-set-key (kbd "s-G") 'projectile-ag-with-ignore-files)
+(global-set-key (kbd "s-r") 'projectile-replace)
+
+(defun projectile-ag-with-ignore-files ()
   (interactive)
-  (helm-ag (projectile-project-root)))
-
-(global-set-key (kbd "s-g") 'projectile-helm-ag)
-
+  (let ((search-term (read-from-minibuffer
+                      (projectile-prepend-project-name "Ag search for: ")
+                      (projectile-symbol-at-point)))
+        (ignore-files (read-from-minibuffer
+                       (projectile-prepend-project-name "Ag ignore files: "))))
+    (setq tmp ag-arguments)
+    (setq ag-arguments (cons (format "--ignore=%s" ignore-files) ag-arguments))
+    (ag search-term (projectile-project-root))
+    (setq ag-arguments tmp)))
 
 
 (require 'dirtree)
