@@ -351,7 +351,11 @@
                    (highlight-symbol-mode 1)
                    (local-set-key (kbd "M-n") 'highlight-symbol-next)
                    (local-set-key (kbd "M-p") 'highlight-symbol-prev)
-                   (local-set-key (kbd "M-r") 'highlight-symbol-query-replace))))
+                   (local-set-key (kbd "M-r") 'highlight-symbol-query-replace-with-default-value))))
+
+(defun highlight-symbol-query-replace-with-default-value ()
+  (interactive)
+  (highlight-symbol-query-replace (read-from-minibuffer "Replacement: " (thing-at-point 'symbol))))
 
 (require 'color-identifiers-mode)
 (global-color-identifiers-mode)
