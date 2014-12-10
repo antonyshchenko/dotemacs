@@ -100,6 +100,7 @@
 
 (require 'linum-relative)
 (setq linum-relative-format "%3s ")
+(setq linum-relative-current-symbol "") ;; show absolute number for the current line
 
 ;; show system name and current file path in window title
 (setq-default frame-title-format (list (system-name) ": %b (%f)"))
