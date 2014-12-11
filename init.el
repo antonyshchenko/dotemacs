@@ -197,7 +197,7 @@
   (interactive "P")
   (let* ((old-text (read-string
                     (projectile-prepend-project-name "Replace: ")
-                    (projectile-symbol-at-point)))
+                    (symbol-at-point-or-selection)))
          (new-text (read-string
                     (projectile-prepend-project-name
                      (format "Replace %s with: " old-text)) (projectile-symbol-at-point)))
@@ -206,6 +206,28 @@
                       (projectile-project-root)))
          (files (projectile-files-with-string old-text directory)))
     (tags-query-replace old-text new-text nil (cons 'list files))))
+
+(defun symbol-at-point-or-selection ()
+  (if (use-region-p) (buffer-substring (region-beginning) (region-end)) (substring-no-properties (or (thing-at-point 'symbol) ""))))
+
+;; Fancy query-replace stuff
+(defun query-replace-wim ()
+  (interactive)
+  (let ((s (symbol-at-point-or-selection)))
+    (query-replace (read-from-minibuffer "Replace: " s) (read-from-minibuffer "Replace with: " s) nil (point-min) (point-max))))
+
+(defun query-replace-wim-in-defun ()
+  (interactive)
+  (let ((s (symbol-at-point-or-selection)))
+    (narrow-to-defun)
+    (let ((begin (point-min)) (end (point-max)))
+      (widen)
+      (query-replace (read-from-minibuffer "Replace: " s) (read-from-minibuffer "Replace with: " s) nil begin end))))
+
+(define-key evil-normal-state-map (kbd "M-r") 'query-replace-wim)
+(define-key evil-normal-state-map (kbd "M-R") 'query-replace-wim-in-defun)
+
+
 
 (require 'dirtree)
 ;; (add-hook 'dirtree-mode-hook (lambda()
@@ -605,51 +627,29 @@ buffers."
 ;;; esc quits
 (define-key evil-normal-state-map [escape] 'keyboard-quit)
 (define-key evil-visual-state-map [escape] 'keyboard-quit)
-(define-key minibuffer-local-map [escape] 'minibuffer-keyboard-quit)
-(define-key minibuffer-local-ns-map [escape] 'minibuffer-keyboard-quit)
-(define-key minibuffer-local-completion-map [escape] 'minibuffer-keyboard-quit)
-(define-key minibuffer-local-must-match-map [escape] 'minibuffer-keyboard-quit)
-(define-key minibuffer-local-isearch-map [escape] 'minibuffer-keyboard-quit)
-
-;; TODO: DRY and define mappings for wWeEbB and other motions, some can be taken from: https://github.com/emacsmirror/evil/blob/master/evil-maps.el#L464
-(define-key minibuffer-local-map (kbd "s-h") 'backward-char)
-(define-key minibuffer-local-ns-map (kbd "s-h") 'backward-char)
-(define-key minibuffer-local-completion-map (kbd "s-h") 'backward-char)
-(define-key minibuffer-local-must-match-map (kbd "s-h") 'backward-char)
-(define-key minibuffer-local-isearch-map (kbd "s-h") 'backward-char)
-
-(define-key minibuffer-local-map (kbd "s-l") 'forward-char)
-(define-key minibuffer-local-ns-map (kbd "s-l") 'forward-char)
-(define-key minibuffer-local-completion-map (kbd "s-l") 'forward-char)
-(define-key minibuffer-local-must-match-map (kbd "s-l") 'forward-char)
-(define-key minibuffer-local-isearch-map (kbd "s-l") 'forward-char)
-
-(define-key evil-ex-completion-map (kbd "s-h") 'backward-char)
-(define-key evil-ex-completion-map (kbd "s-l") 'forward-char)
+(dolist (m (list
+            minibuffer-local-map
+            minibuffer-local-ns-map
+            minibuffer-local-completion-map
+            minibuffer-local-must-match-map
+            minibuffer-local-isearch-map))
+  (define-key m [escape] 'minibuffer-keyboard-quit))
 
 
-
-;; TODO: evil-replace-selection ?
-
-(defun evil-replace-symbol-at-point ()
-  (interactive)
-  (let ((thing (thing-at-point 'symbol)))
-    (trigger-evil-replace-cmd "%" thing thing)))
-
-;; TODO: looks like new evil mode is needed for this
-;; (defun evil-replace-symbol-at-point-in-selection ()
-;;   (interactive)
-;;   (let ((thing (thing-at-point 'symbol)))
-;;     (message "Replacing " thing ", please select an area and hit RET")
-;;     (evil-visual-state)
-;;     (trigger-evil-replace-cmd "'<,'>" thing thing)))
-
-(defun trigger-evil-replace-cmd (area search-term replacement)
-  (let ((command-str (concat area "s/" search-term "/" replacement "/gc")))
-    (evil-ex (cons command-str (- (length command-str) 2)))))
-
-(define-key evil-normal-state-map (kbd "M-r") 'evil-replace-symbol-at-point)
-;; (define-key evil-normal-state-map (kbd "M-R") 'evil-replace-symbol-at-point-in-selection)
+;; Homerow motions in minubuffer
+(dolist (m (list
+             minibuffer-local-map
+             minibuffer-local-ns-map
+             minibuffer-local-completion-map
+             minibuffer-local-must-match-map
+             minibuffer-local-isearch-map
+             evil-ex-completion-map))
+  (define-key m (kbd "S-l") 'forward-char)
+  (define-key m (kbd "S-h") 'backward-char)
+  (define-key m (kbd "M-l") 'forward-word)
+  (define-key m (kbd "M-h") 'backward-word)
+  (define-key m (kbd "H-h") 'beginning-of-line)
+  (define-key m (kbd "H-l") 'end-of-line))
 
 
 ;; clw, dlw to change subwors in camelCaseWords and in underscored_ones
