@@ -1,0 +1,3 @@
+[submodule "vendor/evil-plugins"]
+	path = vendor/evil-plugins
+	url = git@github.com:tarao/evil-plugins.git

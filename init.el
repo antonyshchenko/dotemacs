@@ -224,8 +224,8 @@
       (widen)
       (query-replace (read-from-minibuffer "Replace: " s) (read-from-minibuffer "Replace with: " s) nil begin end))))
 
-(define-key evil-normal-state-map (kbd "M-r") 'query-replace-wim)
-(define-key evil-normal-state-map (kbd "M-R") 'query-replace-wim-in-defun)
+(global-set-key (kbd "M-r") 'query-replace-wim)
+(global-set-key (kbd "M-R") 'query-replace-wim-in-defun)
 
 
 
@@ -651,23 +651,12 @@ buffers."
   (define-key m (kbd "H-h") 'beginning-of-line)
   (define-key m (kbd "H-l") 'end-of-line))
 
-
-;; clw, dlw to change subwors in camelCaseWords and in underscored_ones
-;; from http://metasandwich.com/2013/01/19/having-my-vim-and-m-x-emacs-ing-it-too/
-(evil-define-motion evil-little-word (count)
-  :type exclusive
-  (let* ((case-fold-search nil)
-         (count (if count count 1)))
-    (while (> count 0)
-      (forward-char)
-      (search-forward-regexp "[_A-Z]\\|\\W" nil t)
-      (backward-char)
-      (decf count))))
-
-(define-key evil-operator-state-map (kbd "lw") 'evil-little-word)
-
 (define-key evil-visual-state-map [tab] 'align-regexp)
 
+(add-to-list 'load-path "~/.aquamacs.d/vendor/evil-plugins") ;; (require 'evil-textobj-between)
+(require 'evil-little-word)
+(require 'evil-operator-comment)
+(global-evil-operator-comment-mode 1)
 
 (require 'surround)
 (global-surround-mode 1)
@@ -678,6 +667,10 @@ buffers."
 (require 'evil-numbers)
 (global-set-key (kbd "s-=") 'evil-numbers/inc-at-pt)
 (global-set-key (kbd "s--") 'evil-numbers/dec-at-pt)
+
+
+
+
 
 (require 'project-explorer)
 ;; (add-hook 'project-explorer-mode 'turn-off-evil-mode) ;; does not work for some reason
