@@ -367,28 +367,6 @@
                    (local-set-key (kbd "M-n") 'highlight-symbol-next)
                    (local-set-key (kbd "M-p") 'highlight-symbol-prev))))
 
-;; TODO: evil-replace-selection ?
-
-(defun evil-replace-symbol-at-point ()
-  (interactive)
-  (let ((thing (thing-at-point 'symbol)))
-    (trigger-evil-replace-cmd "%" thing thing)))
-
-;; TODO: looks like new evil mode is needed for this
-;; (defun evil-replace-symbol-at-point-in-selection ()
-;;   (interactive)
-;;   (let ((thing (thing-at-point 'symbol)))
-;;     (message "Replacing " thing ", please select an area and hit RET")
-;;     (evil-visual-state)
-;;     (trigger-evil-replace-cmd "'<,'>" thing thing)))
-
-(defun trigger-evil-replace-cmd (area search-term replacement)
-  (let ((command-str (concat area "s/" search-term "/" replacement "/gc")))
-    (evil-ex (cons command-str (- (length command-str) 2)))))
-
-(define-key evil-normal-state-map (kbd "M-r") 'evil-replace-symbol-at-point)
-;; (define-key evil-normal-state-map (kbd "M-R") 'evil-replace-symbol-at-point-in-selection)
-
 (require 'color-identifiers-mode)
 (global-color-identifiers-mode)
 
@@ -584,7 +562,6 @@ buffers."
 (define-key evil-normal-state-map "r" 'evil-destroy-replace)
 
 
-
 (evil-define-command evil-paste-and-indent-before
   (count &optional register yank-handler)
   :suppress-operator t
@@ -633,6 +610,46 @@ buffers."
 (define-key minibuffer-local-completion-map [escape] 'minibuffer-keyboard-quit)
 (define-key minibuffer-local-must-match-map [escape] 'minibuffer-keyboard-quit)
 (define-key minibuffer-local-isearch-map [escape] 'minibuffer-keyboard-quit)
+
+;; TODO: DRY and define mappings for wWeEbB and other motions, some can be taken from: https://github.com/emacsmirror/evil/blob/master/evil-maps.el#L464
+(define-key minibuffer-local-map (kbd "s-h") 'backward-char)
+(define-key minibuffer-local-ns-map (kbd "s-h") 'backward-char)
+(define-key minibuffer-local-completion-map (kbd "s-h") 'backward-char)
+(define-key minibuffer-local-must-match-map (kbd "s-h") 'backward-char)
+(define-key minibuffer-local-isearch-map (kbd "s-h") 'backward-char)
+
+(define-key minibuffer-local-map (kbd "s-l") 'forward-char)
+(define-key minibuffer-local-ns-map (kbd "s-l") 'forward-char)
+(define-key minibuffer-local-completion-map (kbd "s-l") 'forward-char)
+(define-key minibuffer-local-must-match-map (kbd "s-l") 'forward-char)
+(define-key minibuffer-local-isearch-map (kbd "s-l") 'forward-char)
+
+(define-key evil-ex-completion-map (kbd "s-h") 'backward-char)
+(define-key evil-ex-completion-map (kbd "s-l") 'forward-char)
+
+
+
+;; TODO: evil-replace-selection ?
+
+(defun evil-replace-symbol-at-point ()
+  (interactive)
+  (let ((thing (thing-at-point 'symbol)))
+    (trigger-evil-replace-cmd "%" thing thing)))
+
+;; TODO: looks like new evil mode is needed for this
+;; (defun evil-replace-symbol-at-point-in-selection ()
+;;   (interactive)
+;;   (let ((thing (thing-at-point 'symbol)))
+;;     (message "Replacing " thing ", please select an area and hit RET")
+;;     (evil-visual-state)
+;;     (trigger-evil-replace-cmd "'<,'>" thing thing)))
+
+(defun trigger-evil-replace-cmd (area search-term replacement)
+  (let ((command-str (concat area "s/" search-term "/" replacement "/gc")))
+    (evil-ex (cons command-str (- (length command-str) 2)))))
+
+(define-key evil-normal-state-map (kbd "M-r") 'evil-replace-symbol-at-point)
+;; (define-key evil-normal-state-map (kbd "M-R") 'evil-replace-symbol-at-point-in-selection)
 
 
 ;; clw, dlw to change subwors in camelCaseWords and in underscored_ones
