@@ -177,8 +177,9 @@
 
 (global-set-key (kbd "s-g") 'projectile-ag)
 (global-set-key (kbd "s-G") 'projectile-ag-with-ignore-files)
-(global-set-key (kbd "s-r") 'projectile-replace)
+(global-set-key (kbd "s-r") 'projectile-replace-with-default-value)
 
+;; TODO: consider visual selection if any
 (defun projectile-ag-with-ignore-files ()
   (interactive)
   (let ((search-term (read-from-minibuffer
@@ -191,6 +192,20 @@
     (ag search-term (projectile-project-root))
     (setq ag-arguments tmp)))
 
+;; TODO: consider visual selection if any
+(defun projectile-replace-with-default-value (&optional arg)
+  (interactive "P")
+  (let* ((old-text (read-string
+                    (projectile-prepend-project-name "Replace: ")
+                    (projectile-symbol-at-point)))
+         (new-text (read-string
+                    (projectile-prepend-project-name
+                     (format "Replace %s with: " old-text)) (projectile-symbol-at-point)))
+         (directory (if arg
+                        (read-directory-name "Replace in directory: ")
+                      (projectile-project-root)))
+         (files (projectile-files-with-string old-text directory)))
+    (tags-query-replace old-text new-text nil (cons 'list files))))
 
 (require 'dirtree)
 ;; (add-hook 'dirtree-mode-hook (lambda()
@@ -350,12 +365,29 @@
   (add-hook hook (lambda()
                    (highlight-symbol-mode 1)
                    (local-set-key (kbd "M-n") 'highlight-symbol-next)
-                   (local-set-key (kbd "M-p") 'highlight-symbol-prev)
-                   (local-set-key (kbd "M-r") 'highlight-symbol-query-replace-with-default-value))))
+                   (local-set-key (kbd "M-p") 'highlight-symbol-prev))))
 
-(defun highlight-symbol-query-replace-with-default-value ()
+;; TODO: evil-replace-selection ?
+
+(defun evil-replace-symbol-at-point ()
   (interactive)
-  (highlight-symbol-query-replace (read-from-minibuffer "Replacement: " (thing-at-point 'symbol))))
+  (let ((thing (thing-at-point 'symbol)))
+    (trigger-evil-replace-cmd "%" thing thing)))
+
+;; TODO: looks like new evil mode is needed for this
+;; (defun evil-replace-symbol-at-point-in-selection ()
+;;   (interactive)
+;;   (let ((thing (thing-at-point 'symbol)))
+;;     (message "Replacing " thing ", please select an area and hit RET")
+;;     (evil-visual-state)
+;;     (trigger-evil-replace-cmd "'<,'>" thing thing)))
+
+(defun trigger-evil-replace-cmd (area search-term replacement)
+  (let ((command-str (concat area "s/" search-term "/" replacement "/gc")))
+    (evil-ex (cons command-str (- (length command-str) 2)))))
+
+(define-key evil-normal-state-map (kbd "M-r") 'evil-replace-symbol-at-point)
+;; (define-key evil-normal-state-map (kbd "M-R") 'evil-replace-symbol-at-point-in-selection)
 
 (require 'color-identifiers-mode)
 (global-color-identifiers-mode)
@@ -591,6 +623,7 @@ buffers."
 (define-key evil-normal-state-map (kbd "C-j") 'evil-break-line)
 
 (define-key evil-normal-state-map (kbd "SPC") 'ace-jump-mode)
+(define-key evil-visual-state-map (kbd "SPC") 'ace-jump-mode) ;; TODO: fix this - atm SPC advances selection start by 1 char for some reason
 
 ;;; esc quits
 (define-key evil-normal-state-map [escape] 'keyboard-quit)
