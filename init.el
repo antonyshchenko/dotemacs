@@ -81,10 +81,7 @@
 ; kill open bufer w/o confirmation
 (global-set-key (kbd "s-k") 'kill-this-buffer)
 
-;(setq mac-command-modifier 'control)
 (setq mac-function-modifier 'hyper)
-(global-set-key (kbd "C-x C-m") 'execute-extended-command)
-(global-set-key (kbd "s-/") 'comment-dwim)
 
 ;; auto indent new lines
 (global-set-key (kbd "RET") 'newline-and-indent)
@@ -655,6 +652,8 @@ buffers."
 
 (add-to-list 'load-path "~/.aquamacs.d/vendor/evil-plugins") ;; (require 'evil-textobj-between)
 (require 'evil-little-word)
+
+(setq evil-operator-comment-key (kbd ","))
 (require 'evil-operator-comment)
 (global-evil-operator-comment-mode 1)
 
