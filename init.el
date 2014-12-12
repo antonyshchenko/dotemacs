@@ -176,7 +176,6 @@
 (global-set-key (kbd "s-G") 'projectile-ag-with-ignore-files)
 (global-set-key (kbd "s-r") 'projectile-replace-with-default-value)
 
-;; TODO: consider visual selection if any
 (defun projectile-ag-with-ignore-files ()
   (interactive)
   (let ((search-term (read-from-minibuffer
@@ -188,6 +187,12 @@
     (setq ag-arguments (cons (format "--ignore=%s" ignore-files) ag-arguments))
     (ag search-term (projectile-project-root))
     (setq ag-arguments tmp)))
+
+;; consider visual selection if any
+;; TODO: advise would be better
+(defun projectile-symbol-at-point ()
+  "Get the symbol at point and strip its properties."
+  (symbol-at-point-or-selection))
 
 ;; ;; TODO: consider visual selection if any
 ;; (defun projectile-replace-with-default-value (&optional arg)
@@ -218,7 +223,7 @@
          (add-hook 'kbd-macro-termination-hook 'query-replace-wim-done))))
 
 (defun symbol-at-point-or-selection ()
-  (if (use-region-p) (buffer-substring (region-beginning) (region-end)) (substring-no-properties (or (thing-at-point 'symbol) ""))))
+  (substring-no-properties (if (use-region-p) (buffer-substring (region-beginning) (region-end)) (or (thing-at-point 'symbol) ""))))
 
 (defvar query-replace-wim-current-search-term nil)
 (defvar query-replace-wim-replacement nil)
