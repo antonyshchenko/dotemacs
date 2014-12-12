@@ -189,40 +189,72 @@
     (ag search-term (projectile-project-root))
     (setq ag-arguments tmp)))
 
-;; TODO: consider visual selection if any
-(defun projectile-replace-with-default-value (&optional arg)
-  (interactive "P")
-  (let* ((old-text (read-string
-                    (projectile-prepend-project-name "Replace: ")
-                    (symbol-at-point-or-selection)))
-         (new-text (read-string
-                    (projectile-prepend-project-name
-                     (format "Replace %s with: " old-text)) (projectile-symbol-at-point)))
-         (directory (if arg
-                        (read-directory-name "Replace in directory: ")
-                      (projectile-project-root)))
-         (files (projectile-files-with-string old-text directory)))
-    (tags-query-replace old-text new-text nil (cons 'list files))))
+;; ;; TODO: consider visual selection if any
+;; (defun projectile-replace-with-default-value (&optional arg)
+;;   (interactive "P")
+;;   (let* ((old-text (read-string
+;;                     (projectile-prepend-project-name "Replace: ")
+;;                     (symbol-at-point-or-selection)))
+;;          (new-text (read-string
+;;                     (projectile-prepend-project-name
+;;                      (format "Replace %s with: " old-text)) (projectile-symbol-at-point)))
+;;          (directory (if arg
+;;                         (read-directory-name "Replace in directory: ")
+;;                       (projectile-project-root)))
+;;          (files (projectile-files-with-string old-text directory)))
+;;     (tags-query-replace old-text new-text nil (cons 'list files))))
+
+
+;; Fancy query-replace stuff
+;; TODO: cleanup this mess
+(defun query-replace-wim ()
+  (interactive)
+  (let ((s (symbol-at-point-or-selection)))
+    (let ((r (read-from-minibuffer (format "Replace %s with: " s) s)))
+         (setq query-replace-wim-current-search-term s)
+         (setq query-replace-wim-replacement r)
+         (message "Now select a region where to replace and hit RET")
+         (query-replace-wim-region-selection-mode 1)
+         (add-hook 'kbd-macro-termination-hook 'query-replace-wim-done))))
 
 (defun symbol-at-point-or-selection ()
   (if (use-region-p) (buffer-substring (region-beginning) (region-end)) (substring-no-properties (or (thing-at-point 'symbol) ""))))
 
-;; Fancy query-replace stuff
-(defun query-replace-wim ()
-  (interactive)
-  (let ((s (symbol-at-point-or-selection)))
-    (query-replace (read-from-minibuffer "Replace: " s) (read-from-minibuffer "Replace with: " s) nil (point-min) (point-max))))
+(defvar query-replace-wim-current-search-term nil)
+(defvar query-replace-wim-replacement nil)
 
-(defun query-replace-wim-in-defun ()
+(defun query-replace-wim-do-replace ()
   (interactive)
-  (let ((s (symbol-at-point-or-selection)))
-    (narrow-to-defun)
-    (let ((begin (point-min)) (end (point-max)))
-      (widen)
-      (query-replace (read-from-minibuffer "Replace: " s) (read-from-minibuffer "Replace with: " s) nil begin end))))
+  (let ((beg (if (use-region-p) (region-beginning) (point-min)))
+        (end (if (use-region-p) (region-end) (point-max))))
+    (query-replace query-replace-wim-current-search-term query-replace-wim-replacement nil beg end)
+    (query-replace-wim-done)))
 
+(defvar query-replace-wim-region-select-map (make-keymap))
+(define-key query-replace-wim-region-select-map (kbd "<return>") 'query-replace-wim-do-replace)
+(define-key query-replace-wim-region-select-map (kbd "C-g") 'query-replace-wim-done)
+(define-key query-replace-wim-region-select-map (kbd "<esc>") 'query-replace-wim-done)
+
+(define-minor-mode query-replace-wim-region-selection-mode
+  "Mode to select a region for replacing symbol in"
+  nil "Select region for replace" query-replace-wim-region-select-map)
+
+(defun query-replace-wim-done ()
+  (interactive)
+  (setq query-replace-wim-current-search-term nil)
+  (setq query-replace-wim-replacement nil)
+  (query-replace-wim-region-selection-mode 0))
+
+;; (defun query-replace-wim-in-defun ()
+;;   (interactive)
+;;   (let ((s (symbol-at-point-or-selection)))
+;;     (narrow-to-defun)
+;;     (let ((begin (point-min)) (end (point-max)))
+;;       (widen)
+;;       (query-replace (read-from-minibuffer "Replace: " s) (read-from-minibuffer "Replace with: " s) nil begin end))))
+
+;; (global-set-key (kbd "M-R") 'query-replace-wim-in-defun)
 (global-set-key (kbd "M-r") 'query-replace-wim)
-(global-set-key (kbd "M-R") 'query-replace-wim-in-defun)
 
 
 
