@@ -86,11 +86,6 @@
 ;; auto indent new lines
 (global-set-key (kbd "RET") 'newline-and-indent)
 
-(global-set-key (kbd "M-j")
-                (lambda ()
-                  (interactive)
-                  (join-line -1)))
-
 (require 'linum+)
 (setq linum-format "%d ")
 (global-linum-mode 1)
@@ -378,35 +373,6 @@
 (sp-local-pair 'web-mode "<" nil :when '(sp-web-mode-is-code-context))
 
 
-(let ((map smartparens-mode-map))
-    ;; Movement and navigation
-    (define-key map (kbd "H-l") #'sp-forward-sexp)
-    (define-key map (kbd "H-h") #'sp-backward-sexp)
-    (define-key map (kbd "H-j") #'sp-down-sexp)
-    (define-key map (kbd "H-k") #'sp-up-sexp)
-    (define-key map (kbd "H-u") #'sp-beginning-of-sexp)
-    (define-key map (kbd "H-i") #'sp-end-of-sexp)
-    ;; ;; Deleting and killing
-    (define-key map (kbd "H-d") #'sp-kill-sexp)
-    (define-key map (kbd "H-y") #'sp-copy-sexp)
-    ;; ;; Depth changing
-    ;; (define-key map (kbd "M-s") #'sp-splice-sexp)
-    ;; (define-key map (kbd "M-<up>") #'sp-splice-sexp-killing-backward)
-    ;; (define-key map (kbd "M-<down>") #'sp-splice-sexp-killing-forward)
-    ;; (define-key map (kbd "M-r") #'sp-splice-sexp-killing-around)
-    ;; (define-key map (kbd "M-?") #'sp-convolute-sexp)
-    ;; Barfage & Slurpage
-    (define-key map (kbd "s-l")  #'sp-forward-slurp-sexp)
-    (define-key map (kbd "s-h")  #'sp-forward-barf-sexp)
-    (define-key map (kbd "M-h")  #'sp-backward-slurp-sexp)
-    (define-key map (kbd "M-l")  #'sp-backward-barf-sexp)
-    (define-key map (kbd "s-j")  #'sp-raise-sexp)
-    ;; Miscellaneous commands
-    ;; (define-key map (kbd "M-S") #'sp-split-sexp)
-    ;; (define-key map (kbd "M-J") #'sp-join-sexp)
-    ;; (define-key map (kbd "C-M-t") #'sp-transpose-sexp)
-    )
-
 
 (require 'highlight-symbol)
 (setq highlight-symbol-idle-delay 0.2)
@@ -655,6 +621,9 @@ buffers."
 (define-key evil-insert-state-map (kbd "C-j") 'evil-break-line)
 (define-key evil-normal-state-map (kbd "C-j") 'evil-break-line)
 
+(define-key evil-insert-state-map (kbd "M-j") 'evil-join)
+(define-key evil-normal-state-map (kbd "M-j") 'evil-join)
+
 (define-key evil-normal-state-map (kbd "SPC") 'ace-jump-mode)
 (define-key evil-visual-state-map (kbd "SPC") 'ace-jump-mode) ;; TODO: fix this - atm SPC advances selection start by 1 char for some reason
 
@@ -705,6 +674,42 @@ buffers."
 (global-set-key (kbd "s--") 'evil-numbers/dec-at-pt)
 
 
+;; TODO: refactor and move somewhere
+(defgroup evil-operator-replace nil
+  "Comment/uncomment operator for Evil"
+  :prefix "evil-operator-comment-"
+  :group 'evil)
+
+(defcustom evil-operator-replace-key (kbd "R")
+  "A key for replace operator"
+  :type `,(if (get 'key-sequence 'widget-type)
+              'key-sequence
+            'sexp)
+  :group 'evil-operator-replace)
+
+(defun evil-replace-in-region (query beg end)
+  "Replace in text from BEG to END with TYPE."
+  (query-replace (read-from-minibuffer "Replace: " query) (read-from-minibuffer "Replace with: " query) nil beg end))
+
+(define-minor-mode evil-operator-replace-mode
+  :lighter ""
+  :keymap (make-sparse-keymap)
+  :group 'evil-operator-replace
+  (evil-normalize-keymaps))
+
+(defun evil-operator-replace-mode-install () (evil-operator-replace-mode 1))
+
+(define-globalized-minor-mode global-evil-operator-replace-mode
+  evil-operator-replace-mode evil-operator-replace-mode-install
+  "Global minor mode of replace operator for Evil.")
+
+(evil-define-key 'normal evil-operator-replace-mode-map
+  evil-operator-replace-key (lambda ()
+                              (interactive)
+                              (let ((s (substring-no-properties (or (thing-at-point 'symbol) ""))))
+                                (apply 'evil-replace-in-region (cons s (evil-operator-range))))))
+
+(global-evil-operator-replace-mode 1)
 
 
 
@@ -821,3 +826,102 @@ buffers."
       (error "Buffer is not attached to any file."))))
 
 (define-key minibuffer-local-map (kbd "C-w") 'backward-kill-word)
+
+
+(require 'cider)
+(add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
+(setq nrepl-hide-special-buffers t)
+(add-hook 'cider-repl-mode-hook 'rainbow-delimiters-mode)
+(setq cider-popup-stacktraces nil)
+(setq cider-repl-popup-stacktraces t)
+(setq cider-repl-use-pretty-printing t)
+
+(add-hook 'cider-mode-hook (lambda ()
+                             (local-set-key (kbd "s-]") 'cider-jump)
+                             (local-set-key (kbd "s-[") 'cider-jump-back)))
+
+(evil-set-initial-state 'cider-repl-mode 'emacs)
+
+
+(define-minor-mode evil-lisp-mode
+  "Minor mode for setting up Evil with smartparens in a single buffer"
+  :keymap '()
+  (let ((prev-state evil-state))
+    (evil-normal-state)
+    (evil-change-state prev-state)))
+
+(defun evil-lisp-mode-insert-sexp-after ()
+  "Insert sexp after the current one. Inspired by https://github.com/syl20bnr/evil-lisp-state"
+  (interactive)
+  (if (char-equal (char-after) ?\() (forward-char))
+  (sp-up-sexp)
+  (evil-insert-state)
+  (insert " ")
+  (let ((remaining-text-in-line (substring-no-properties (buffer-substring (point) (line-end-position)))))
+    (if (or (not (eq nil (string-match "\\`\s+\\'" remaining-text-in-line))) (= 0 (length remaining-text-in-line)))
+        (sp-newline)))
+  (sp-insert-pair "("))
+
+(defun evil-lisp-mode-insert-sexp-before ()
+  "Insert sexp before the current one. Inspired by https://github.com/syl20bnr/evil-lisp-state"
+  (interactive)
+  (if (char-equal (char-after) ?\() (forward-char))
+  (sp-backward-up-sexp)
+  (evil-insert-state)
+  (if (looking-back "^\\s-*")
+      (progn
+        (sp-newline)
+        (evil-previous-visual-line)
+        (evil-end-of-line)
+        (insert " ")
+        (sp-insert-pair "(")
+        (indent-for-tab-command))
+    (progn
+      (insert " ")
+      (backward-char)
+      (sp-insert-pair "("))))
+
+(evil-define-key 'normal evil-lisp-mode-map
+  (kbd "D") 'sp-kill-hybrid-sexp
+  (kbd "C") (lambda ()
+              (interactive)
+              (let ((current-prefix-arg 4))
+                (call-interactively 'sp-kill-hybrid-sexp))
+              (evil-insert-state))
+  ;; (kbd "S") ' - TODO: change whole line with respect to parens
+  ;; foo |bar -- evil-change-whole-line
+  ;; (foo |bar) -- ()
+  ;; (foo (bar |baz)) -- ()
+  ;; (foo -- (
+  ;; ((foo -- ((
+  (kbd "X") 'sp-backward-delete-char
+  (kbd "x") 'sp-delete-char
+  (kbd "H") (lambda ()
+            (interactive)
+            (sp-previous-sexp)
+            (sp-backward-sexp))
+  (kbd "L") 'sp-next-sexp
+  (kbd "J") (lambda ()
+            (interactive)
+            (sp-down-sexp 2)
+            (sp-backward-up-sexp))
+  (kbd "K") 'sp-backward-up-sexp
+  (kbd "H-r") 'sp-raise-sexp
+  (kbd "H-u") 'sp-splice-sexp
+  (kbd "H-k") 'sp-splice-sexp-killing-backward
+  (kbd "H-j") 'sp-splice-sexp-killing-forward
+  (kbd "s-l") 'sp-forward-slurp-sexp
+  (kbd "s-h") 'sp-forward-barf-sexp
+  (kbd "M-h") 'sp-backward-slurp-sexp
+  (kbd "M-l") 'sp-backward-barf-sexp
+  (kbd "H-s") 'sp-split-sexp
+  (kbd "C-t") 'sp-transpose-sexp
+  (kbd "(") 'evil-lisp-mode-insert-sexp-before
+  (kbd ")") 'evil-lisp-mode-insert-sexp-after
+ )
+
+(dolist (hook '(emacs-lisp-mode-hook
+                lisp-interaction-mode-hook
+                clojure-mode-hook))
+  (add-hook hook (lambda()
+                   (evil-lisp-mode))))
