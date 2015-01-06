@@ -29,6 +29,7 @@
 (depends-on "f")
 (depends-on "flx")
 (depends-on "flx-ido")
+(depends-ond "golden-ratio")
 (depends-on "grizzl")
 (depends-on "helm")
 (depends-on "helm-projectile")
