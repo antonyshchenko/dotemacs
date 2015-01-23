@@ -42,7 +42,7 @@
 ;; (push '("\*ag regexp*" :regexp t :height 20 :stick t) popwin:special-display-config)
 ;; (push '("\*rspec-compilation*" :regexp t :height 20 :stick t) popwin:special-display-config)
 
-;; word moving commands will move cursor into between CamelCaseWords
+;; ;; word moving commands will move cursor into between CamelCaseWords
 (global-subword-mode 1)
 ;; (toggle-frame-maximized)
 
@@ -314,6 +314,10 @@
     (when indent
       (indent-line-to indent)
       (when (> offset 0) (forward-char offset)))))
+
+(require 'ruby-hash-syntax)
+(global-set-key (kbd "C-c h") 'ruby-toggle-hash-syntax)
+
 
 
 (require 'expand-region)
