@@ -31,9 +31,6 @@
 (global-auto-revert-mode 1)
 (setq auto-revert-verbose nil)
 (winner-mode 1)
-(setq even-window-heights nil)
-(require 'windmove)
-(windmove-default-keybindings 'meta)
 
 (setq x-select-enable-clipboard t) ;; merge system clipboard and kill-ring
 
@@ -45,7 +42,7 @@
 ;; (push '("\*ag regexp*" :regexp t :height 20 :stick t) popwin:special-display-config)
 ;; (push '("\*rspec-compilation*" :regexp t :height 20 :stick t) popwin:special-display-config)
 
-;; word moving commands will move cursor into between CamelCaseWords
+;; ;; word moving commands will move cursor into between CamelCaseWords
 (global-subword-mode 1)
 ;; (toggle-frame-maximized)
 
@@ -77,6 +74,11 @@
 (setq uniquify-buffer-name-style 'forward
       uniquify-after-kill-buffer-p t
       uniquify-ignore-buffers-re "^\\*") ; Do not rename special buffers!
+
+(require 'golden-ratio)
+(setq golden-ratio-exclude-modes '("ediff-mode"))
+(golden-ratio-mode 1)
+(setq split-width-threshold nil)
 
 ; kill open bufer w/o confirmation
 (global-set-key (kbd "s-k") 'kill-this-buffer)
@@ -312,6 +314,10 @@
     (when indent
       (indent-line-to indent)
       (when (> offset 0) (forward-char offset)))))
+
+(require 'ruby-hash-syntax)
+(global-set-key (kbd "C-c h") 'ruby-toggle-hash-syntax)
+
 
 
 (require 'expand-region)
