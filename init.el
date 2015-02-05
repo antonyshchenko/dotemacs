@@ -482,6 +482,7 @@ buffers."
 (require 'evil)
 (evil-mode 1)
 (setq evil-auto-indent t)
+(setq evil-move-cursor-back nil)
 (setq evil-search-module 'evil-search)
 (define-key evil-normal-state-map (kbd "C-s") 'evil-search-forward)
 
@@ -860,7 +861,8 @@ buffers."
   (let ((remaining-text-in-line (substring-no-properties (buffer-substring (point) (line-end-position)))))
     (if (or (not (eq nil (string-match "\\`\s+\\'" remaining-text-in-line))) (= 0 (length remaining-text-in-line)))
         (sp-newline)))
-  (sp-insert-pair "("))
+  ;; (sp-insert-pair "(")
+  )
 
 (defun evil-lisp-mode-insert-sexp-before ()
   "Insert sexp before the current one. Inspired by https://github.com/syl20bnr/evil-lisp-state"
@@ -874,12 +876,13 @@ buffers."
         (evil-previous-visual-line)
         (evil-end-of-line)
         (insert " ")
-        (sp-insert-pair "(")
+        ;; (sp-insert-pair "(")
         (indent-for-tab-command))
     (progn
       (insert " ")
       (backward-char)
-      (sp-insert-pair "("))))
+      ;; (sp-insert-pair "(")
+      )))
 
 (evil-define-key 'normal evil-lisp-mode-map
   (kbd "D") 'sp-kill-hybrid-sexp
@@ -925,3 +928,5 @@ buffers."
                 clojure-mode-hook))
   (add-hook hook (lambda()
                    (evil-lisp-mode))))
+
+(require 'nginx-mode)

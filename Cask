@@ -58,3 +58,4 @@
 (depends-on "tree-mode")
 (depends-on "web-mode")
 (depends-on "yari")
+(depends-on "nginx-mode")
