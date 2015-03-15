@@ -5,6 +5,7 @@
     ace-jump-buffer
     helm-projectile
     evil
+    evil-nerd-commenter
     )
   "List of all packages to install and/or initialize. Built-in packages
 which require an initialization must be listed explicitly in the list.")
@@ -105,12 +106,11 @@ which require an initialization must be listed explicitly in the list.")
                                                        (interactive)
                                                        (evil-insert-newline-above)))
       )))
-;; For each package, define a function env0der/init-<package-env0der>
-;;
-;; (defun env0der/init-my-package ()
-;;   "Initialize my package"
-;;   )
-;;
-;; Often the body of an initialize function uses `use-package'
-;; For more info on `use-package', see readme:
-;; https://github.com/jwiegley/use-package
+
+(defun env0der/init-evil-nerd-commenter ()
+  (use-package evil-nerd-commenter
+    :config
+    (progn
+      (define-key evil-normal-state-map "," 'evilnc-comment-operator)
+      (define-key evil-visual-state-map "," 'evilnc-comment-operator))))
+

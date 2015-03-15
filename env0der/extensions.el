@@ -11,7 +11,4 @@
   "List of all extensions to load after the packages.")
 
 (defun env0der/init-evil-plugins ()
-  (setq evil-operator-comment-key (kbd ","))
-  (require 'evil-operator-comment)
-  (global-evil-operator-comment-mode 1)
   )
