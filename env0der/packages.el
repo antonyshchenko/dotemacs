@@ -6,6 +6,7 @@
     helm-projectile
     evil
     evil-nerd-commenter
+    color-identifiers-mode
     )
   "List of all packages to install and/or initialize. Built-in packages
 which require an initialization must be listed explicitly in the list.")
@@ -114,3 +115,8 @@ which require an initialization must be listed explicitly in the list.")
       (define-key evil-normal-state-map "," 'evilnc-comment-operator)
       (define-key evil-visual-state-map "," 'evilnc-comment-operator))))
 
+(defun env0der/init-color-identifiers-mode ()
+  (use-package color-identifiers-mode
+    :init
+    (progn
+      (global-color-identifiers-mode))))

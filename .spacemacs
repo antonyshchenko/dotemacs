@@ -10,7 +10,7 @@
    dotspacemacs-configuration-layer-path '()
    ;; List of configuration layers to load. If it is the symbol `all' instead
    ;; of a list then all discovered layers will be installed.
-   dotspacemacs-configuration-layers '(env0der)
+   dotspacemacs-configuration-layers '(env0der colors)
    ;; A list of packages and/or extensions that will not be install and loaded.
    dotspacemacs-excluded-packages '()
    ;; If non-nil spacemacs will delete any orphan packages, i.e. packages that
@@ -105,7 +105,11 @@ before layers configuration."
 layers configuration."
   (global-hl-line-mode -1)
   (blink-cursor-mode t)
-  (setq powerline-default-separator 'arrow))
+  (setq powerline-default-separator 'arrow)
+  (spacemacs/toggle-line-numbers)
+  (linum-relative-toggle)
+  (setq linum-relative-format "%3s ")
+  (add-hook 'css-mode-hook 'rainbow-mode))
 
 
 
@@ -134,6 +138,7 @@ layers configuration."
  '(sp-wrap-overlay-face ((t nil)))
  '(sp-wrap-tag-overlay-face ((t nil)))
  '(powerline-active1 ((t (:background "#2e3436" :foreground "gray80" :inherit mode-line))))
+ '(fringe ((t (:background "#2e3436" :foreground "gray80"))))
  )
 
 
