@@ -109,31 +109,6 @@ layers configuration."
 
 
 
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(default-frame-alist
-    (quote
-     ((cursor-type . box)
-      (internal-border-width . 0)
-      (background-toolbar-color . "#cf3ccf3ccf3c")
-      (bottom-toolbar-shadow-color . "#79e77df779e7")
-      (top-toolbar-shadow-color . "#fffffbeeffff")
-      (border-color . "black")
-      (modeline . t)
-      (fringe)
-      (mouse-color . "black")
-      (cursor-color . "#fce94f")
-      (background-mode . dark)
-      (tool-bar-lines . 0)
-      (menu-bar-lines . 1)
-      (right-fringe . 12)
-      (left-fringe . 4)
-      (background-color . "#2e3436")
-      (foreground-color . "gray100")
-      (font-backend mac-ct ns)))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -157,7 +132,9 @@ layers configuration."
  '(region ((t (:background "gray50"))))
  '(sp-pair-overlay-face ((t (:inherit default))))
  '(sp-wrap-overlay-face ((t nil)))
- '(sp-wrap-tag-overlay-face ((t nil))))
+ '(sp-wrap-tag-overlay-face ((t nil)))
+ '(powerline-active1 ((t (:background "#2e3436" :foreground "gray80" :inherit mode-line))))
+ )
 
 
 ;; Do not write anything past this comment. This is where Emacs will
