@@ -19,7 +19,7 @@ which require an initialization must be listed explicitly in the list.")
     :config
     (progn
       (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action)
-      (global-set-key (kbd "s-f") 'helm-semantic-or-imenu))))
+      (global-set-key (kbd "s-f") 'helm-imenu))))
 
 (defun env0der/init-ace-jump-mode ()
   (use-package ace-jump-mode
