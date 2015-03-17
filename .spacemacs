@@ -10,9 +10,9 @@
    dotspacemacs-configuration-layer-path '()
    ;; List of configuration layers to load. If it is the symbol `all' instead
    ;; of a list then all discovered layers will be installed.
-   dotspacemacs-configuration-layers '(env0der colors html)
+   dotspacemacs-configuration-layers '(env0der colors html ruby)
    ;; A list of packages and/or extensions that will not be install and loaded.
-   dotspacemacs-excluded-packages '()
+   dotspacemacs-excluded-packages '(evil-escape)
    ;; If non-nil spacemacs will delete any orphan packages, i.e. packages that
    ;; are declared in a layer which is not a member of
    ;; the list `dotspacemacs-configuration-layers'
@@ -95,7 +95,9 @@ before layers configuration."
    ;; The default package repository used if no explicit repository has been
    ;; specified with an installed package.
    ;; Not used for now.
-   dotspacemacs-default-package-repository nil)
+   dotspacemacs-default-package-repository nil
+   ruby-version-manager 'rbenv
+   ruby-enable-ruby-on-rails-support t)
   ;; User initialization goes here
   )
 
@@ -109,7 +111,9 @@ layers configuration."
   (spacemacs/toggle-line-numbers)
   (linum-relative-toggle)
   (setq linum-relative-format "%3s ")
-  (add-hook 'css-mode-hook 'rainbow-mode))
+  (add-hook 'css-mode-hook 'rainbow-mode)
+  (remove-hook 'enh-ruby-mode-hook 'flycheck-mode)
+  (show-smartparens-global-mode))
 
 
 
