@@ -10,9 +10,9 @@
    dotspacemacs-configuration-layer-path '()
    ;; List of configuration layers to load. If it is the symbol `all' instead
    ;; of a list then all discovered layers will be installed.
-   dotspacemacs-configuration-layers '(env0der colors html ruby)
+   dotspacemacs-configuration-layers '(env0der colors html ruby clojure)
    ;; A list of packages and/or extensions that will not be install and loaded.
-   dotspacemacs-excluded-packages '(evil-escape)
+   dotspacemacs-excluded-packages '(evil-escape auto-complete)
    ;; If non-nil spacemacs will delete any orphan packages, i.e. packages that
    ;; are declared in a layer which is not a member of
    ;; the list `dotspacemacs-configuration-layers'
@@ -73,7 +73,7 @@ before layers configuration."
    ;; If non nil the frame is maximized when Emacs starts up.
    ;; Takes effect only if `dotspacemacs-fullscreen-at-startup' is nil.
    ;; (Emacs 24.4+ only)
-   dotspacemacs-maximized-at-startup nil
+   dotspacemacs-maximized-at-startup t
    ;; A value from the range (0..100), in increasing opacity, which describes
    ;; the transparency level of a frame when it's active or selected.
    ;; Transparency can be toggled through `toggle-transparency'.
