@@ -25,7 +25,7 @@ which require an initialization must be listed explicitly in the list.")
   (use-package ace-jump-mode
     :config
     (progn
-      (define-key global-map (kbd "C-SPC") 'ace-jump-mode))))
+      (define-key global-map (kbd "s-j") 'ace-jump-mode))))
 
 (defun env0der/init-ace-jump-buffer ()
   (use-package ace-jump-buffer
@@ -100,10 +100,16 @@ which require an initialization must be listed explicitly in the list.")
       (define-key evil-normal-state-map "P" 'evil-paste-and-indent-before)
       (define-key evil-normal-state-map "p" 'evil-paste-and-indent-after)
 
-      (define-key evil-normal-state-map (kbd "RET") (lambda ()
+      (define-key evil-insert-state-map (kbd "C-j") (lambda ()
+                                                      (interactive)
+                                                      (newline-and-indent)))
+      (define-key evil-normal-state-map (kbd "C-j") (lambda ()
+                                                      (interactive)
+                                                      (newline-and-indent)))
+      (define-key evil-normal-state-map (kbd "M-j") (lambda ()
                                                       (interactive)
                                                       (evil-insert-newline-below)))
-      (define-key evil-normal-state-map [(S-return)] (lambda ()
+      (define-key evil-normal-state-map (kbd "M-k") (lambda ()
                                                        (interactive)
                                                        (evil-insert-newline-above)))
       )))
