@@ -80,25 +80,19 @@ which require an initialization must be listed explicitly in the list.")
         (evil-destroy beg end type register yank-handler)
         (evil-paste-before 1 register))
 
-      (evil-define-command evil-paste-and-indent-before
-        (count &optional register yank-handler)
-        :suppress-operator t
-        (interactive "P<x>")
+      (defadvice evil-paste-after (around env0der/evil-paste-after-and-indent activate)
+        "Paste and indent"
         (evil-with-single-undo
-          (evil-paste-before count register yank-handler)
+          ad-do-it
           (call-interactively 'indent-region)))
 
-      (evil-define-command evil-paste-and-indent-after
-        (count &optional register yank-handler)
-        :suppress-operator t
-        (interactive "P<x>")
+      (defadvice evil-paste-before (around env0der/evil-paste-before-and-indent activate)
+        "Paste and indent"
         (evil-with-single-undo
-          (evil-paste-after count register yank-handler)
+          ad-do-it
           (call-interactively 'indent-region)))
 
       (define-key evil-normal-state-map "r" 'evil-destroy-replace)
-      (define-key evil-normal-state-map "P" 'evil-paste-and-indent-before)
-      (define-key evil-normal-state-map "p" 'evil-paste-and-indent-after)
 
       (define-key evil-insert-state-map (kbd "C-j") (lambda ()
                                                       (interactive)
@@ -126,3 +120,5 @@ which require an initialization must be listed explicitly in the list.")
     :init
     (progn
       (global-color-identifiers-mode))))
+
+
