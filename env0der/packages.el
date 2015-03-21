@@ -1,6 +1,7 @@
 (defvar env0der-packages
   '(
     helm
+    helm-swoop
     ace-jump-mode
     ace-jump-buffer
     helm-projectile
@@ -20,6 +21,14 @@ which require an initialization must be listed explicitly in the list.")
     (progn
       (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action)
       (global-set-key (kbd "s-f") 'helm-imenu))))
+
+(defun env0der/init-helm-swoop ()
+  (use-package helm-swoop
+    :config
+    (progn
+      (setq helm-swoop-speed-or-color t)
+      (global-set-key (kbd "C-s") 'helm-swoop))))
+
 
 (defun env0der/init-ace-jump-mode ()
   (use-package ace-jump-mode
@@ -120,5 +129,4 @@ which require an initialization must be listed explicitly in the list.")
     :init
     (progn
       (global-color-identifiers-mode))))
-
 
