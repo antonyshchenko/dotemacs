@@ -115,7 +115,31 @@ layers configuration."
   (setq linum-relative-format "%3s ")
   (add-hook 'css-mode-hook 'rainbow-mode)
   (remove-hook 'enh-ruby-mode-hook 'flycheck-mode)
-  (show-smartparens-global-mode))
+  (show-smartparens-global-mode)
+  ;; rebind some spacemacs bindings
+  (use-package helm
+    :config
+    (progn
+      (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action)
+      (global-set-key (kbd "s-f") 'helm-imenu)
+      (define-key helm-map (kbd "M-j") 'helm-next-line)
+      (define-key helm-map (kbd "M-k") 'helm-previous-line)
+      (define-key helm-map (kbd "M-h") 'helm-next-source)
+      (define-key helm-map (kbd "M-l") 'helm-previous-source)
+      (define-key helm-map (kbd "C-j") 'helm-maybe-exit-minibuffer)
+      (define-key helm-map (kbd "C-M-j") 'helm-scroll-other-window-down)
+      (define-key helm-map (kbd "C-M-k") 'helm-scroll-other-window)
+      (define-key helm-map (kbd "C-w") 'backward-kill-word)))
+  (use-package auto-complete
+    :config
+    (progn
+      (define-key ac-completing-map (kbd "M-j") 'ac-next)
+      (define-key ac-completing-map (kbd "M-k") 'ac-previous)
+      (define-key ac-completing-map (kbd "C-j") 'ac-complete)))
+  (add-hook 'ido-setup-hook (lambda ()
+                              (define-key ido-completion-map (kbd "M-j") 'ido-next-match)
+                              (define-key ido-completion-map (kbd "M-k") 'ido-prev-match)
+                              (define-key ido-completion-map (kbd "C-j") 'ido-exit-minibuffer))))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
