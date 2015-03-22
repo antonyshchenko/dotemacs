@@ -7,6 +7,8 @@
     evil
     evil-nerd-commenter
     color-identifiers-mode
+    auto-complete
+    ido
     )
   "List of all packages to install and/or initialize. Built-in packages
 which require an initialization must be listed explicitly in the list.")
@@ -19,7 +21,12 @@ which require an initialization must be listed explicitly in the list.")
     :config
     (progn
       (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action)
-      (global-set-key (kbd "s-f") 'helm-imenu))))
+      (global-set-key (kbd "s-f") 'helm-imenu)
+      (define-key helm-map (kbd "M-j") 'helm-next-line)
+      (define-key helm-map (kbd "M-k") 'helm-previous-line)
+      (define-key helm-map (kbd "M-h") 'helm-next-source)
+      (define-key helm-map (kbd "M-l") 'helm-previous-source)
+      (define-key helm-map (kbd "C-j") 'helm-maybe-exit-minibuffer))))
 
 (defun env0der/init-helm-swoop ()
   (use-package helm-swoop
@@ -122,3 +129,20 @@ which require an initialization must be listed explicitly in the list.")
     :init
     (progn
       (global-color-identifiers-mode))))
+
+(defun env0der/init-auto-complete ()
+  (use-package auto-complete
+    :config
+    (progn
+      (define-key ac-completing-map (kbd "M-j") 'ac-next)
+      (define-key ac-completing-map (kbd "M-k") 'ac-previous)
+      (define-key ac-completing-map (kbd "C-j") 'ac-complete))))
+
+(defun env0der/init-ido ()
+  (use-package ido
+    :config
+    (progn
+      (add-hook 'ido-setup-hook (lambda ()
+                                  (define-key ido-completion-map (kbd "M-j") 'ido-next-match)
+                                  (define-key ido-completion-map (kbd "M-k") 'ido-prev-match)
+                                  (define-key ido-completion-map (kbd "C-j") 'ido-exit-minibuffer))))))
