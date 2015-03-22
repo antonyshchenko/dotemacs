@@ -2,7 +2,6 @@
   '(
     helm
     helm-swoop
-    ace-jump-mode
     ace-jump-buffer
     helm-projectile
     evil
@@ -29,12 +28,6 @@ which require an initialization must be listed explicitly in the list.")
       (setq helm-swoop-speed-or-color t)
       (global-set-key (kbd "C-s") 'helm-swoop))))
 
-
-(defun env0der/init-ace-jump-mode ()
-  (use-package ace-jump-mode
-    :config
-    (progn
-      (define-key global-map (kbd "s-j") 'ace-jump-mode))))
 
 (defun env0der/init-ace-jump-buffer ()
   (use-package ace-jump-buffer
@@ -129,4 +122,3 @@ which require an initialization must be listed explicitly in the list.")
     :init
     (progn
       (global-color-identifiers-mode))))
-
