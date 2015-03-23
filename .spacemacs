@@ -13,7 +13,7 @@
    dotspacemacs-configuration-layers '(env0der colors html ruby clojure dash)
 
    ;; A list of packages and/or extensions that will not be install and loaded.
-   dotspacemacs-excluded-packages '(evil-escape)
+   dotspacemacs-excluded-packages '(evil-escape flycheck)
    ;; If non-nil spacemacs will delete any orphan packages, i.e. packages that
    ;; are declared in a layer which is not a member of
    ;; the list `dotspacemacs-configuration-layers'
@@ -114,7 +114,6 @@ layers configuration."
   (linum-relative-toggle)
   (setq linum-relative-format "%3s ")
   (add-hook 'css-mode-hook 'rainbow-mode)
-  (remove-hook 'enh-ruby-mode-hook 'flycheck-mode)
   (show-smartparens-global-mode)
   ;; rebind some spacemacs bindings
   (use-package helm
@@ -139,7 +138,12 @@ layers configuration."
   (add-hook 'ido-setup-hook (lambda ()
                               (define-key ido-completion-map (kbd "M-j") 'ido-next-match)
                               (define-key ido-completion-map (kbd "M-k") 'ido-prev-match)
-                              (define-key ido-completion-map (kbd "C-j") 'ido-exit-minibuffer))))
+                              (define-key ido-completion-map (kbd "C-j") 'ido-exit-minibuffer)))
+  (use-package enh-ruby-mode
+    :config
+    (progn
+      (setq enh-ruby-check-syntax nil)))
+  )
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -166,8 +170,7 @@ layers configuration."
  '(sp-wrap-overlay-face ((t nil)))
  '(sp-wrap-tag-overlay-face ((t nil)))
  '(powerline-active1 ((t (:background "#2e3436" :foreground "gray80" :inherit mode-line))))
- '(fringe ((t (:background "#2e3436" :foreground "gray80"))))
- )
+ '(fringe ((t (:background "#2e3436" :foreground "gray80")))))
 
 
 ;; Do not write anything past this comment. This is where Emacs will
