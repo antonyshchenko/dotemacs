@@ -121,6 +121,7 @@ layers configuration."
     (progn
       (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action)
       (global-set-key (kbd "s-f") 'helm-imenu)
+      (define-key helm-map (kbd "C-z")  'helm-select-action)
       (define-key helm-map (kbd "M-j") 'helm-next-line)
       (define-key helm-map (kbd "M-k") 'helm-previous-line)
       (define-key helm-map (kbd "M-h") 'helm-next-source)
@@ -128,7 +129,12 @@ layers configuration."
       (define-key helm-map (kbd "C-j") 'helm-maybe-exit-minibuffer)
       (define-key helm-map (kbd "C-M-j") 'helm-scroll-other-window-down)
       (define-key helm-map (kbd "C-M-k") 'helm-scroll-other-window)
-      (define-key helm-map (kbd "C-w") 'backward-kill-word)))
+      (define-key helm-map (kbd "C-w") 'backward-kill-word)
+      (define-key helm-map (kbd "M-c") 'helm-buffer-run-kill-persistent)
+      (define-key helm-map (kbd "M-m") 'helm-toggle-visible-mark)
+      (define-key helm-map (kbd "C-m") 'helm-toggle-all-marks)
+      (define-key helm-buffer-map (kbd "M-m") 'helm-toggle-visible-mark)
+      (define-key helm-buffer-map (kbd "C-m") 'helm-toggle-all-marks)))
   (use-package auto-complete
     :config
     (progn
