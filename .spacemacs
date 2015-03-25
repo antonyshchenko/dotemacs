@@ -142,8 +142,7 @@ layers configuration."
   (use-package enh-ruby-mode
     :config
     (progn
-      (setq enh-ruby-check-syntax nil)))
-  )
+      (setq enh-ruby-check-syntax nil))))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -170,7 +169,8 @@ layers configuration."
  '(sp-wrap-overlay-face ((t nil)))
  '(sp-wrap-tag-overlay-face ((t nil)))
  '(powerline-active1 ((t (:background "#2e3436" :foreground "gray80" :inherit mode-line))))
- '(fringe ((t (:background "#2e3436" :foreground "gray80")))))
+ '(fringe ((t (:background "#2e3436" :foreground "gray80"))))
+ `(trailing-whitespace ((t (:background "#2e3436")))))
 
 
 ;; Do not write anything past this comment. This is where Emacs will

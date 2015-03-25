@@ -1,3 +1,6 @@
+;; Cleanup whitespace on save
+(add-hook 'before-save-hook 'whitespace-cleanup)
+
 (define-key minibuffer-local-map (kbd "C-w") 'backward-kill-word)
 (global-set-key (kbd "s-w") 'kill-this-buffer)
 (global-set-key (kbd "s-{") 'switch-to-prev-buffer)
