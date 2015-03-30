@@ -31,3 +31,5 @@
     (when indent
       (indent-line-to indent)
       (when (> offset 0) (forward-char offset)))))
+
+(setq ido-auto-merge-work-directories-length -1)

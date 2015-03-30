@@ -7,6 +7,7 @@
     evil-nerd-commenter
     color-identifiers-mode
     projectile
+    cider
     )
   "List of all packages to install and/or initialize. Built-in packages
 which require an initialization must be listed explicitly in the list.")
@@ -135,3 +136,12 @@ which require an initialization must be listed explicitly in the list.")
           (setq ag-arguments tmp)))
       (global-set-key (kbd "s-G") 'projectile-ag-with-ignore-files)
       )))
+
+(defun env0der/init-cider ()
+  (use-package cider
+    :config
+    (progn
+      (defun cider-reset-system ()
+        (interactive)
+        (spacemacs//cider-eval-in-repl-no-focus "(user/reset)"))
+      (define-key clojure-mode-map (kbd "s-r") 'cider-reset-system))))
