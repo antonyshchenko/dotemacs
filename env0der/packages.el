@@ -8,6 +8,8 @@
     color-identifiers-mode
     projectile
     cider
+    tabbar
+    tabbar-ruler
     )
   "List of all packages to install and/or initialize. Built-in packages
 which require an initialization must be listed explicitly in the list.")
@@ -145,3 +147,40 @@ which require an initialization must be listed explicitly in the list.")
         (interactive)
         (spacemacs//cider-eval-in-repl-no-focus "(user/reset)"))
       (define-key clojure-mode-map (kbd "s-r") 'cider-reset-system))))
+
+(defun env0der/init-tabbar-ruler ()
+  (use-package tabbar-ruler
+    :init
+    (setq tabbar-ruler-global-tabbar t)
+    (setq tabbar-ruler-global-ruler nil)
+    (setq tabbar-ruler-popup-menu nil)
+    (setq tabbar-ruler-popup-toolbar nil)
+    (setq tabbar-ruler-popup-scrollbar nil)
+    (setq tabbar-ruler-movement-timer-delay 1000000)
+    (require 'tabbar-ruler)
+    (global-set-key (kbd "s-{") 'tabbar-ruler-backward)
+    (global-set-key (kbd "s-}") 'tabbar-ruler-forward)
+
+    ;; for now just override and hack this function to remove tab with TAGS file from projectile project tabs list
+    (defun tabbar-ruler-projectile-tabbar-buffer-groups ()
+      (if tabbar-ruler-projectile-tabbar-buffer-group-calc
+          (symbol-value 'tabbar-ruler-projectile-tabbar-buffer-group-calc)
+        (set (make-local-variable 'tabbar-ruler-projectile-tabbar-buffer-group-calc)
+
+             (cond
+              ((or (get-buffer-process (current-buffer)) (memq major-mode '(comint-mode compilation-mode))) '("Term"))
+              ((string-equal "*" (substring (buffer-name) 0 1)) '("Misc"))
+              ((string-prefix-p "TAGS" (buffer-name)) '("Misc"))
+              ((condition-case err
+                   (projectile-project-root)
+                 (error nil)) (list (projectile-project-name)))
+              ((memq major-mode '(emacs-lisp-mode python-mode emacs-lisp-mode c-mode c++-mode makefile-mode lua-mode vala-mode)) '("Coding"))
+              ((memq major-mode '(javascript-mode js-mode nxhtml-mode html-mode css-mode)) '("HTML"))
+              ((memq major-mode '(org-mode calendar-mode diary-mode)) '("Org"))
+              ((memq major-mode '(dired-mode)) '("Dir"))
+              (t '("Main"))))
+        (symbol-value 'tabbar-ruler-projectile-tabbar-buffer-group-calc)))
+
+
+    (tabbar-ruler-group-by-projectile-project)
+    ))
