@@ -10,6 +10,8 @@
     cider
     tabbar
     tabbar-ruler
+    smartparens
+    web-mode
     )
   "List of all packages to install and/or initialize. Built-in packages
 which require an initialization must be listed explicitly in the list.")
@@ -184,3 +186,29 @@ which require an initialization must be listed explicitly in the list.")
 
     (tabbar-ruler-group-by-projectile-project)
     ))
+
+(defun env0der/init-smartparens ()
+  (use-package smartparens
+    :init
+    (sp-local-pair 'web-mode "%" "%"
+                   :unless '(sp-in-string-or-word-p)
+                   :post-handlers '(
+                                    (space-and-space-on-each-side "SPC")
+                                    (space-on-each-side "=" "#")
+                                    ))
+
+    (defun sp-web-mode-is-code-context (id action context)
+      (when (and (eq action 'insert)
+                 (not (or (get-text-property (point) 'part-side)
+                          (get-text-property (point) 'block-side))))
+
+        t))
+
+    (sp-local-pair 'web-mode "<" nil :when '(sp-web-mode-is-code-context))
+    ))
+
+(defun env0der/init-web-mode ()
+  (use-package web-mode
+    :init
+    (add-hook 'web-mode-hook (lambda()
+                               (setq web-mode-enable-auto-pairing nil)))))
