@@ -12,6 +12,7 @@
     tabbar-ruler
     smartparens
     web-mode
+    company
     )
   "List of all packages to install and/or initialize. Built-in packages
 which require an initialization must be listed explicitly in the list.")
@@ -112,8 +113,8 @@ which require an initialization must be listed explicitly in the list.")
   (use-package evil-nerd-commenter
     :config
     (progn
-      (define-key evil-normal-state-map "," 'evilnc-comment-operator)
-      (define-key evil-visual-state-map "," 'evilnc-comment-operator))))
+      (define-key evil-normal-state-map "gc" 'evilnc-comment-operator)
+      (define-key evil-visual-state-map "gc" 'evilnc-comment-operator))))
 
 (defun env0der/init-color-identifiers-mode ()
   (use-package color-identifiers-mode
@@ -210,5 +211,24 @@ which require an initialization must be listed explicitly in the list.")
 (defun env0der/init-web-mode ()
   (use-package web-mode
     :init
+    ;; (add-to-list 'web-mode-comment-formats '("ruby" . "#"))
     (add-hook 'web-mode-hook (lambda()
+                               (setq web-mode-markup-indent-offset 2)
+                               (setq web-mode-code-indent-offset 2)
+                               (setq web-mode-css-indent-offset 2)
+                               (setq web-mode-indent-style 2)
                                (setq web-mode-enable-auto-pairing nil)))))
+
+(defun env0der/init-company ()
+  (use-package company
+    :config
+    (progn
+      (define-key company-mode-map (kbd "M-j") 'company-select-next)
+      (define-key company-mode-map (kbd "M-k") 'company-select-previous)))
+
+  (when (configuration-layer/layer-usedp 'auto-completion)
+    (spacemacs|defvar-company-backends ruby-mode)
+    (spacemacs|add-company-hook ruby-mode)
+
+    (defun ruby/post-init-company ()
+      (spacemacs|add-company-hook ruby-mode))))

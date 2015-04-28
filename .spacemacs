@@ -10,7 +10,13 @@
    dotspacemacs-configuration-layer-path '()
    ;; List of configuration layers to load. If it is the symbol `all' instead
    ;; of a list then all discovered layers will be installed.
-   dotspacemacs-configuration-layers '(env0der colors html ruby clojure dash)
+   dotspacemacs-configuration-layers '(env0der
+                                       colors
+                                       html
+                                       ;; ruby
+                                       clojure
+                                       dash
+                                       (auto-completion :variables auto-completion-use-tab-instead-of-enter t))
 
    ;; A list of packages and/or extensions that will not be install and loaded.
    dotspacemacs-excluded-packages '(evil-escape flycheck)
@@ -47,7 +53,7 @@ before layers configuration."
                                :width normal
                                :powerline-scale 1.1)
    ;; The leader key
-   dotspacemacs-leader-key "SPC"
+   dotspacemacs-leader-key ","
    ;; Major mode leader key is a shortcut key which is the equivalent of
    ;; pressing `<leader> m`. Set it to `nil` to disable it.
    dotspacemacs-major-mode-leader-key nil
@@ -136,20 +142,14 @@ layers configuration."
       (define-key helm-map (kbd "C-m") 'helm-toggle-all-marks)
       (define-key helm-buffer-map (kbd "M-m") 'helm-toggle-visible-mark)
       (define-key helm-buffer-map (kbd "C-m") 'helm-toggle-all-marks)))
-  (use-package auto-complete
-    :config
-    (progn
-      (define-key ac-completing-map (kbd "M-j") 'ac-next)
-      (define-key ac-completing-map (kbd "M-k") 'ac-previous)
-      (define-key ac-completing-map (kbd "C-j") 'ac-complete)))
+
   (add-hook 'ido-setup-hook (lambda ()
                               (define-key ido-completion-map (kbd "M-j") 'ido-next-match)
                               (define-key ido-completion-map (kbd "M-k") 'ido-prev-match)
                               (define-key ido-completion-map (kbd "C-j") 'ido-exit-minibuffer)))
-  (use-package enh-ruby-mode
-    :config
-    (progn
-      (setq enh-ruby-check-syntax nil))))
+
+  (define-key evil-normal-state-map (kbd "SPC") 'evil-ace-jump-word-mode)
+  (global-set-key (kbd "s-/") 'spacemacs/helm-projectile-smart-do-search))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
