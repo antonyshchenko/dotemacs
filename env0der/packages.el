@@ -13,6 +13,8 @@
     smartparens
     web-mode
     company
+    ruby-mode
+    cperl-mode
     )
   "List of all packages to install and/or initialize. Built-in packages
 which require an initialization must be listed explicitly in the list.")
@@ -224,11 +226,20 @@ which require an initialization must be listed explicitly in the list.")
     :config
     (progn
       (define-key company-mode-map (kbd "M-j") 'company-select-next)
-      (define-key company-mode-map (kbd "M-k") 'company-select-previous)))
+      (define-key company-mode-map (kbd "M-k") 'company-select-previous))))
 
+(defun env0der/init-ruby-mode ()
   (when (configuration-layer/layer-usedp 'auto-completion)
     (spacemacs|defvar-company-backends ruby-mode)
     (spacemacs|add-company-hook ruby-mode)
 
     (defun ruby/post-init-company ()
       (spacemacs|add-company-hook ruby-mode))))
+
+(defun env0der/init-cperl-mode ()
+  (when (configuration-layer/layer-usedp 'auto-completion)
+    (spacemacs|defvar-company-backends cperl-mode)
+    (spacemacs|add-company-hook cperl-mode)
+
+    (defun cperl/post-init-company ()
+      (spacemacs|add-company-hook cperl-mode))))
