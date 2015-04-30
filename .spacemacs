@@ -16,7 +16,8 @@
                                        ;; ruby
                                        clojure
                                        dash
-                                       (auto-completion :variables auto-completion-use-tab-instead-of-enter t))
+                                       (auto-completion :variables auto-completion-use-tab-instead-of-enter t)
+                                       git)
 
    ;; A list of packages and/or extensions that will not be install and loaded.
    dotspacemacs-excluded-packages '(evil-escape flycheck)
@@ -106,6 +107,8 @@ before layers configuration."
    dotspacemacs-default-package-repository nil
    ruby-version-manager 'rbenv
    ruby-enable-ruby-on-rails-support t
+   git-enable-github-support t
+   git-magit-status-fullscreen t
    )
   ;; User initialization goes here
   )
@@ -149,7 +152,9 @@ layers configuration."
                               (define-key ido-completion-map (kbd "C-j") 'ido-exit-minibuffer)))
 
   (define-key evil-normal-state-map (kbd "SPC") 'evil-ace-jump-word-mode)
-  (global-set-key (kbd "s-/") 'spacemacs/helm-projectile-smart-do-search))
+  (global-set-key (kbd "s-/") 'spacemacs/helm-projectile-smart-do-search)
+  (define-key isearch-mode-map (kbd "C-j") 'isearch-exit)
+  (global-set-key (kbd "C-s") 'evil-search-forward))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

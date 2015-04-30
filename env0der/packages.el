@@ -1,6 +1,5 @@
 (defvar env0der-packages
   '(
-    helm-swoop
     ace-jump-buffer
     helm-projectile
     evil
@@ -21,14 +20,6 @@ which require an initialization must be listed explicitly in the list.")
 
 (defvar env0der-excluded-packages '()
   "List of packages to exclude.")
-
-(defun env0der/init-helm-swoop ()
-  (use-package helm-swoop
-    :config
-    (progn
-      (setq helm-swoop-speed-or-color t)
-      (global-set-key (kbd "C-s") 'helm-swoop))))
-
 
 (defun env0der/init-ace-jump-buffer ()
   (use-package ace-jump-buffer
