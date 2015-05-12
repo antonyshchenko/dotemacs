@@ -14,6 +14,7 @@
 ;; better ruby intendation
 (setq ruby-deep-indent-paren nil)
 (setq enh-ruby-deep-indent-paren nil)
+(setq js-indent-level 2)
 
 (defadvice ruby-indent-line (after unindent-closing-paren activate)
   (let ((column (current-column))
