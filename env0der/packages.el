@@ -14,6 +14,7 @@
     company
     ruby-mode
     cperl-mode
+    mo-git-blame
     )
   "List of all packages to install and/or initialize. Built-in packages
 which require an initialization must be listed explicitly in the list.")
@@ -234,3 +235,13 @@ which require an initialization must be listed explicitly in the list.")
 
     (defun cperl/post-init-company ()
       (spacemacs|add-company-hook cperl-mode))))
+
+(defun env0der/init-mo-git-blame ()
+  (use-package mo-git-blame
+    :init
+    (progn
+      (evil-leader/set-key "gb" 'mo-git-blame-current))
+    :config
+    (progn
+      (dolist (state '(normal visual insert))
+        (evil-define-key state mo-git-blame-mode-map (kbd "q") 'mo-git-blame-quit)))))
