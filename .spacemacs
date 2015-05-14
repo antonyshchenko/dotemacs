@@ -163,10 +163,13 @@ layers configuration."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:inherit nil :stipple nil :background "#2e3436" :foreground "gray100" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 140 :width normal :foundry "nil" :family "Menlo"))))
- '(font-lock-builtin-face ((t (:foreground "light sky blue"))))
+ '(default ((t (:inherit nil :stipple nil :background "#1B1D1E" :foreground "gray100" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 140 :width normal :foundry "nil" :family "Menlo"))))
+ '(font-lock-builtin-face ((t (:foreground "#f56e80"))))
+ '(font-lock-keyword-face ((t (:foreground "#f56e80"))))
  '(font-lock-comment-face ((t (:foreground "gray43"))))
  '(font-lock-string-face ((t (:foreground "yellow green"))))
+ '(font-lock-constant-face ((t (:foreground "#7897fa"))))
+ '(font-lock-type-face ((t (:foreground "#4cd8e6"))))
  '(helm-selection ((t (:foreground "Green"))))
  '(helm-source-header ((t (:foreground "white" :weight bold))))
  '(highlight-symbol-face ((t (:background "gray30"))))
@@ -182,10 +185,6 @@ layers configuration."
  '(sp-pair-overlay-face ((t (:inherit default))))
  '(sp-wrap-overlay-face ((t nil)))
  '(sp-wrap-tag-overlay-face ((t nil)))
- '(powerline-active1 ((t (:background "#2e3436" :foreground "gray80" :inherit mode-line))))
- '(fringe ((t (:background "#2e3436" :foreground "gray80"))))
- `(trailing-whitespace ((t (:background "#2e3436")))))
-
-
-;; Do not write anything past this comment. This is where Emacs will
-;; auto-generate custom variable definitions.
+ '(powerline-active1 ((t (:background "#1B1D1E" :foreground "gray80" :inherit mode-line))))
+ '(fringe ((t (:background "#1B1D1E" :foreground "gray80"))))
+ `(trailing-whitespace ((t (:background "#1B1D1E")))))
