@@ -1,6 +1,5 @@
 (defvar env0der-packages
-  '(
-    ace-jump-buffer
+  '(ace-jump-buffer
     helm-projectile
     evil
     evil-nerd-commenter
@@ -15,9 +14,7 @@
     ruby-mode
     cperl-mode
     mo-git-blame
-    )
-  "List of all packages to install and/or initialize. Built-in packages
-which require an initialization must be listed explicitly in the list.")
+    js2-mode))
 
 (defvar env0der-excluded-packages '()
   "List of packages to exclude.")
@@ -220,6 +217,25 @@ which require an initialization must be listed explicitly in the list.")
       (define-key company-mode-map (kbd "M-k") 'company-select-previous))))
 
 (defun env0der/init-ruby-mode ()
+  ;; better ruby intendation
+  (setq ruby-deep-indent-paren nil)
+  (setq enh-ruby-deep-indent-paren nil)
+
+  (defadvice env0der/ruby-indent-line (after unindent-closing-paren activate)
+    (let ((column (current-column))
+          indent offset)
+      (save-excursion
+        (back-to-indentation)
+        (let ((state (syntax-ppss)))
+          (setq offset (- column (current-column)))
+          (when (and (eq (char-after) ?\))
+                     (not (zerop (car state))))
+            (goto-char (cadr state))
+            (setq indent (current-indentation)))))
+      (when indent
+        (indent-line-to indent)
+        (when (> offset 0) (forward-char offset)))))
+
   (when (configuration-layer/layer-usedp 'auto-completion)
     (spacemacs|defvar-company-backends ruby-mode)
     (spacemacs|add-company-hook ruby-mode)
@@ -228,6 +244,13 @@ which require an initialization must be listed explicitly in the list.")
       (spacemacs|add-company-hook ruby-mode))))
 
 (defun env0der/init-cperl-mode ()
+  (defalias 'perl-mode 'cperl-mode)
+  (setq cperl-indent-level 4
+        cperl-close-paren-offset -4
+        cperl-continued-statement-offset 4
+        cperl-indent-parens-as-block t
+        cperl-tab-always-indent t)
+
   (when (configuration-layer/layer-usedp 'auto-completion)
     (spacemacs|defvar-company-backends cperl-mode)
     (spacemacs|add-company-hook cperl-mode)
@@ -244,3 +267,13 @@ which require an initialization must be listed explicitly in the list.")
     (progn
       (dolist (state '(normal visual insert))
         (evil-define-key state mo-git-blame-mode-map (kbd "q") 'mo-git-blame-quit)))))
+
+(defun env0der/init-js2-mode ()
+  (use-package js2-mode
+    :init
+    (progn
+      (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode)))
+    :config
+    (progn
+      (setq js2-basic-offset 2)
+      (js2-mode-hide-warnings-and-errors))))

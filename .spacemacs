@@ -154,7 +154,9 @@ layers configuration."
   (define-key evil-normal-state-map (kbd "SPC") 'evil-ace-jump-word-mode)
   (global-set-key (kbd "s-/") 'spacemacs/helm-projectile-smart-do-search)
   (define-key isearch-mode-map (kbd "C-j") 'isearch-exit)
-  (global-set-key (kbd "C-s") 'evil-search-forward))
+  (global-set-key (kbd "C-s") 'evil-search-forward)
+  (evil-leader/set-key "bk" 'spacemacs/kill-this-buffer)
+  (evil-leader/set-key "bd" 'env0der/delete-current-buffer-file))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
