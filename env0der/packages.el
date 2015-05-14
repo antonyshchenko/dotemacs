@@ -100,8 +100,7 @@ which require an initialization must be listed explicitly in the list.")
                                                       (evil-insert-newline-below)))
       (define-key evil-normal-state-map [(S-return)] (lambda ()
                                                        (interactive)
-                                                       (evil-insert-newline-above)))
-      )))
+                                                       (evil-insert-newline-above))))))
 
 (defun env0der/init-evil-nerd-commenter ()
   (use-package evil-nerd-commenter

@@ -32,3 +32,6 @@
       (when (> offset 0) (forward-char offset)))))
 
 (setq ido-auto-merge-work-directories-length -1)
+
+;; show system name and current file path in window title
+(setq-default frame-title-format (list (system-name) ": %b (%f)"))
