@@ -214,7 +214,8 @@
     :config
     (progn
       (define-key company-mode-map (kbd "M-j") 'company-select-next)
-      (define-key company-mode-map (kbd "M-k") 'company-select-previous))))
+      (define-key company-mode-map (kbd "M-k") 'company-select-previous)
+      (define-key company-active-map (kbd "C-j") 'company-complete-selection))))
 
 (defun env0der/init-ruby-mode ()
   ;; better ruby intendation
