@@ -14,7 +14,9 @@
     ruby-mode
     cperl-mode
     mo-git-blame
-    js2-mode))
+    js2-mode
+    bm
+    helm-bm))
 
 (defvar env0der-excluded-packages '()
   "List of packages to exclude.")
@@ -278,3 +280,33 @@
     (progn
       (setq js2-basic-offset 2)
       (js2-mode-hide-warnings-and-errors))))
+
+(defun env0der/init-bm ()
+  (use-package bm
+    :init
+    (progn
+      (setq bm-restore-repository-on-load t))
+    :config
+    (progn
+      (setq bm-cycle-all-buffers t)
+      (setq bm-marker 'bm-marker-left)
+      (setq bm-highlight-style 'bm-highlight-only-line)
+      (setq-default bm-buffer-persistence t)
+      (define-key evil-normal-state-map (kbd "gbb") 'bm-toggle)
+      (define-key evil-normal-state-map (kbd "gbn") 'bm-next)
+      (define-key evil-normal-state-map (kbd "gbp") 'bm-previous)
+
+      (add-hook' after-init-hook 'bm-repository-load)
+      (add-hook 'find-file-hooks 'bm-buffer-restore)
+      (add-hook 'kill-buffer-hook 'bm-buffer-save)
+      (add-hook 'kill-emacs-hook '(lambda nil
+                                    (bm-buffer-save-all)
+                                    (bm-repository-save)))
+      (add-hook 'after-save-hook 'bm-buffer-save)
+      (add-hook 'after-revert-hook 'bm-buffer-restore))))
+
+(defun env0der/init-helm-bm ()
+  (use-package helm-bm
+    :config
+    (progn
+      (evil-leader/set-key "hb" 'helm-bm))))

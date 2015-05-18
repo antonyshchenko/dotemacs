@@ -207,6 +207,7 @@ layers configuration."
    '(tabbar-default ((t (:foreground "black" :background "#2b2626"))))
    '(tabbar-selected ((t (:foreground "#2e3436" :background "gray100"))))
    '(tabbar-unselected ((t (:foreground "gray100" :background "#414447"))))
+   '(bm-persistent-face ((t (:foreground "Black" :background "DarkOrange1"))))
    '(region ((t (:background "gray50"))))
    '(sp-pair-overlay-face ((t (:inherit default))))
    '(sp-wrap-overlay-face ((t nil)))
