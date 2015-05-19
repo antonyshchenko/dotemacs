@@ -179,12 +179,12 @@ layers configuration."
   ;; (set-face-attribute 'tabbar-default nil :background "#3b3a3a")
 
   (custom-set-faces
-   '(default ((t (:inherit nil :stipple nil :background "#1B1D1E" :foreground "gray100" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 140 :width normal :foundry "nil" :family "Menlo"))))
+   '(default ((t (:inherit nil :stipple nil :background "#1d1f21" :foreground "gray100" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 140 :width normal :foundry "nil" :family "Menlo"))))
    '(font-lock-builtin-face ((t (:foreground "#f56e80"))))
    '(font-lock-keyword-face ((t (:foreground "#f56e80"))))
    '(font-lock-comment-face ((t (:foreground "gray43"))))
    '(font-lock-string-face ((t (:foreground "yellow green"))))
-   '(font-lock-constant-face ((t (:foreground "#8aabff"))))
+   '(font-lock-constant-face ((t (:foreground "#94c9fe"))))
    '(font-lock-type-face ((t (:foreground "#4cd8e6"))))
    '(evil-search-highlight-persist-highlight-face ((t (:background "yellow1" :foreground "black"))))
    '(magit-item-highlight ((t (:background "#212526"))))
@@ -218,5 +218,5 @@ layers configuration."
    '(powerline-inactive1 ((t (:background "#545454" :foreground "white" :box nil))))
    '(powerline-inactive2 ((t (:background "#545454" :foreground "white" :box nil))))
    '(mode-line-inactive ((t (:background  "#545454" :foreground "white" :box nil))))
-   '(fringe ((t (:background "#1B1D1E" :foreground "gray80"))))
-   `(trailing-whitespace ((t (:background "#1B1D1E"))))))
+   '(fringe ((t (:background "#1d1f21" :foreground "gray80"))))
+   `(trailing-whitespace ((t (:background "#1d1f21"))))))

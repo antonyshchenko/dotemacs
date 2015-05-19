@@ -132,7 +132,11 @@
           (ag search-term (projectile-project-root))
           (setq ag-arguments tmp)))
       (global-set-key (kbd "s-G") 'projectile-ag-with-ignore-files)
-      )))
+
+      ;; always use system find command to get project files
+      ;; otherwise deleted files will be still shown until they are staged in git
+      (defun projectile-get-ext-command ()
+        projectile-generic-command))))
 
 (defun env0der/init-cider ()
   (use-package cider
