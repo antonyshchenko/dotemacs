@@ -86,14 +86,14 @@
           ad-do-it
           (call-interactively 'indent-region)))
 
+      (defun newline-and-indent-interactive ()
+        (interactive)
+        (newline-and-indent))
+
       (define-key evil-normal-state-map "r" 'evil-destroy-replace)
 
-      (define-key evil-insert-state-map (kbd "C-j") (lambda ()
-                                                      (interactive)
-                                                      (newline-and-indent)))
-      (define-key evil-normal-state-map (kbd "C-j") (lambda ()
-                                                      (interactive)
-                                                      (newline-and-indent)))
+      (define-key evil-insert-state-map (kbd "C-j") 'newline-and-indent-interactive)
+      (define-key evil-normal-state-map (kbd "C-j") 'newline-and-indent-interactive)
       (define-key evil-normal-state-map (kbd "<RET>") (lambda ()
                                                       (interactive)
                                                       (evil-insert-newline-below)))
@@ -221,7 +221,7 @@
     (progn
       (define-key company-mode-map (kbd "M-j") 'company-select-next)
       (define-key company-mode-map (kbd "M-k") 'company-select-previous)
-      (define-key company-active-map (kbd "C-j") 'company-complete-selection))))
+      (define-key company-active-map (kbd "C-j") 'newline-and-indent-interactive))))
 
 (defun env0der/init-ruby-mode ()
   ;; better ruby intendation
