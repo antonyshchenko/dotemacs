@@ -3,6 +3,7 @@
     helm-projectile
     evil
     evil-nerd-commenter
+    evil-matchit
     color-identifiers-mode
     projectile
     cider
@@ -16,7 +17,8 @@
     mo-git-blame
     js2-mode
     bm
-    helm-bm))
+    helm-bm
+    web-mode))
 
 (defvar env0der-excluded-packages '()
   "List of packages to exclude.")
@@ -31,7 +33,7 @@
   (use-package helm-projectile
     :config
     (progn
-      (global-set-key (kbd "s-o") 'helm-projectile))))
+      (global-set-key (kbd "s-o") 'helm-projectile-find-file))))
 
 (defun env0der/init-evil ()
   (use-package evil
@@ -206,14 +208,16 @@
 
 (defun env0der/init-web-mode ()
   (use-package web-mode
-    :init
-    ;; (add-to-list 'web-mode-comment-formats '("ruby" . "#"))
-    (add-hook 'web-mode-hook (lambda()
-                               (setq web-mode-markup-indent-offset 2)
-                               (setq web-mode-code-indent-offset 2)
-                               (setq web-mode-css-indent-offset 2)
-                               (setq web-mode-indent-style 2)
-                               (setq web-mode-enable-auto-pairing nil)))))
+    :config
+    (progn
+      ;; don't treat _ as a part of a word
+      (modify-syntax-entry ?_ "." web-mode-syntax-table)
+      ;; (add-to-list 'web-mode-comment-formats '("ruby" . "#"))
+      (setq web-mode-markup-indent-offset 2)
+      (setq web-mode-code-indent-offset 2)
+      (setq web-mode-css-indent-offset 2)
+      (setq web-mode-indent-style 2)
+      (setq web-mode-enable-auto-pairing nil))))
 
 (defun env0der/init-company ()
   (use-package company
@@ -314,3 +318,9 @@
     :config
     (progn
       (evil-leader/set-key "hb" 'helm-bm))))
+
+(defun env0der/init-evil-matchit ()
+  (use-package evil-matchit
+    :config
+    (progn
+      (global-evil-matchit-mode))))
