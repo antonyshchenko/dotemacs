@@ -227,6 +227,7 @@
       (define-key company-mode-map (kbd "M-j") 'company-select-next)
       (define-key company-mode-map (kbd "M-k") 'company-select-previous)
       (define-key company-active-map (kbd "M-l") 'company-complete-selection)
+      (define-key company-active-map (kbd "C-w") 'backward-kill-word)
       (define-key company-active-map (kbd "C-j") 'newline-and-indent-interactive))))
 
 (defun env0der/init-ruby-mode ()
