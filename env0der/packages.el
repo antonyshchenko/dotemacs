@@ -120,6 +120,7 @@
   (use-package projectile
     :config
     (progn
+      (setq projectile-project-root-files (cons ".projectile" projectile-project-root-files))
       (global-set-key (kbd "s-g") 'projectile-ag)
 
       (defun projectile-ag-with-ignore-files ()

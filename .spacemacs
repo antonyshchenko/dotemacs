@@ -17,7 +17,8 @@
                                        clojure
                                        dash
                                        (auto-completion :variables auto-completion-use-tab-instead-of-enter t)
-                                       git)
+                                       git
+                                       csharp)
 
    ;; A list of packages and/or extensions that will not be install and loaded.
    dotspacemacs-excluded-packages '(evil-escape flycheck)

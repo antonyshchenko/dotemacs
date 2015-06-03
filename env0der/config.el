@@ -10,3 +10,4 @@
 (setq-default frame-title-format (list (system-name) ": %b (%f)"))
 
 (setq-default vc-follow-symlinks t)
+(add-hook 'prog-mode-hook 'subword-mode)
