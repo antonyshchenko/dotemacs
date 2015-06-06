@@ -18,7 +18,8 @@
                                        dash
                                        (auto-completion :variables auto-completion-use-tab-instead-of-enter t)
                                        git
-                                       csharp)
+                                       csharp
+                                       emacs-lisp)
 
    ;; A list of packages and/or extensions that will not be install and loaded.
    dotspacemacs-excluded-packages '(evil-escape flycheck)
