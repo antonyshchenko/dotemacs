@@ -18,7 +18,9 @@
     js2-mode
     bm
     helm-bm
-    web-mode))
+    web-mode
+    helm
+    ctags-update))
 
 (defvar env0der-excluded-packages '()
   "List of packages to exclude.")
@@ -327,3 +329,20 @@
     :config
     (progn
       (global-evil-matchit-mode))))
+
+(defun env0der/init-helm ()
+  (use-package helm
+    :config
+    (progn
+      (define-key evil-normal-state-map (kbd "C-]") 'helm-etags-select))))
+
+(defun env0der/init-ctags-update ()
+  (use-package ctags-update
+    :config
+    (progn
+      (setq ctags-update-delay-seconds 0)
+      (setq tags-revert-without-query t)
+      (global-auto-revert-mode t)
+      (setq auto-revert-verbose nil)
+      (add-hook 'after-save-hook 'ctags-update)
+      (evil-leader/set-key "pR" 'ctags-update))))
