@@ -334,7 +334,15 @@
   (use-package helm
     :config
     (progn
-      (define-key evil-normal-state-map (kbd "C-]") 'helm-etags-select))))
+      (define-key evil-normal-state-map (kbd "C-]") 'helm-etags-select)
+
+      (defun env0der/hyper-jump ()
+        (interactive)
+        (evil-ace-jump-word-mode)
+        (message (thing-at-point 'symbol))
+        (helm-etags-select nil))
+
+      (define-key evil-normal-state-map (kbd "C-SPC") 'env0der/hyper-jump))))
 
 (defun env0der/init-ctags-update ()
   (use-package ctags-update

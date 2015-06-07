@@ -10,9 +10,3 @@
         (delete-file filename)
         (kill-buffer buffer)
         (message "File '%s' successfully removed" filename)))))
-
-(defun env0der/hyper-jump ()
-  (interactive)
-  (evil-ace-jump-word-mode)
-  (message (thing-at-point 'symbol))
-  (helm-etags-select nil))

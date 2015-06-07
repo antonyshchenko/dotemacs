@@ -154,8 +154,6 @@ layers configuration."
                               (define-key ido-completion-map (kbd "C-j") 'ido-exit-minibuffer)))
 
   (define-key evil-normal-state-map (kbd "SPC") 'evil-ace-jump-word-mode)
-  (define-key evil-normal-state-map (kbd "C-SPC") 'env0der/hyper-jump)
-
   (global-set-key (kbd "s-/") 'spacemacs/helm-projectile-smart-do-search)
   (define-key isearch-mode-map (kbd "C-j") 'isearch-exit)
   (global-set-key (kbd "C-s") 'evil-search-forward)
