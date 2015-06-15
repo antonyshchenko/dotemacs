@@ -11,3 +11,5 @@
 
 (setq-default vc-follow-symlinks t)
 (add-hook 'prog-mode-hook 'subword-mode)
+
+(desktop-save-mode 1)
