@@ -162,6 +162,9 @@ layers configuration."
   (evil-leader/set-key "bk" 'spacemacs/kill-this-buffer)
   (evil-leader/set-key "bd" 'env0der/delete-current-buffer-file)
 
+  (define-key evil-normal-state-map "H" "^")
+  (define-key evil-normal-state-map "L" "$")
+
   ;; customize theme
   (set-face-attribute 'spacemacs-emacs-face nil :box nil)
   (set-face-attribute 'spacemacs-evilified-face nil :box nil)
