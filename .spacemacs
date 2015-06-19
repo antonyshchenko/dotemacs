@@ -22,7 +22,7 @@
                                        emacs-lisp)
 
    ;; A list of packages and/or extensions that will not be install and loaded.
-   dotspacemacs-excluded-packages '(flycheck)
+   dotspacemacs-excluded-packages '(evil-escape flycheck git-gutter)
    ;; If non-nil spacemacs will delete any orphan packages, i.e. packages that
    ;; are declared in a layer which is not a member of
    ;; the list `dotspacemacs-configuration-layers'
@@ -51,7 +51,7 @@ before layers configuration."
    ;; Default font. `powerline-scale' allows to quickly tweak the mode-line
    ;; size to make separators look not too crappy.
    dotspacemacs-default-font '("Menlo"
-                               :size 14
+                               :size 18
                                :weight normal
                                :width normal
                                :powerline-scale 1.1)
@@ -65,8 +65,6 @@ before layers configuration."
    ;; By default the command key is `:' so ex-commands are executed like in Vim
    ;; with `:' and Emacs commands are executed with `<leader> :'.
    dotspacemacs-command-key ":"
-   evil-escape-key-sequence "ii"
-   evil-escape-delay 0.2
    ;; If non nil the paste micro-state is enabled. While enabled pressing `p`
    ;; several times cycle between the kill ring content.
    dotspacemacs-enable-paste-micro-state t
@@ -100,7 +98,7 @@ before layers configuration."
    ;; If non nil smooth scrolling (native-scrolling) is enabled. Smooth
    ;; scrolling overrides the default behavior of Emacs which recenters the
    ;; point when it reaches the top or bottom of the screen.
-   dotspacemacs-smooth-scrolling t
+   dotspacemacs-smooth-scrolling nil
    ;; If non-nil smartparens-strict-mode will be enabled in programming modes.
    dotspacemacs-smartparens-strict-mode nil
    ;; If non nil advises quit functions to keep server open when quitting.
@@ -113,6 +111,7 @@ before layers configuration."
    ruby-enable-ruby-on-rails-support t
    git-enable-github-support t
    git-magit-status-fullscreen t
+   git-gutter-use-fringe nil
    )
   ;; User initialization goes here
   )
@@ -124,9 +123,9 @@ layers configuration."
   (global-hl-line-mode -1)
   (blink-cursor-mode t)
   (setq powerline-default-separator nil)
-  (spacemacs/toggle-line-numbers)
-  (linum-relative-toggle)
-  (setq linum-relative-format "%3s ")
+  ;; (spacemacs/toggle-line-numbers)
+  ;; (linum-relative-toggle)
+  ;; (setq linum-relative-format "%3s ")
   (add-hook 'css-mode-hook 'rainbow-mode)
   (show-smartparens-global-mode)
   ;; rebind some spacemacs bindings
@@ -165,6 +164,9 @@ layers configuration."
   (define-key evil-normal-state-map "H" "^")
   (define-key evil-normal-state-map "L" "$")
 
+  ;; (define-key evil-insert-state-map (kbd "<tab>") 'evil-normal-state)
+  (evil-leader/set-key "pR" 'ctags-update)
+
   ;; customize theme
   (set-face-attribute 'spacemacs-emacs-face nil :box nil)
   (set-face-attribute 'spacemacs-evilified-face nil :box nil)
@@ -186,7 +188,7 @@ layers configuration."
   ;; (set-face-attribute 'tabbar-default nil :background "#3b3a3a")
 
   (custom-set-faces
-   '(default ((t (:inherit nil :stipple nil :background "#1d1f21" :foreground "gray100" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 140 :width normal :foundry "nil" :family "Menlo"))))
+   '(default ((t (:inherit nil :stipple nil :background "#1d1f21" :foreground "gray100" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 180 :width normal :foundry "nil" :family "Menlo"))))
    '(font-lock-builtin-face ((t (:foreground "#f56e80"))))
    '(font-lock-keyword-face ((t (:foreground "#f56e80"))))
    '(font-lock-comment-face ((t (:foreground "gray43"))))
@@ -210,10 +212,6 @@ layers configuration."
    '(rainbow-delimiters-depth-8-face ((t (:foreground "salmon"))))
    '(rainbow-delimiters-mismatched-face ((t (:foreground "white" :background "#c91700"))))
    '(rainbow-delimiters-unmatched-face ((t (:foreground "white" :background "#c91700"))))
-   '(tabbar-separator ((t (:foreground "black" :background "#2b2626"))))
-   '(tabbar-default ((t (:foreground "black" :background "#2b2626"))))
-   '(tabbar-selected ((t (:foreground "#2e3436" :background "gray100"))))
-   '(tabbar-unselected ((t (:foreground "gray100" :background "#414447"))))
    '(bm-persistent-face ((t (:foreground "Black" :background "DarkOrange1"))))
    '(region ((t (:background "gray50"))))
    '(sp-pair-overlay-face ((t (:inherit default))))

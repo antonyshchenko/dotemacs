@@ -20,7 +20,11 @@
     helm-bm
     web-mode
     helm
-    ctags-update))
+    ctags-update
+    nlinum
+    ag
+    browse-at-remote
+    osx-clipboard))
 
 (defvar env0der-excluded-packages '()
   "List of packages to exclude.")
@@ -123,7 +127,21 @@
     :config
     (progn
       (setq projectile-project-root-files (cons ".projectile" projectile-project-root-files))
-      (global-set-key (kbd "s-g") 'projectile-ag)
+
+      (defun env0der/projectile-ag ()
+        (interactive)
+        (let ((search-term (read-from-minibuffer
+                                      (projectile-prepend-project-name "Ag search for: ")
+                                      (projectile-symbol-at-point))))
+          (ag/search search-term (projectile-project-root))))
+
+      ;; focus ag search results window when search is finished
+      (add-hook 'compilation-finish-functions (lambda (buf str)
+                                                (let ((buffer-contents (with-current-buffer buf (buffer-string))))
+                                                  (if (not (null (string-match "mode: ag;" buffer-contents)))
+                                                      (select-window (get-buffer-window buf))))))
+
+      (evil-leader/set-key "/" 'env0der/projectile-ag)
 
       (defun projectile-ag-with-ignore-files ()
         (interactive)
@@ -140,8 +158,9 @@
 
       ;; always use system find command to get project files
       ;; otherwise deleted files will be still shown until they are staged in git
-      (defun projectile-get-ext-command ()
-        projectile-generic-command))))
+      ;; (defun projectile-get-ext-command ()
+      ;;   projectile-generic-command)
+      )))
 
 (defun env0der/init-cider ()
   (use-package cider
@@ -236,6 +255,7 @@
   ;; better ruby intendation
   (setq ruby-deep-indent-paren nil)
   (setq enh-ruby-deep-indent-paren nil)
+  (setq ruby-align-to-stmt-keywords '(def if unless))
 
   (defadvice env0der/ruby-indent-line (after unindent-closing-paren activate)
     (let ((column (current-column))
@@ -335,6 +355,23 @@
   (use-package helm
     :config
     (progn
+      (defun env0der/jump-to-definiton-thing-at-point ()
+        (interactive)
+        (let ((thing (thing-at-point 'symbol 1)))
+          (when (and (equal 'ruby-mode major-mode) (equal ":" (substring thing 0 1)))
+            ;; in ruby mode try to find appropriate method for ruby symbol at point
+            (setq thing (substring thing 1)))
+          thing))
+
+      (defun env0der/jump-to-definition-via-tags (arg)
+        (interactive "P")
+        (let ((thing (env0der/jump-to-definiton-thing-at-point)))
+          (when (derived-mode-p 'ruby-mode 'cperl-mode)
+            ;; quick fix for searching full qualified class/module names in ruby and perl
+            (setq thing (first (reverse (split-string thing "::")))))
+          (helm-etags+-select-internal (concat "\\_<" thing "\\_>"))))
+
+      ;; (define-key evil-normal-state-map (kbd "C-]") 'env0der/jump-to-definition-via-tags)
       (define-key evil-normal-state-map (kbd "C-]") 'helm-etags-select)
 
       (defun env0der/hyper-jump ()
@@ -355,3 +392,19 @@
       (setq auto-revert-verbose nil)
       (add-hook 'after-save-hook 'ctags-update)
       (evil-leader/set-key "pR" 'ctags-update))))
+
+(defun env0der/init-nlinum ()
+  (use-package nlinum
+    :config
+    (progn
+      (global-nlinum-mode t)
+      (setq nlinum-format "%d "))))
+
+(defun env0der/init-ag ()
+  (use-package ag))
+
+(defun env0der/init-browse-at-remote ()
+  (use-package browse-at-remote))
+
+(defun env0der/init-osx-clipboard ()
+  (use-package osx-clipboard-mode))
