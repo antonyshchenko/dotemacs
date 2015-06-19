@@ -181,8 +181,10 @@
     (setq tabbar-ruler-popup-scrollbar nil)
     (setq tabbar-ruler-movement-timer-delay 1000000)
     (require 'tabbar-ruler)
-    (global-set-key (kbd "s-{") 'tabbar-ruler-backward)
-    (global-set-key (kbd "s-}") 'tabbar-ruler-forward)
+    (global-set-key (kbd "M-h") 'tabbar-ruler-backward)
+    (global-set-key (kbd "M-l") 'tabbar-ruler-forward)
+    (global-set-key (kbd "M-w") 'kill-this-buffer)
+    (evil-leader/set-key "bk" 'kill-this-buffer)
 
     ;; for now just override and hack this function to remove tab with TAGS file from projectile project tabs list
     (defun tabbar-ruler-projectile-tabbar-buffer-groups ()
