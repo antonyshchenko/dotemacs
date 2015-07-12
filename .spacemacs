@@ -185,8 +185,6 @@ layers configuration."
   (set-face-attribute 'spacemacs-motion-face nil :box nil)
   (set-face-attribute 'spacemacs-normal-face nil :box nil)
   (set-face-attribute 'spacemacs-visual-face nil :box nil)
-  ;; (setq tabbar-background-color "#3b3a3a")
-  ;; (set-face-attribute 'tabbar-default nil :background "#3b3a3a")
 
   (custom-set-faces
    '(default ((t (:inherit nil :stipple nil :background "#1d1f21" :foreground "gray100" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 180 :width normal :foundry "nil" :family "Menlo"))))

@@ -212,7 +212,14 @@
 
 
     (tabbar-ruler-group-by-projectile-project)
-    ))
+
+    ;; for some reason this is the only (but ugly) way to force tabbar to use any colors different from the default ones
+    (run-with-idle-timer 5 nil (lambda ()
+                                 (setq tabbar-background-color "#666666")
+                                 (set-face-attribute 'tabbar-selected nil :background "#1d1f21")
+                                 (set-face-attribute 'tabbar-selected nil :foreground "white")
+                                 (tabbar-install-faces)
+                                 (set-face-attribute 'tabbar-default nil :background "#666666")))))
 
 (defun env0der/init-smartparens ()
   (use-package smartparens
