@@ -253,6 +253,7 @@
     (progn
       (define-key company-mode-map (kbd "M-j") 'company-select-next)
       (define-key company-mode-map (kbd "M-k") 'company-select-previous)
+      (define-key company-active-map (kbd "TAB") 'company-complete)
       (define-key company-active-map (kbd "<tab>") 'company-complete)
       (define-key company-active-map (kbd "C-w") 'backward-kill-word)
       (define-key company-active-map (kbd "C-j") 'newline-and-indent-interactive))))
