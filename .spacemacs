@@ -133,6 +133,7 @@ layers configuration."
     :config
     (progn
       (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action)
+      (define-key key-translation-map (kbd "M-[ 2 9 ~") (kbd "s-f")) ;; map Command-f to O2S escape sequence in iTerm2
       (global-set-key (kbd "s-f") 'helm-imenu)
       (define-key helm-map (kbd "C-z")  'helm-select-action)
       (define-key helm-map (kbd "M-j") 'helm-next-line)

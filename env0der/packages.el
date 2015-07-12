@@ -33,12 +33,14 @@
   (use-package ace-jump-buffer
     :config
     (progn
+      (define-key key-translation-map (kbd "M-[ 2 6 ~") (kbd "s-b")) ;; map Command-b to O2Q escape sequence in iTerm2 (http://aperiodic.net/phil/archives/Geekery/term-function-keys.html)
       (global-set-key (kbd "s-b") 'ace-jump-buffer))))
 
 (defun env0der/init-helm-projectile ()
   (use-package helm-projectile
     :config
     (progn
+      (define-key key-translation-map (kbd "M-[ 2 8 ~") (kbd "s-o")) ;; map Command-o to O2R escape sequence in iTerm2
       (global-set-key (kbd "s-o") 'helm-projectile-find-file))))
 
 (defun env0der/init-evil ()
@@ -105,6 +107,8 @@
       (define-key evil-normal-state-map (kbd "<RET>") (lambda ()
                                                       (interactive)
                                                       (evil-insert-newline-below)))
+
+      (define-key key-translation-map (kbd "M-[ 2 5 ~") (kbd "<S-return>")) ;; map Shift-Return to O2P escape sequence in iTerm2
       (define-key evil-normal-state-map [(S-return)] (lambda ()
                                                        (interactive)
                                                        (evil-insert-newline-above))))))
