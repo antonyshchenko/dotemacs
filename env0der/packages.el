@@ -424,7 +424,7 @@
   (use-package browse-at-remote))
 
 (defun env0der/init-osx-clipboard ()
-  (use-package osx-clipboard-mode
+  (use-package osx-clipboard
     :config
     (progn
       (osx-clipboard-mode +1)
