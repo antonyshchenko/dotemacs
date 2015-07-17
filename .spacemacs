@@ -148,7 +148,9 @@ layers configuration."
       (define-key helm-map (kbd "M-m") 'helm-toggle-visible-mark)
       (define-key helm-map (kbd "C-m") 'helm-toggle-all-marks)
       (define-key helm-buffer-map (kbd "M-m") 'helm-toggle-visible-mark)
-      (define-key helm-buffer-map (kbd "C-m") 'helm-toggle-all-marks)))
+      (define-key helm-buffer-map (kbd "C-m") 'helm-toggle-all-marks)
+      (setq helm-echo-input-in-header-line nil) ;; disable temporarely because of glitches in terminal
+      ))
 
   (add-hook 'ido-setup-hook (lambda ()
                               (define-key ido-completion-map (kbd "M-j") 'ido-next-match)
