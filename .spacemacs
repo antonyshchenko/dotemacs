@@ -51,7 +51,7 @@ before layers configuration."
    ;; Default font. `powerline-scale' allows to quickly tweak the mode-line
    ;; size to make separators look not too crappy.
    dotspacemacs-default-font '("Menlo"
-                               :size 18
+                               :size 15
                                :weight normal
                                :width normal
                                :powerline-scale 1.1)
@@ -133,7 +133,7 @@ layers configuration."
     :config
     (progn
       (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action)
-      (define-key key-translation-map (kbd "M-[ 2 9 ~") (kbd "s-f")) ;; map Command-f to O2S escape sequence in iTerm2
+      (define-key key-translation-map "\033[14;2~" (kbd "s-f"))
       (global-set-key (kbd "s-f") 'helm-imenu)
       (define-key helm-map (kbd "C-z")  'helm-select-action)
       (define-key helm-map (kbd "M-j") 'helm-next-line)
@@ -187,7 +187,7 @@ layers configuration."
   (set-face-attribute 'spacemacs-visual-face nil :box nil)
 
   (custom-set-faces
-   '(default ((t (:inherit nil :stipple nil :background "#1d1f21" :foreground "gray100" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 180 :width normal :foundry "nil" :family "Menlo"))))
+   '(default ((t (:inherit nil :stipple nil :background "#1d1f21" :foreground "gray100" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :foundry "nil" :family "Menlo"))))
    '(font-lock-builtin-face ((t (:foreground "#f56e80"))))
    '(font-lock-keyword-face ((t (:foreground "#f56e80"))))
    '(font-lock-comment-face ((t (:foreground "gray43"))))

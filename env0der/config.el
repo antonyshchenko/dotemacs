@@ -2,7 +2,6 @@
 (add-hook 'before-save-hook 'whitespace-cleanup)
 
 (define-key minibuffer-local-map (kbd "C-w") 'backward-kill-word)
-(global-set-key (kbd "s-w") 'kill-this-buffer)
 
 (setq ido-auto-merge-work-directories-length -1)
 

@@ -33,14 +33,14 @@
   (use-package ace-jump-buffer
     :config
     (progn
-      (define-key key-translation-map (kbd "M-[ 2 6 ~") (kbd "s-b")) ;; map Command-b to O2Q escape sequence in iTerm2 (http://aperiodic.net/phil/archives/Geekery/term-function-keys.html)
+      (define-key key-translation-map "\033[12;2~" (kbd "s-b"))
       (global-set-key (kbd "s-b") 'ace-jump-buffer))))
 
 (defun env0der/init-helm-projectile ()
   (use-package helm-projectile
     :config
     (progn
-      (define-key key-translation-map (kbd "M-[ 2 8 ~") (kbd "s-o")) ;; map Command-o to O2R escape sequence in iTerm2
+      (define-key key-translation-map "\033[13;2~" (kbd "s-o"))
       (global-set-key (kbd "s-o") 'helm-projectile-find-file))))
 
 (defun env0der/init-evil ()
@@ -108,7 +108,7 @@
                                                       (interactive)
                                                       (evil-insert-newline-below)))
 
-      (define-key key-translation-map (kbd "M-[ 2 5 ~") (kbd "<S-return>")) ;; map Shift-Return to O2P escape sequence in iTerm2
+      (define-key key-translation-map "\033[11;2~" (kbd "<S-return>"))
       (define-key evil-normal-state-map [(S-return)] (lambda ()
                                                        (interactive)
                                                        (evil-insert-newline-above))))))
@@ -186,8 +186,11 @@
     (setq tabbar-ruler-movement-timer-delay 1000000)
     (require 'tabbar-ruler)
     (global-set-key (kbd "M-h") 'tabbar-ruler-backward)
+    (global-set-key (kbd "s-{") 'tabbar-ruler-backward)
     (global-set-key (kbd "M-l") 'tabbar-ruler-forward)
+    (global-set-key (kbd "s-}") 'tabbar-ruler-forward)
     (global-set-key (kbd "M-w") 'kill-this-buffer)
+    (global-set-key (kbd "s-w") 'kill-this-buffer)
     (evil-leader/set-key "bk" 'kill-this-buffer)
 
     ;; for now just override and hack this function to remove tab with TAGS file from projectile project tabs list
